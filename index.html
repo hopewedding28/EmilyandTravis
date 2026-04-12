@@ -4,62 +4,74 @@
 
   <!-- ============================================================
        EMILY & TRAVIS WEDDING SITE
-       FILE: index.html
-       PURPOSE: Entry portal — the gate. First thing any guest sees.
-       PHILOSOPHY: Atmosphere first. One action. No choices.
-                   The forest is alive before you touch it.
-       LAST UPDATED: 2026
+       FILE: rsvp.html
+       PURPOSE: The Book of Names. Grimoire-style RSVP form.
+                Dark enchanted spellbook floating in the golden
+                forest clearing. Ren faire meets forest creatures
+                meets Snow White meets park life.
+       PALETTE:
+         Burnt Orange  #CC5500
+         Dark Green    #1a3a1a / #013220
+         Plum Purple   #673147
+         Black         #0a0a0a
+         White/Mist    rgba(248,242,224,0.97)
+       BACKGROUND: inside-gate.png
+       FONTS: Shadows Into Light Two (display), Zen Loop (body)
   ============================================================ -->
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#060b06" />
+  <meta name="theme-color" content="#0a0a0a" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Emily & Travis" />
 
-  <!-- Open Graph — so sharing the link looks beautiful -->
-  <meta property="og:title" content="You've Been Summoned — Emily & Travis" />
-  <meta property="og:description" content="Beyond the trees, a celebration is waiting. September 23, 2028." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="assets/backgrounds/gate.png" />
+  <title>Emily &amp; Travis — The Book of Names</title>
 
-  <title>Emily and Travis · 09.23.28</title>
-
-  <!-- Font preconnect for faster load -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
-
-  <!-- Preload the background so it's ready instantly -->
-  <link rel="preload" href="assets/backgrounds/gate.png" as="image" />
+  <link rel="preload" href="assets/backgrounds/inside-gate.png" as="image" />
 
   <style>
 
     /* ============================================================
        TABLE OF CONTENTS
-       1. CSS VARIABLES / TOKENS
-       2. RESET + BASE
-       3. HERO + BACKGROUND
-       4. OVERLAY SYSTEM
-       5. MIST LAYER
-       6. FIREFLY SYSTEM
-       7. CURSOR SPARKLE (desktop)
-       8. TAP RIPPLE (mobile + desktop)
-       9. CONTENT BLOCK
-       10. HEADLINE
-       11. SUBTEXT
-       12. BUTTON — WISPY
-       13. MONOGRAM WATERMARK
-       14. FOOTER WHISPER (date + countdown)
-       15. IDLE MESSAGE
-       16. SOUND TOGGLE
-       17. PAGE LOAD SEQUENCE
-       18. BREATHING VIGNETTE
-       19. ANIMATIONS LIBRARY
-       20. MOBILE / RESPONSIVE
-       21. SAFE AREA INSETS
-       22. REDUCED MOTION
+       1.  CSS VARIABLES / TOKENS
+       2.  RESET + BASE
+       3.  FOREST BACKGROUND
+       4.  OVERLAY SYSTEM
+       5.  MIST LAYER
+       6.  FIREFLY SYSTEM (true lightning bug colors)
+       7.  ATTENDANCE MOOD OVERLAYS
+       8.  RED TINT FLASH
+       9.  GRIMOIRE CARD
+       10. CARD DECORATIONS — SVG BOTANICAL CORNERS
+       11. CARD DECORATIONS — SVG VINE DIVIDERS
+       12. CARD DECORATIONS — SVG CROWN SEAL
+       13. CARD DECORATIONS — PARCHMENT TEXTURE
+       14. GRIMOIRE TITLE
+       15. INTRO COPY
+       16. ATTENDANCE REACTION LINE
+       17. FORM FIELDS — BASE
+       18. FORM FIELDS — LABELS
+       19. FORM FIELDS — INPUTS + SELECTS
+       20. FORM FIELDS — FOCUS STATES
+       21. FORM FIELDS — CHECKBOXES
+       22. YES FIELDS COLLAPSE ANIMATION
+       23. SPARK BURST SYSTEM
+       24. LEAF DRIFT SYSTEM
+       25. MAGIC TRANSITION (firefly converge)
+       26. WAX SEAL SUBMIT BUTTON
+       27. LOADING DOTS
+       28. RESPONSE STATE
+       29. REGISTRY BUTTON
+       30. EDIT RESPONSE LINK
+       31. POPUP / MODAL
+       32. LOADING SCREEN
+       33. ANIMATIONS LIBRARY
+       34. MOBILE / RESPONSIVE
+       35. SAFE AREA INSETS
+       36. REDUCED MOTION
     ============================================================ */
 
 
@@ -67,38 +79,63 @@
        1. CSS VARIABLES / TOKENS
     ============================================================ */
     :root {
-      /* Colors */
-      --gold:           #f3d37a;
-      --gold-dim:       rgba(243, 211, 122, 0.55);
-      --gold-soft:      rgba(243, 211, 122, 0.28);
-      --gold-whisper:   rgba(243, 211, 122, 0.12);
-      --gold-trace:     rgba(243, 211, 122, 0.07);
-      --gold-glow:      rgba(243, 211, 122, 0.40);
-      --mist:           rgba(245, 237, 210, 0.96);
-      --mist-soft:      rgba(240, 234, 214, 0.82);
-      --mist-faint:     rgba(240, 234, 214, 0.48);
-      --forest-deep:    #060b06;
-      --forest-mid:     #0c160d;
+      /* Wedding palette */
+      --burnt-orange:       #CC5500;
+      --burnt-orange-dim:   rgba(204, 85, 0, 0.55);
+      --burnt-orange-soft:  rgba(204, 85, 0, 0.28);
+      --burnt-orange-glow:  rgba(204, 85, 0, 0.20);
+      --burnt-orange-trace: rgba(204, 85, 0, 0.08);
 
-      /* Timing tokens */
-      --t-fast:         250ms;
-      --t-base:         450ms;
-      --t-slow:         700ms;
-      --t-ambient:      9s;
+      --plum:               #673147;
+      --plum-dim:           rgba(103, 49, 71, 0.65);
+      --plum-soft:          rgba(103, 49, 71, 0.35);
+      --plum-glow:          rgba(103, 49, 71, 0.22);
+      --plum-border:        rgba(103, 49, 71, 0.45);
 
-      /* Easing curves */
-      --ease-soft:      cubic-bezier(0.25, 0.8, 0.25, 1);
-      --ease-default:   cubic-bezier(0.4, 0, 0.2, 1);
-      --ease-out:       cubic-bezier(0.0, 0, 0.2, 1);
-      --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
+      --forest-green:       #1a3a1a;
+      --forest-green-deep:  #013220;
+      --forest-green-mid:   rgba(26, 58, 26, 0.72);
+      --forest-green-soft:  rgba(26, 58, 26, 0.38);
 
-      /* Spacing scale (8px base) */
+      /* Site-wide colors */
+      --gold:               #f3d37a;
+      --gold-dim:           rgba(243, 211, 122, 0.45);
+      --mist:               rgba(248, 242, 224, 0.97);
+      --mist-soft:          rgba(242, 235, 212, 0.88);
+      --mist-faint:         rgba(240, 234, 214, 0.55);
+      --text-main:          rgba(232, 225, 199, 0.92);
+      --text-soft:          rgba(232, 225, 199, 0.68);
+
+      /* Card */
+      --card-bg:            rgba(6, 8, 6, 0.82);
+      --card-border:        rgba(103, 49, 71, 0.38);
+      --card-inner-glow:    rgba(204, 85, 0, 0.06);
+      --field-bg:           rgba(4, 8, 4, 0.78);
+      --field-border:       rgba(103, 49, 71, 0.22);
+      --field-focus-border: rgba(204, 85, 0, 0.55);
+      --field-focus-glow:   rgba(204, 85, 0, 0.18);
+
+      /* System */
+      --forest-deep:        #060b06;
+      --danger-red:         rgba(135, 18, 18, 0.30);
+      --popup-bg:           rgba(6, 8, 6, 0.95);
+
+      /* Timing */
+      --t-fast:             250ms;
+      --t-base:             450ms;
+      --t-slow:             700ms;
+
+      /* Easing */
+      --ease-soft:          cubic-bezier(0.25, 0.8, 0.25, 1);
+      --ease-default:       cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:        cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      /* Spacing */
       --sp-xs:  8px;
       --sp-sm:  16px;
       --sp-md:  24px;
       --sp-lg:  32px;
       --sp-xl:  48px;
-      --sp-xxl: 64px;
     }
 
 
@@ -113,112 +150,75 @@
 
     html {
       width: 100%;
-      height: 100%;
-      /* prevent iOS bounce */
-      overscroll-behavior: none;
+      min-height: 100%;
+      overscroll-behavior-x: none;
     }
 
     body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
+      min-height: 100vh;
+      font-family: 'Zen Loop', sans-serif;
       background: var(--forest-deep);
-      /* hide cursor on desktop — replaced with sparkle */
-      cursor: none;
-    }
-
-    /* restore cursor on mobile (no hover) */
-    @media (hover: none) {
-      body { cursor: auto; }
+      color: var(--text-main);
+      overflow-x: hidden;
     }
 
 
     /* ============================================================
-       3. HERO + BACKGROUND
+       3. FOREST BACKGROUND
     ============================================================ */
-    .hero {
-      position: relative;
-      width: 100%;
-      height: 100%;
+    .forest {
       min-height: 100vh;
-      /* safe area support */
       min-height: 100dvh;
-      background:
-        url("assets/backgrounds/gate.png") center / cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      /* intentional: whole screen is the interaction */
-      cursor: none;
-      /* start invisible — JS controls fade-in sequence */
-      opacity: 0;
-      will-change: transform, filter, opacity;
-    }
-
-    @media (hover: none) {
-      .hero { cursor: pointer; }
-    }
-
-    /* ambient slow zoom — barely perceptible depth */
-    .hero.loaded {
-      animation:
-        heroFadeIn 1.2s var(--ease-soft) forwards,
-        ambientZoom 32s ease-in-out 1.2s infinite alternate;
-    }
-
-    @keyframes heroFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    @keyframes ambientZoom {
-      from { transform: scale(1); }
-      to   { transform: scale(1.045); }
-    }
-
-    /* click/tap transition state */
-    .hero.zooming {
-      animation: none !important;
-      transform: scale(1.14) !important;
-      filter: brightness(1.26) !important;
-      transition:
-        transform 1.0s var(--ease-default),
-        filter 1.0s var(--ease-default);
-    }
-
-    /* subtle parallax container — shifts on mouse move */
-    .parallax-layer {
-      position: absolute;
-      inset: -3%;
-      width: 106%;
-      height: 106%;
-      background: inherit;
-      background-size: cover;
-      background-position: center;
-      will-change: transform;
-      transition: transform 0.12s linear;
+      background: url("assets/backgrounds/inside-gate.png") center / cover no-repeat;
+      position: relative;
+      padding: 4rem 1.25rem 5rem;
+      overflow: hidden;
+      isolation: isolate;
     }
 
 
     /* ============================================================
        4. OVERLAY SYSTEM
+       Lighter than index since inside-gate is warm and bright
     ============================================================ */
 
-    /* base dark vignette */
-    .overlay-vignette {
+    /* base vignette */
+    .forest::before {
+      content: "";
       position: absolute;
       inset: 0;
       z-index: 1;
       background: radial-gradient(
         ellipse at center,
-        rgba(6,6,6,0.18)  0%,
-        rgba(6,6,6,0.50)  50%,
-        rgba(6,6,6,0.82)  100%
+        rgba(6, 6, 6, 0.15) 0%,
+        rgba(6, 6, 6, 0.42) 52%,
+        rgba(6, 6, 6, 0.75) 100%
       );
       pointer-events: none;
+      transition: background 0.6s var(--ease-default);
     }
 
-    /* breathing vignette — pulses slowly like a heartbeat */
+    /* attendance mood — yes (brighter, warmer) */
+    .forest.attendance-yes::before {
+      background: radial-gradient(
+        ellipse at center,
+        rgba(10, 12, 6, 0.08) 0%,
+        rgba(8, 10, 6, 0.32) 52%,
+        rgba(6, 8, 4, 0.62) 100%
+      );
+    }
+
+    /* attendance mood — no (darker, heavier) */
+    .forest.attendance-no::before {
+      background: radial-gradient(
+        ellipse at center,
+        rgba(6, 4, 8, 0.28) 0%,
+        rgba(6, 4, 10, 0.55) 52%,
+        rgba(4, 4, 8, 0.82) 100%
+      );
+    }
+
+    /* breathing vignette layer */
     .overlay-breathe {
       position: absolute;
       inset: 0;
@@ -226,67 +226,66 @@
       background: radial-gradient(
         ellipse at center,
         transparent 30%,
-        rgba(4,8,4,0.22) 100%
+        rgba(4, 6, 4, 0.18) 100%
       );
       pointer-events: none;
-      animation: breathePulse 8s ease-in-out infinite;
+      animation: breathePulse 10s ease-in-out infinite;
     }
 
     @keyframes breathePulse {
-      0%, 100% { opacity: 0.6; transform: scale(1); }
-      50%       { opacity: 1.0; transform: scale(1.02); }
+      0%,  100% { opacity: 0.5; }
+      50%        { opacity: 1.0; }
     }
 
-    /* slow color shift — like clouds passing over the moon */
-    .overlay-shift {
+    /* warm golden center glow matching inside-gate light */
+    .overlay-glow {
       position: absolute;
       inset: 0;
       z-index: 2;
       background: radial-gradient(
-        ellipse at 48% 45%,
-        rgba(243, 211, 122, 0.03) 0%,
-        transparent 60%
+        ellipse at 50% 38%,
+        rgba(204, 85, 0, 0.04) 0%,
+        transparent 55%
       );
       pointer-events: none;
-      animation: colorShift 18s ease-in-out infinite alternate;
+      animation: glowShift 18s ease-in-out infinite alternate;
     }
 
-    @keyframes colorShift {
+    @keyframes glowShift {
       0%   { opacity: 0.4; }
-      50%  { opacity: 1.0; }
-      100% { opacity: 0.3; }
+      100% { opacity: 1.0; }
     }
 
 
     /* ============================================================
        5. MIST LAYER
-       Slow fog drifting across the bottom of the screen
     ============================================================ */
     .mist-layer {
       position: absolute;
       inset: auto 0 0 0;
-      height: 32vh;
+      height: 30vh;
       z-index: 3;
       background:
-        radial-gradient(ellipse at 20% 100%, rgba(255,255,255,0.028), transparent 36%),
-        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.042), transparent 42%),
-        radial-gradient(ellipse at 80% 100%, rgba(255,255,255,0.032), transparent 38%);
+        radial-gradient(ellipse at 20% 100%, rgba(255,255,255,0.022), transparent 36%),
+        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.034), transparent 42%),
+        radial-gradient(ellipse at 80% 100%, rgba(255,255,255,0.024), transparent 38%);
       filter: blur(22px);
-      opacity: 0.9;
+      opacity: 0.88;
       pointer-events: none;
       animation: mistDrift 22s ease-in-out infinite alternate;
     }
 
     @keyframes mistDrift {
-      0%   { transform: translateX(-2%) translateY(0); opacity: 0.7; }
-      100% { transform: translateX(2%) translateY(-1.5%); opacity: 1.0; }
+      0%   { transform: translateX(-2%) translateY(0);    opacity: 0.68; }
+      100% { transform: translateX(2%)  translateY(-1%);  opacity: 0.95; }
     }
 
 
     /* ============================================================
        6. FIREFLY SYSTEM
-       Generated by JS. Each has random size, position,
-       drift path, flicker timing. None synchronized.
+       True lightning bug colors — each firefly gets its own
+       color from the palette. Some shift mid-animation.
+       Colors: yellow-green, amber, gold, blue-white, warm white
     ============================================================ */
     .fireflies {
       position: absolute;
@@ -296,19 +295,10 @@
       overflow: hidden;
     }
 
+    /* base firefly — color set by JS */
     .firefly {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(255, 243, 194, 0.98)  0%,
-        rgba(243, 211, 122, 0.55)  48%,
-        rgba(243, 211, 122, 0.12)  72%,
-        transparent                100%
-      );
-      box-shadow:
-        0 0 8px  rgba(243, 211, 122, 0.52),
-        0 0 18px rgba(243, 211, 122, 0.20);
       opacity: 0;
       animation-name: driftFloat, flickerGlow;
       animation-timing-function: linear, ease-in-out;
@@ -316,454 +306,1120 @@
       will-change: transform, opacity;
     }
 
-    /* fireflies near gate light drift slightly differently */
-    .firefly.center-drift {
-      animation-name: driftCenter, flickerGlow;
+    /* color variant classes — set by JS */
+    .firefly.color-yellowgreen {
+      background: radial-gradient(circle,
+        rgba(200, 240, 80,  0.98) 0%,
+        rgba(160, 210, 60,  0.55) 48%,
+        transparent 100%);
+      box-shadow:
+        0 0 8px  rgba(180, 230, 70,  0.65),
+        0 0 20px rgba(160, 210, 50,  0.28);
     }
 
-    /* fireflies that drift upward from the bottom */
+    .firefly.color-amber {
+      background: radial-gradient(circle,
+        rgba(255, 180, 60,  0.98) 0%,
+        rgba(240, 150, 30,  0.55) 48%,
+        transparent 100%);
+      box-shadow:
+        0 0 8px  rgba(255, 170, 50,  0.65),
+        0 0 20px rgba(240, 140, 20,  0.28);
+    }
+
+    .firefly.color-gold {
+      background: radial-gradient(circle,
+        rgba(255, 240, 140, 0.98) 0%,
+        rgba(243, 211, 122, 0.55) 48%,
+        transparent 100%);
+      box-shadow:
+        0 0 8px  rgba(243, 220, 120, 0.65),
+        0 0 20px rgba(230, 200, 100, 0.28);
+    }
+
+    .firefly.color-bluewhite {
+      background: radial-gradient(circle,
+        rgba(220, 240, 255, 0.98) 0%,
+        rgba(180, 220, 255, 0.55) 48%,
+        transparent 100%);
+      box-shadow:
+        0 0 8px  rgba(200, 230, 255, 0.65),
+        0 0 20px rgba(160, 210, 255, 0.28);
+    }
+
+    .firefly.color-warmwhite {
+      background: radial-gradient(circle,
+        rgba(255, 252, 230, 0.98) 0%,
+        rgba(255, 245, 200, 0.55) 48%,
+        transparent 100%);
+      box-shadow:
+        0 0 8px  rgba(255, 248, 220, 0.65),
+        0 0 20px rgba(255, 240, 190, 0.28);
+    }
+
+    /* riser fireflies drift upward from bottom */
     .firefly.rise {
       animation-name: driftRise, flickerGlow;
     }
 
     @keyframes driftFloat {
       0%   { transform: translate3d(0, 0, 0) scale(0.88); }
-      20%  { transform: translate3d(16px, -24px, 0) scale(1.06); }
-      40%  { transform: translate3d(-11px, -40px, 0) scale(0.94); }
-      60%  { transform: translate3d(14px, -28px, 0) scale(1.10); }
-      80%  { transform: translate3d(-8px, -14px, 0) scale(0.96); }
-      100% { transform: translate3d(-5px, 0, 0) scale(0.90); }
+      20%  { transform: translate3d(18px, -26px, 0) scale(1.07); }
+      40%  { transform: translate3d(-12px, -42px, 0) scale(0.94); }
+      60%  { transform: translate3d(15px, -30px, 0) scale(1.11); }
+      80%  { transform: translate3d(-9px,  -15px, 0) scale(0.97); }
+      100% { transform: translate3d(-5px,   0,   0) scale(0.90); }
     }
 
-    /* center-cluster drift — circles near gate glow */
-    @keyframes driftCenter {
-      0%   { transform: translate3d(0, 0, 0) scale(0.9); }
-      25%  { transform: translate3d(8px, -18px, 0) scale(1.04); }
-      50%  { transform: translate3d(-6px, -10px, 0) scale(0.96); }
-      75%  { transform: translate3d(4px, -20px, 0) scale(1.06); }
-      100% { transform: translate3d(-3px, 0, 0) scale(0.92); }
-    }
-
-    /* rising drift — floats upward from bottom edge */
     @keyframes driftRise {
       0%   { transform: translate3d(0, 0, 0) scale(0.7); opacity: 0; }
-      10%  { opacity: 0.6; }
-      100% { transform: translate3d(var(--rx, 20px), -120px, 0) scale(1.1); opacity: 0; }
+      8%   { opacity: 0.7; }
+      100% { transform: translate3d(var(--rx, 18px), -140px, 0) scale(1.1); opacity: 0; }
     }
 
     @keyframes flickerGlow {
-      0%,  100% { opacity: 0.05; }
-      12%        { opacity: 0.65; }
-      28%        { opacity: 0.11; }
-      50%        { opacity: 0.78; }
-      68%        { opacity: 0.18; }
-      84%        { opacity: 0.52; }
+      0%,  100% { opacity: 0.04; }
+      10%        { opacity: 0.68; }
+      26%        { opacity: 0.10; }
+      48%        { opacity: 0.80; }
+      66%        { opacity: 0.16; }
+      82%        { opacity: 0.55; }
     }
 
 
     /* ============================================================
-       7. CURSOR SPARKLE (desktop only)
-       Tiny gold sparks follow the cursor
+       7. ATTENDANCE MOOD OVERLAYS
+       Already handled in section 4 via .forest.attendance-yes/no
+       Additional particle reactions defined in JS
     ============================================================ */
-    .cursor-dot {
-      position: fixed;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(255, 243, 194, 0.92);
-      box-shadow:
-        0 0 8px  rgba(243, 211, 122, 0.7),
-        0 0 16px rgba(243, 211, 122, 0.3);
-      pointer-events: none;
-      z-index: 9999;
-      transform: translate(-50%, -50%);
-      transition: opacity 0.2s ease;
-      will-change: transform;
-    }
-
-    .cursor-spark {
-      position: fixed;
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: rgba(255, 243, 194, 0.85);
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      animation: sparkFade 0.6s ease forwards;
-      will-change: transform, opacity;
-    }
-
-    @keyframes sparkFade {
-      0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(
-        calc(-50% + var(--sx, 0px)),
-        calc(-50% + var(--sy, 0px))
-      ) scale(0.2); }
-    }
 
 
     /* ============================================================
-       8. TAP RIPPLE
-       Gold ripple expands from tap/click point
+       8. RED TINT FLASH
+       Triggers on chaos code attempts 25+
     ============================================================ */
-    .ripple {
-      position: fixed;
-      border-radius: 50%;
-      border: 1px solid rgba(243, 211, 122, 0.55);
-      background: radial-gradient(
-        circle,
-        rgba(243, 211, 122, 0.12) 0%,
-        transparent 70%
-      );
+    .forest.red-tint::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--danger-red);
+      z-index: 5;
+      animation: redFlash 0.55s ease forwards;
       pointer-events: none;
-      z-index: 9997;
-      transform: translate(-50%, -50%) scale(0);
-      animation: rippleOut 0.85s var(--ease-out) forwards;
-      will-change: transform, opacity;
     }
 
-    @keyframes rippleOut {
-      0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    @keyframes redFlash {
+      0%   { opacity: 0; }
+      20%  { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    /* screen flicker for chaos attempts 15 */
+    .forest.flicker {
+      animation: screenFlicker 0.20s linear 1;
+    }
+
+    @keyframes screenFlicker {
+      0%   { opacity: 1; }
+      18%  { opacity: 0.12; }
+      38%  { opacity: 1; }
+      58%  { opacity: 0.18; }
+      100% { opacity: 1; }
     }
 
 
     /* ============================================================
-       9. CONTENT BLOCK
+       9. GRIMOIRE CARD
+       Dark parchment floating in the clearing.
+       Plum border, burnt orange inner glow, deep dark bg.
+       Subtle noise texture via SVG filter.
     ============================================================ */
     .content {
       position: relative;
       z-index: 6;
-      text-align: center;
-      max-width: 580px;
-      width: 100%;
-      padding: var(--sp-lg) var(--sp-md);
-      /* pushed down so headline clears ironwork */
-      transform: translateY(44px);
-      /* content fades in as part of load sequence */
-      opacity: 0;
-      transition: opacity 0.8s var(--ease-soft);
+      max-width: 820px;
+      margin: 0 auto;
     }
 
-    .content.visible {
-      opacity: 1;
-    }
-
-
-    /* ============================================================
-       10. HEADLINE
-    ============================================================ */
-    h1 {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(2.4rem, 6vw, 3.6rem);
-      /* soft ivory/cream — NOT gold, so it reads against the golden gate */
-      color: rgba(248, 242, 224, 0.97);
-      /* layered shadows create a dark halo so it lifts off ANY background */
-      text-shadow:
-        0 0  4px  rgba(0, 0, 0, 1.0),
-        0 2px 8px  rgba(0, 0, 0, 1.0),
-        0 4px 20px rgba(0, 0, 0, 0.95),
-        0 0  40px rgba(0, 0, 0, 0.85),
-        0 0  60px rgba(0, 0, 0, 0.60);
-      margin-bottom: var(--sp-sm);
-      line-height: 1.1;
-      letter-spacing: 0.01em;
-      opacity: 0;
-      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
-      animation-delay: 1400ms;
-    }
-
-    /* faint monogram behind headline */
-    .monogram {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -54%);
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(6rem, 18vw, 11rem);
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(243, 211, 122, 0.06);
-      text-stroke: 1px rgba(243, 211, 122, 0.06);
-      letter-spacing: 0.12em;
-      pointer-events: none;
-      z-index: 5;
-      user-select: none;
-      animation: monogramPulse 12s ease-in-out infinite;
-      white-space: nowrap;
-    }
-
-    @keyframes monogramPulse {
-      0%,  100% { opacity: 0.55; }
-      50%        { opacity: 1.0; }
-    }
-
-
-    /* ============================================================
-       11. SUBTEXT
-    ============================================================ */
-    p.sub {
-      font-family: 'Zen Loop', sans-serif;
-      font-size: clamp(0.88rem, 1.8vw, 1.02rem);
-      /* slightly brighter than before so it's legible on the gate */
-      color: rgba(242, 235, 212, 0.92);
-      line-height: 1.78;
-      margin-bottom: var(--sp-lg);
-      letter-spacing: 0.038em;
-      text-shadow:
-        0 0  4px  rgba(0, 0, 0, 1.0),
-        0 1px 8px  rgba(0, 0, 0, 1.0),
-        0 2px 18px rgba(0, 0, 0, 0.95),
-        0 0  35px rgba(0, 0, 0, 0.80);
-      opacity: 0;
-      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
-      animation-delay: 1900ms;
-    }
-
-
-    /* ============================================================
-       12. BUTTON — WISPY
-       Transparent. Two hairlines top/bottom.
-       Glow swell on hover. Text lifts to gold on hover.
-       Hairlines expand outward from center on load.
-    ============================================================ */
-    .btn-enter {
-      font-family: 'Zen Loop', sans-serif;
-      display: inline-block;
+    .form-card {
       position: relative;
-      padding: 0.85rem 3.2rem;
-      font-size: clamp(0.78rem, 1.5vw, 0.92rem);
-      letter-spacing: 0.24em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: rgba(248, 242, 224, 0.95);
-      text-shadow:
-        0 0  4px  rgba(0, 0, 0, 1.0),
-        0 1px 8px  rgba(0, 0, 0, 1.0),
-        0 0  22px rgba(0, 0, 0, 0.95),
-        0 0  40px rgba(0, 0, 0, 0.80);
-      background: transparent;
-      border: none;
-      cursor: none;
-      outline: none;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+
+      /* plum border with subtle glow */
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+
+      /* layered shadows for depth */
+      box-shadow:
+        0 0  0    1px  rgba(103, 49, 71, 0.12),
+        0 0  40px 0    rgba(204, 85, 0,  0.08),
+        0 0  80px 0    rgba(103, 49, 71, 0.10),
+        0 24px 60px    rgba(0, 0, 0, 0.55),
+        inset 0 1px 0  rgba(255, 255, 255, 0.02),
+        inset 0 0 40px rgba(204, 85, 0, 0.04);
+
+      padding: 3rem 2.5rem 2.5rem;
+      overflow: hidden;
+
+      /* page load animation */
       opacity: 0;
-      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
-      animation-delay: 2400ms;
+      transform: translateY(20px);
       transition:
-        color      400ms var(--ease-default),
-        transform  150ms var(--ease-default);
-      -webkit-tap-highlight-color: transparent;
+        opacity    0.8s var(--ease-soft),
+        transform  0.8s var(--ease-soft),
+        box-shadow 0.3s var(--ease-default),
+        filter     0.45s var(--ease-default);
     }
 
-    @media (hover: none) {
-      .btn-enter { cursor: pointer; }
+    .form-card.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* top hairline — animates in from center */
-    .btn-enter::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 50%;
-      right: 50%;
-      height: 1px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        var(--gold-dim),
-        transparent
-      );
-      transition:
-        left  600ms var(--ease-soft),
-        right 600ms var(--ease-soft);
+    /* chaos shake on bad code attempts */
+    .form-card.chaos-shake {
+      animation: cardShake 0.38s var(--ease-default);
     }
 
-    /* bottom hairline */
-    .btn-enter::after {
-      content: "";
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      right: 50%;
-      height: 1px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        var(--gold-dim),
-        transparent
-      );
-      transition:
-        left  600ms var(--ease-soft),
-        right 600ms var(--ease-soft);
+    @keyframes cardShake {
+      0%   { transform: translateX(0); }
+      18%  { transform: translateX(-7px); }
+      36%  { transform: translateX(6px); }
+      54%  { transform: translateX(-5px); }
+      72%  { transform: translateX(4px); }
+      100% { transform: translateX(0); }
     }
 
-    /* hairlines expand out once button is visible */
-    .btn-enter.lines-open::before { left: 10%; right: 10%; }
-    .btn-enter.lines-open::after  { left: 10%; right: 10%; }
-
-    /* hover: hairlines reach full width */
-    .btn-enter:hover::before,
-    .btn-enter:hover::after {
-      left: 0%;
-      right: 0%;
+    /* form hidden after submit */
+    .form-card.form-hidden {
+      opacity: 0;
+      filter: blur(3px);
+      transform: scale(0.986);
+      pointer-events: none;
     }
 
-    /* inner glow swell */
-    .btn-glow {
+    /* parchment noise texture overlay on card */
+    .card-texture {
       position: absolute;
       inset: 0;
-      background: radial-gradient(
-        ellipse at center,
-        rgba(243, 211, 122, 0.09) 0%,
-        transparent 68%
-      );
-      opacity: 0;
-      border-radius: 2px;
-      transition: opacity 400ms var(--ease-default);
+      z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      opacity: 0.45;
       pointer-events: none;
+      mix-blend-mode: overlay;
+      border-radius: 4px;
     }
 
-    .btn-label {
+    /* all card children above texture */
+    .form-card > *:not(.card-texture):not(.spark-burst):not(.magic-transition) {
       position: relative;
       z-index: 1;
     }
 
-    .btn-enter:hover {
-      color: var(--gold);
-      text-shadow:
-        0 0  16px rgba(243, 211, 122, 0.58),
-        0 1px 12px rgba(0, 0, 0, 0.98);
+
+    /* ============================================================
+       10. CARD DECORATIONS — SVG BOTANICAL CORNERS
+       Vine + leaf motifs in plum purple, one in each corner.
+       Built entirely in SVG, no images needed.
+    ============================================================ */
+    .corner-decor {
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      opacity: 0.55;
+      pointer-events: none;
+      z-index: 2;
     }
 
-    .btn-enter:hover .btn-glow { opacity: 1; }
-    .btn-enter:active           { transform: scale(0.97); }
+    .corner-decor.tl {
+      top: 0;
+      left: 0;
+    }
+
+    .corner-decor.tr {
+      top: 0;
+      right: 0;
+      transform: scaleX(-1);
+    }
+
+    .corner-decor.bl {
+      bottom: 0;
+      left: 0;
+      transform: scaleY(-1);
+    }
+
+    .corner-decor.br {
+      bottom: 0;
+      right: 0;
+      transform: scale(-1, -1);
+    }
+
+    /* corner SVG paths animate in on load */
+    .corner-decor path,
+    .corner-decor circle {
+      stroke-dasharray: 200;
+      stroke-dashoffset: 200;
+      animation: drawCorner 1.8s var(--ease-soft) forwards;
+    }
+
+    .corner-decor.tl path { animation-delay: 0.8s; }
+    .corner-decor.tr path { animation-delay: 1.0s; }
+    .corner-decor.bl path { animation-delay: 1.2s; }
+    .corner-decor.br path { animation-delay: 1.4s; }
+
+    @keyframes drawCorner {
+      to { stroke-dashoffset: 0; }
+    }
 
 
     /* ============================================================
-       13. MONOGRAM WATERMARK
-       Faint E + T behind the content
+       11. CARD DECORATIONS — SVG VINE DIVIDERS
+       Horizontal botanical dividers between form sections
     ============================================================ */
-    .monogram-wrap {
-      position: absolute;
-      inset: 0;
-      z-index: 5;
+    .vine-divider {
       display: flex;
       align-items: center;
       justify-content: center;
+      margin: 1.5rem 0 1.2rem;
+      opacity: 0.48;
       pointer-events: none;
-      overflow: hidden;
+    }
+
+    .vine-divider svg {
+      width: 100%;
+      max-width: 420px;
+      height: 18px;
     }
 
 
     /* ============================================================
-       14. FOOTER WHISPER
-       Tiny date + countdown at bottom of screen
+       12. CARD DECORATIONS — SVG CROWN SEAL
+       Small decorative crown above the title
     ============================================================ */
-    .footer-whisper {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      /* respect iPhone home bar */
-      padding-bottom: max(1.2rem, env(safe-area-inset-bottom));
-      z-index: 8;
-      text-align: center;
+    .crown-seal {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 0.6rem;
+      opacity: 0.72;
+    }
+
+    .crown-seal svg {
+      width: 44px;
+      height: 28px;
+      filter: drop-shadow(0 0 6px rgba(204, 85, 0, 0.45));
+      animation: crownGlow 4s ease-in-out infinite;
+    }
+
+    @keyframes crownGlow {
+      0%,  100% { filter: drop-shadow(0 0 4px rgba(204, 85, 0, 0.35)); opacity: 0.65; }
+      50%        { filter: drop-shadow(0 0 10px rgba(204, 85, 0, 0.65)); opacity: 0.85; }
+    }
+
+
+    /* ============================================================
+       13. CARD DECORATIONS — PARCHMENT TEXTURE
+       Already handled via .card-texture in section 9
+       Additional inner border lines for grimoire feel
+    ============================================================ */
+
+    /* inner ruled lines — very faint, like old book paper */
+    .ruled-lines {
+      position: absolute;
+      inset: 2.5rem 2.5rem;
+      z-index: 0;
       pointer-events: none;
-      opacity: 0;
-      animation: fadeInSoft 1.4s var(--ease-soft) forwards;
-      animation-delay: 3000ms;
-    }
-
-    .footer-names {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(0.72rem, 1.4vw, 0.88rem);
-      color: rgba(243, 211, 122, 0.58);
-      letter-spacing: 0.10em;
-      text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
-      display: block;
-      margin-bottom: 0.18rem;
-    }
-
-    .footer-countdown {
-      font-family: 'Zen Loop', sans-serif;
-      font-size: clamp(0.62rem, 1.2vw, 0.76rem);
-      color: rgba(240, 234, 214, 0.38);
-      letter-spacing: 0.08em;
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
-      display: block;
-      /* heartbeat pulse on the number */
-      animation: heartbeatPulse 2.4s ease-in-out infinite;
-      animation-delay: 3500ms;
-    }
-
-    @keyframes heartbeatPulse {
-      0%,  100% { opacity: 0.38; transform: scale(1); }
-      14%        { opacity: 0.70; transform: scale(1.04); }
-      28%        { opacity: 0.38; transform: scale(1); }
-      42%        { opacity: 0.62; transform: scale(1.02); }
-    }
-
-    /* wedding day orb — only shown on 09.23.28 */
-    .wedding-orb {
-      display: inline-block;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(255, 243, 194, 0.98) 0%,
-        rgba(243, 211, 122, 0.70) 50%,
-        transparent 100%
+      opacity: 0.04;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 27px,
+        rgba(103, 49, 71, 0.8) 27px,
+        rgba(103, 49, 71, 0.8) 28px
       );
-      box-shadow:
-        0 0 8px  rgba(243, 211, 122, 0.80),
-        0 0 18px rgba(243, 211, 122, 0.40),
-        0 0 32px rgba(243, 211, 122, 0.20);
-      margin-right: 0.5rem;
-      vertical-align: middle;
-      animation: orbBreath 2.2s ease-in-out infinite;
     }
 
-    @keyframes orbBreath {
-      0%,  100% { transform: scale(0.85); opacity: 0.65; }
-      50%        { transform: scale(1.18); opacity: 1.00; }
+    /* inner frame lines */
+    .inner-frame {
+      position: absolute;
+      inset: 12px;
+      z-index: 0;
+      border: 1px solid rgba(103, 49, 71, 0.12);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    .inner-frame-2 {
+      position: absolute;
+      inset: 16px;
+      z-index: 0;
+      border: 1px solid rgba(204, 85, 0, 0.06);
+      border-radius: 2px;
+      pointer-events: none;
     }
 
 
     /* ============================================================
-       15. IDLE MESSAGE
-       Appears after 12 seconds of no interaction
+       14. GRIMOIRE TITLE
+       "The Book of Names"
+       Shadows Into Light Two, burnt orange glow
     ============================================================ */
-    .idle-message {
-      position: fixed;
-      bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 3.5rem));
-      left: 0;
-      right: 0;
+    .grimoire-title {
+      font-family: 'Shadows Into Light Two', cursive;
+      color: var(--mist);
+      font-size: clamp(2rem, 5vw, 3rem);
       text-align: center;
-      z-index: 8;
-      pointer-events: none;
-      font-family: 'Zen Loop', sans-serif;
-      font-size: clamp(0.72rem, 1.3vw, 0.82rem);
-      color: rgba(240, 234, 214, 0.42);
-      letter-spacing: 0.08em;
-      font-style: italic;
-      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      margin-bottom: 0.5rem;
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      text-shadow:
+        0 0  4px  rgba(0, 0, 0, 0.98),
+        0 2px 12px rgba(0, 0, 0, 0.92),
+        0 0  28px rgba(204, 85, 0, 0.28),
+        0 0  48px rgba(204, 85, 0, 0.12);
       opacity: 0;
-      transition: opacity 1.2s var(--ease-soft);
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 900ms;
     }
 
-    .idle-message.visible {
+
+    /* ============================================================
+       15. INTRO COPY
+       "The forest requires your name..."
+    ============================================================ */
+    .intro-copy {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      color: var(--mist-faint);
+      font-style: italic;
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+      text-shadow:
+        0 1px 8px rgba(0, 0, 0, 0.95),
+        0 0 20px rgba(0, 0, 0, 0.80);
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 1200ms;
+    }
+
+
+    /* ============================================================
+       16. ATTENDANCE REACTION LINE
+       "the forest brightens at your answer" / "you'll be missed"
+    ============================================================ */
+    .attendance-reaction {
+      min-height: 1.4em;
+      margin: 0.5rem 0 0.2rem;
+      font-size: 0.98rem;
+      color: rgba(204, 85, 0, 0.88);
+      font-style: italic;
+      letter-spacing: 0.03em;
+      text-align: center;
+      text-shadow: 0 0 12px rgba(204, 85, 0, 0.35);
+      transition:
+        opacity   0.4s var(--ease-default),
+        transform 0.4s var(--ease-default);
+    }
+
+    .attendance-reaction.hidden-reaction {
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+    }
+
+    /* no reaction — plum color */
+    .attendance-reaction.mood-no {
+      color: rgba(103, 49, 71, 0.88);
+      text-shadow: 0 0 12px rgba(103, 49, 71, 0.35);
+    }
+
+
+    /* ============================================================
+       17. FORM FIELDS — BASE
+    ============================================================ */
+    form {
+      margin-top: 0.6rem;
+    }
+
+    .field-group {
+      margin-top: var(--sp-sm);
+    }
+
+    .field-group + .field-group {
+      margin-top: 0.6rem;
+    }
+
+    /* hidden utility */
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* ============================================================
+       18. FORM FIELDS — LABELS
+       Small, whisper-y, not clinical
+    ============================================================ */
+    label {
+      display: block;
+      margin-bottom: 0.38rem;
+      font-size: 0.88rem;
+      color: rgba(204, 85, 0, 0.82);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-family: 'Zen Loop', sans-serif;
+      text-shadow: 0 0 8px rgba(204, 85, 0, 0.20);
+    }
+
+
+    /* ============================================================
+       19. FORM FIELDS — INPUTS + SELECTS
+       Dark inset, parchment feel, carved look
+    ============================================================ */
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="tel"],
+    select {
+      width: 100%;
+      padding: 0.88rem 1rem;
+      border-radius: 3px;
+      border: 1px solid var(--field-border);
+      font-size: 0.98rem;
+      font-family: 'Zen Loop', sans-serif;
+      background: var(--field-bg);
+      color: var(--text-main);
+      outline: none;
+      letter-spacing: 0.02em;
+
+      /* inset shadow for carved look */
+      box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.55),
+        inset 0 0 0 1px rgba(103, 49, 71, 0.08);
+
+      transition:
+        box-shadow    0.25s var(--ease-default),
+        border-color  0.25s var(--ease-default),
+        background    0.25s var(--ease-default);
+    }
+
+    input::placeholder {
+      color: rgba(232, 225, 199, 0.32);
+      font-style: italic;
+      letter-spacing: 0.03em;
+    }
+
+    select option {
+      background: #1a0a10;
+      color: var(--text-main);
+    }
+
+    /* number input — hide spinners */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
+
+
+    /* ============================================================
+       20. FORM FIELDS — FOCUS STATES
+       Burnt orange glow — warm and alive
+    ============================================================ */
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    select:focus {
+      border-color: var(--field-focus-border);
+      background: rgba(8, 12, 8, 0.88);
+      box-shadow:
+        inset 0 2px 6px rgba(0, 0, 0, 0.55),
+        0 0 0   1px rgba(204, 85, 0, 0.28),
+        0 0 14px    rgba(204, 85, 0, 0.18),
+        0 0 28px    rgba(204, 85, 0, 0.08);
+    }
+
+
+    /* ============================================================
+       21. FORM FIELDS — CHECKBOXES
+       Dietary restrictions grid
+    ============================================================ */
+    .checkbox-section {
+      margin-top: var(--sp-sm);
+    }
+
+    .checkbox-section > label {
+      margin-bottom: 0.55rem;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 0.75rem;
+      margin-top: 0.4rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      background: rgba(6, 10, 6, 0.65);
+      border: 1px solid rgba(103, 49, 71, 0.16);
+      border-radius: 3px;
+      padding: 0.65rem 0.8rem;
+      min-height: 48px;
+      transition:
+        border-color  0.22s var(--ease-default),
+        background    0.22s var(--ease-default),
+        box-shadow    0.22s var(--ease-default);
+      cursor: pointer;
+    }
+
+    .checkbox-item:has(input:checked) {
+      border-color: rgba(204, 85, 0, 0.38);
+      background: rgba(204, 85, 0, 0.06);
+      box-shadow: 0 0 10px rgba(204, 85, 0, 0.08);
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      font-size: 0.92rem;
+      letter-spacing: 0.02em;
+      text-transform: none;
+      color: var(--text-main);
+      cursor: pointer;
+      text-shadow: none;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--burnt-orange);
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      box-shadow: none;
+      border: none;
+    }
+
+
+    /* ============================================================
+       22. YES FIELDS COLLAPSE ANIMATION
+       Smooth expand/collapse when attendance changes
+    ============================================================ */
+    .yes-fields {
+      overflow: hidden;
+      transition:
+        max-height 0.42s var(--ease-soft),
+        opacity    0.35s var(--ease-default),
+        transform  0.35s var(--ease-default);
+      max-height: 900px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .yes-fields.collapsed {
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-10px);
+      pointer-events: none;
+    }
+
+
+    /* ============================================================
+       23. SPARK BURST SYSTEM
+       Fires on "yes" attendance — gold/orange sparks
+    ============================================================ */
+    .spark-burst {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 7;
+      overflow: visible;
+    }
+
+    .spark {
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      animation: burstOut 1.0s var(--ease-default) forwards;
+    }
+
+    /* spark color variants */
+    .spark.orange {
+      background: rgba(255, 140, 30, 0.95);
+      box-shadow: 0 0 10px rgba(255, 140, 30, 0.80);
+    }
+
+    .spark.gold {
+      background: rgba(255, 220, 100, 0.95);
+      box-shadow: 0 0 10px rgba(255, 220, 100, 0.80);
+    }
+
+    .spark.plum {
+      background: rgba(180, 100, 140, 0.95);
+      box-shadow: 0 0 10px rgba(180, 100, 140, 0.80);
+    }
+
+    @keyframes burstOut {
+      0% {
+        transform: translate(0, 0) scale(0.4);
+        opacity: 0;
+      }
+      18% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.2);
+        opacity: 0;
+      }
+    }
+
+
+    /* ============================================================
+       24. LEAF DRIFT SYSTEM
+       Fires on "no" attendance — dark leaves fall
+    ============================================================ */
+    .leaf {
+      position: absolute;
+      border-radius: 60% 40% 60% 40%;
+      transform: rotate(18deg);
+      animation: leafFall 2.4s var(--ease-default) forwards;
+      pointer-events: none;
+      z-index: 7;
+    }
+
+    .leaf.dark {
+      background: rgba(80, 40, 20, 0.65);
+      width: 10px;
+      height: 14px;
+    }
+
+    .leaf.plum {
+      background: rgba(103, 49, 71, 0.55);
+      width: 8px;
+      height: 12px;
+    }
+
+    @keyframes leafFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-12px) rotate(0deg) scale(0.6);
+      }
+      12% {
+        opacity: 0.85;
+      }
+      100% {
+        opacity: 0;
+        transform:
+          translateY(180px)
+          translateX(var(--leafX, 18px))
+          rotate(230deg)
+          scale(1.05);
+      }
+    }
+
+
+    /* ============================================================
+       25. MAGIC TRANSITION (firefly converge)
+       Fires on successful form submit — fireflies converge to center
+    ============================================================ */
+    .magic-transition {
+      position: absolute;
+      inset: 0;
+      z-index: 8;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.38s var(--ease-default);
+    }
+
+    .magic-transition.show {
+      display: flex;
       opacity: 1;
     }
 
+    .magic-center {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
 
+    .converge-firefly {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      animation: convergeCenter 1.1s var(--ease-soft) forwards;
+    }
 
+    /* color variants for converging fireflies */
+    .converge-firefly.orange {
+      background: rgba(255, 160, 50, 0.95);
+      box-shadow: 0 0 12px rgba(255, 140, 30, 0.85), 0 0 22px rgba(204, 85, 0, 0.50);
+    }
+
+    .converge-firefly.plum {
+      background: rgba(200, 120, 160, 0.95);
+      box-shadow: 0 0 12px rgba(180, 90, 130, 0.85), 0 0 22px rgba(103, 49, 71, 0.50);
+    }
+
+    .converge-firefly.green {
+      background: rgba(100, 200, 80, 0.95);
+      box-shadow: 0 0 12px rgba(80, 180, 60, 0.85), 0 0 22px rgba(26, 58, 26, 0.50);
+    }
+
+    @keyframes convergeCenter {
+      0% {
+        transform: translate(var(--startX), var(--startY)) scale(0.6);
+        opacity: 0;
+      }
+      18% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(0, 0) scale(1.3);
+        opacity: 0;
+      }
+    }
 
 
     /* ============================================================
-       17. PAGE LOAD SEQUENCE
-       Handled by JS — hero starts opacity:0,
-       JS adds .loaded class after assets ready
+       26. WAX SEAL SUBMIT BUTTON
+       Plum purple, SVG wax seal design, burnt orange on hover.
+       This is the centerpiece interaction of the form.
+    ============================================================ */
+    .wax-seal-btn {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin: 2rem auto 0;
+      width: 100%;
+      max-width: 320px;
+      padding: 1rem 1.5rem 0.9rem;
+      background: rgba(103, 49, 71, 0.22);
+      border: 1px solid var(--plum-border);
+      border-radius: 3px;
+      color: var(--mist-soft);
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      outline: none;
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+
+      box-shadow:
+        0 0 0   1px rgba(103, 49, 71, 0.15),
+        0 0 20px    rgba(103, 49, 71, 0.15),
+        0 4px 16px  rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+
+      transition:
+        background   0.28s var(--ease-default),
+        border-color 0.28s var(--ease-default),
+        box-shadow   0.28s var(--ease-default),
+        color        0.28s var(--ease-default),
+        transform    0.12s var(--ease-default);
+    }
+
+    /* seal SVG icon above text */
+    .wax-seal-btn .seal-icon {
+      display: block;
+      margin-bottom: 0.35rem;
+      opacity: 0.72;
+      transition: opacity 0.28s var(--ease-default);
+      filter: drop-shadow(0 0 4px rgba(103, 49, 71, 0.50));
+    }
+
+    .wax-seal-btn .btn-text {
+      display: block;
+    }
+
+    /* loading dots inside button */
+    .wax-seal-btn .btn-loader {
+      display: none;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .wax-seal-btn .btn-loader.active {
+      display: flex;
+    }
+
+    .wax-seal-btn .btn-text.hidden {
+      display: none;
+    }
+
+    .wax-seal-btn .seal-icon.hidden {
+      display: none;
+    }
+
+    /* hover */
+    .wax-seal-btn:hover:not(:disabled) {
+      background: rgba(204, 85, 0, 0.18);
+      border-color: rgba(204, 85, 0, 0.55);
+      color: var(--mist);
+      box-shadow:
+        0 0 0   1px rgba(204, 85, 0, 0.22),
+        0 0 24px    rgba(204, 85, 0, 0.20),
+        0 4px 20px  rgba(0, 0, 0, 0.50),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    }
+
+    .wax-seal-btn:hover:not(:disabled) .seal-icon {
+      opacity: 0.95;
+      filter: drop-shadow(0 0 8px rgba(204, 85, 0, 0.65));
+    }
+
+    /* active / press */
+    .wax-seal-btn:active:not(:disabled) {
+      transform: scale(0.982);
+    }
+
+    /* disabled */
+    .wax-seal-btn:disabled {
+      opacity: 0.60;
+      cursor: not-allowed;
+    }
+
+
+    /* ============================================================
+       27. LOADING DOTS
+       Three pulsing dots inside submit while sending
+    ============================================================ */
+    .dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.9;
+      animation: dotPulse 1.1s infinite ease-in-out;
+    }
+
+    .dot-pulse:nth-child(2) { animation-delay: 0.14s; }
+    .dot-pulse:nth-child(3) { animation-delay: 0.28s; }
+
+    @keyframes dotPulse {
+      0%, 80%, 100% { transform: scale(0.5);  opacity: 0.35; }
+      40%            { transform: scale(1.0);  opacity: 1.00; }
+    }
+
+
+    /* ============================================================
+       28. RESPONSE STATE
+       What the guest sees after submitting their RSVP.
+       Dark card, personal message, registry link if declining.
+    ============================================================ */
+    .response-wrap {
+      position: relative;
+      min-height: 40px;
+    }
+
+    .response {
+      margin-top: 1.5rem;
+      padding: 2rem 1.5rem 1.8rem;
+      background: rgba(4, 6, 4, 0.72);
+      border: 1px solid rgba(103, 49, 71, 0.22);
+      border-radius: 3px;
+      text-align: center;
+
+      box-shadow:
+        inset 0 2px 8px rgba(0, 0, 0, 0.40),
+        0 0 20px rgba(103, 49, 71, 0.10);
+
+      opacity: 0;
+      transform: scale(0.984) translateY(12px);
+      transition:
+        opacity   0.50s var(--ease-soft),
+        transform 0.50s var(--ease-soft);
+      pointer-events: none;
+    }
+
+    .response.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    .response p {
+      font-size: 1.05rem;
+      line-height: 1.55;
+    }
+
+    .response p + p {
+      margin-top: 0.7rem;
+    }
+
+    .response-title {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: 1.5rem;
+      color: var(--mist);
+      text-shadow:
+        0 0 12px rgba(204, 85, 0, 0.30),
+        0 2px 10px rgba(0, 0, 0, 0.85);
+      margin-bottom: 0.5rem;
+    }
+
+    .response-subtitle {
+      font-size: 1.0rem;
+      color: var(--mist-faint);
+      font-style: italic;
+    }
+
+    .approval-line {
+      font-size: 0.92rem;
+      color: rgba(204, 85, 0, 0.72);
+      font-style: italic;
+      margin-top: 0.8rem;
+      letter-spacing: 0.03em;
+    }
+
+
+    /* ============================================================
+       29. REGISTRY BUTTON
+       Shows when guest declines — wispy style
+    ============================================================ */
+    .registry-wrapper {
+      margin-top: 1.2rem;
+    }
+
+    .registry-btn {
+      display: inline-block;
+      margin-top: 0.6rem;
+      padding: 0.7rem 1.6rem;
+      background: transparent;
+      border: 1px solid var(--plum-border);
+      color: var(--mist-soft);
+      text-decoration: none;
+      border-radius: 3px;
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.92rem;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      transition:
+        background    0.25s var(--ease-default),
+        border-color  0.25s var(--ease-default),
+        color         0.25s var(--ease-default),
+        box-shadow    0.25s var(--ease-default);
+    }
+
+    .registry-btn:hover {
+      background: var(--plum-soft);
+      border-color: rgba(103, 49, 71, 0.65);
+      color: var(--mist);
+      box-shadow: 0 0 14px rgba(103, 49, 71, 0.20);
+    }
+
+
+    /* ============================================================
+       30. EDIT RESPONSE LINK
+    ============================================================ */
+    .response-actions {
+      margin-top: 1.2rem;
+    }
+
+    .edit-response {
+      cursor: pointer;
+      color: var(--mist-faint);
+      font-size: 0.88rem;
+      letter-spacing: 0.06em;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.22s var(--ease-default);
+      background: none;
+      border: none;
+      font-family: 'Zen Loop', sans-serif;
+    }
+
+    .edit-response:hover {
+      color: var(--mist-soft);
+    }
+
+
+    /* ============================================================
+       31. POPUP / MODAL
+       Validation errors, gentle messages
+    ============================================================ */
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      padding: 1rem;
+    }
+
+    .popup-overlay.show {
+      display: flex;
+    }
+
+    .popup-box {
+      width: min(380px, 100%);
+      background: var(--popup-bg);
+      border: 1px solid rgba(103, 49, 71, 0.30);
+      padding: 1.8rem 1.4rem 1.4rem;
+      border-radius: 4px;
+      text-align: center;
+      box-shadow:
+        0 0 0 1px rgba(103, 49, 71, 0.12),
+        0 24px 48px rgba(0, 0, 0, 0.55);
+      animation: popupIn 0.35s var(--ease-spring);
+    }
+
+    @keyframes popupIn {
+      from { transform: scale(0.92) translateY(10px); opacity: 0; }
+      to   { transform: scale(1)    translateY(0);    opacity: 1; }
+    }
+
+    .popup-box p {
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--text-main);
+    }
+
+    .popup-close-btn {
+      margin-top: 1.2rem;
+      padding: 0.72rem 1.8rem;
+      background: transparent;
+      border: 1px solid var(--plum-border);
+      color: var(--mist-soft);
+      border-radius: 3px;
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition:
+        background   0.22s var(--ease-default),
+        border-color 0.22s var(--ease-default),
+        color        0.22s var(--ease-default);
+    }
+
+    .popup-close-btn:hover {
+      background: var(--plum-soft);
+      border-color: rgba(103, 49, 71, 0.60);
+      color: var(--mist);
+    }
+
+
+    /* ============================================================
+       32. LOADING SCREEN
     ============================================================ */
     .loading-screen {
       position: fixed;
@@ -776,19 +1432,13 @@
 
     .loading-screen.done {
       opacity: 0;
+      pointer-events: none;
     }
 
 
     /* ============================================================
-       18. BREATHING VIGNETTE
-       Already defined in overlay system above (overlay-breathe)
+       33. ANIMATIONS LIBRARY
     ============================================================ */
-
-
-    /* ============================================================
-       19. ANIMATIONS LIBRARY
-    ============================================================ */
-
     @keyframes riseIn {
       from {
         opacity: 0;
@@ -805,112 +1455,115 @@
       to   { opacity: 1; }
     }
 
-    @keyframes leafDrift {
-      0% {
-        transform: translate(0, 0) rotate(0deg) scale(0.7);
-        opacity: 0;
-      }
-      10% { opacity: 0.65; }
-      100% {
-        transform: translate(var(--lx, 20px), -90px) rotate(200deg) scale(1);
-        opacity: 0;
-      }
+    @keyframes subtleFloat {
+      0%,  100% { transform: translateY(0); }
+      50%        { transform: translateY(-4px); }
+    }
+
+    @keyframes orangeGlow {
+      0%,  100% { box-shadow: 0 0 12px rgba(204, 85, 0, 0.15); }
+      50%        { box-shadow: 0 0 22px rgba(204, 85, 0, 0.28); }
     }
 
 
     /* ============================================================
-       20. MOBILE / RESPONSIVE
+       34. MOBILE / RESPONSIVE
     ============================================================ */
-    @media (max-width: 600px) {
-      .content {
-        transform: translateY(24px);
-        padding: var(--sp-md) var(--sp-sm);
+    @media (max-width: 720px) {
+      .forest {
+        padding: 2.5rem 0.9rem 4rem;
+      }
+
+      .form-card {
+        padding: 2rem 1.2rem 1.8rem;
+      }
+
+      .grimoire-title {
+        font-size: clamp(1.7rem, 7vw, 2.2rem);
+      }
+
+      .intro-copy {
+        font-size: 0.88rem;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wax-seal-btn {
         max-width: 100%;
       }
 
-      h1 {
-        font-size: clamp(2.0rem, 9vw, 2.7rem);
+      .corner-decor {
+        width: 52px;
+        height: 52px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .form-card {
+        padding: 1.6rem 1rem 1.5rem;
       }
 
-      p.sub {
-        font-size: 0.9rem;
-        margin-bottom: var(--sp-md);
+      .grimoire-title {
+        font-size: clamp(1.5rem, 8vw, 1.9rem);
       }
 
-      .btn-enter {
-        padding: 0.78rem 2.4rem;
+      label {
         font-size: 0.80rem;
       }
 
-      /* more fireflies visible on mobile = better experience */
-      .firefly {
-        box-shadow:
-          0 0 10px rgba(243, 211, 122, 0.60),
-          0 0 22px rgba(243, 211, 122, 0.26);
+      input[type="text"],
+      input[type="number"],
+      select {
+        padding: 0.78rem 0.88rem;
+        font-size: 0.92rem;
       }
     }
 
-    @media (max-width: 380px) {
-      h1 { font-size: clamp(1.8rem, 10vw, 2.2rem); }
-      p.sub { font-size: 0.82rem; }
-    }
-
 
     /* ============================================================
-       21. SAFE AREA INSETS
-       For iPhone notch, Dynamic Island, Android nav bar
+       35. SAFE AREA INSETS
     ============================================================ */
-    .content {
-      padding-top:    max(var(--sp-lg), env(safe-area-inset-top));
-      padding-left:   max(var(--sp-md), env(safe-area-inset-left));
-      padding-right:  max(var(--sp-md), env(safe-area-inset-right));
+    .forest {
+      padding-top:    max(4rem, env(safe-area-inset-top));
+      padding-bottom: max(5rem, env(safe-area-inset-bottom));
     }
 
 
     /* ============================================================
-       22. REDUCED MOTION
+       36. REDUCED MOTION
     ============================================================ */
     @media (prefers-reduced-motion: reduce) {
-      .hero,
-      .hero.loaded            { animation: none; opacity: 1; }
-      .overlay-breathe        { animation: none; }
-      .overlay-shift          { animation: none; }
-      .mist-layer             { animation: none; }
-      .firefly                { display: none; }
-      .monogram               { animation: none; }
-      .footer-countdown       { animation: none; }
+      .overlay-breathe     { animation: none; }
+      .overlay-glow        { animation: none; }
+      .mist-layer          { animation: none; }
+      .firefly             { display: none; }
+      .crown-seal svg      { animation: none; }
+      .corner-decor path,
+      .corner-decor circle { animation: none; stroke-dashoffset: 0; }
 
-      h1, p.sub, .btn-enter,
-      .footer-whisper,
-      .sound-toggle           { animation: none; opacity: 1; transform: none; }
-
-      .content                { opacity: 1; }
-      .loading-screen         { display: none; }
+      .grimoire-title,
+      .intro-copy          { animation: none; opacity: 1; transform: none; }
+      .form-card           { opacity: 1; transform: none; transition: none; }
+      .loading-screen      { display: none; }
     }
 
   </style>
 </head>
 <body>
 
-  <!-- ============================================================
-       LOADING SCREEN
-       Intentional black. Fades out when assets ready.
-  ============================================================ -->
+  <!-- loading screen -->
   <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
 
-
-
-
-
   <!-- ============================================================
-       HERO
+       FOREST WRAPPER
   ============================================================ -->
-  <div class="hero" id="hero" role="main">
+  <div class="forest" id="forest">
 
-    <!-- overlays -->
-    <div class="overlay-vignette" aria-hidden="true"></div>
-    <div class="overlay-breathe"  aria-hidden="true"></div>
-    <div class="overlay-shift"    aria-hidden="true"></div>
+    <!-- atmospheric overlays -->
+    <div class="overlay-breathe" aria-hidden="true"></div>
+    <div class="overlay-glow"    aria-hidden="true"></div>
 
     <!-- mist -->
     <div class="mist-layer" aria-hidden="true"></div>
@@ -918,53 +1571,365 @@
     <!-- fireflies -->
     <div class="fireflies" id="fireflies" aria-hidden="true"></div>
 
-    <!-- faint E + T monogram -->
-    <div class="monogram-wrap" aria-hidden="true">
-      <span class="monogram">E &amp; T</span>
+    <!-- ============================================================
+         CONTENT
+    ============================================================ -->
+    <div class="content" id="contentWrap">
+      <div class="form-card" id="formCard">
+
+        <!-- parchment texture + inner frames -->
+        <div class="card-texture"   aria-hidden="true"></div>
+        <div class="ruled-lines"    aria-hidden="true"></div>
+        <div class="inner-frame"    aria-hidden="true"></div>
+        <div class="inner-frame-2"  aria-hidden="true"></div>
+
+        <!-- botanical corner decorations -->
+        <div class="corner-decor tl" aria-hidden="true">
+          <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 68 C4 40 4 20 4 4 L68 4" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
+            <path d="M4 52 C12 44 22 38 32 36" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M4 36 C16 30 28 26 40 24" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M18 4 C22 14 24 26 22 38" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M36 4 C38 12 38 24 34 34" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <circle cx="4"  cy="4"  r="2.5" fill="#CC5500" opacity="0.7"/>
+            <circle cx="32" cy="36" r="1.8" fill="#673147" opacity="0.6"/>
+            <circle cx="22" cy="38" r="1.5" fill="#CC5500" opacity="0.5"/>
+            <path d="M8 44 C10 40 14 38 18 40 C14 42 10 44 8 44Z" fill="#1a3a1a" opacity="0.55"/>
+            <path d="M14 28 C16 24 20 23 24 26 C20 27 16 28 14 28Z" fill="#1a3a1a" opacity="0.50"/>
+            <path d="M28 10 C30 7 34 6 36 9 C33 10 30 10 28 10Z"   fill="#1a3a1a" opacity="0.45"/>
+          </svg>
+        </div>
+
+        <div class="corner-decor tr" aria-hidden="true">
+          <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 68 C4 40 4 20 4 4 L68 4" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
+            <path d="M4 52 C12 44 22 38 32 36" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M4 36 C16 30 28 26 40 24" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M18 4 C22 14 24 26 22 38" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M36 4 C38 12 38 24 34 34" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <circle cx="4"  cy="4"  r="2.5" fill="#CC5500" opacity="0.7"/>
+            <circle cx="32" cy="36" r="1.8" fill="#673147" opacity="0.6"/>
+            <circle cx="22" cy="38" r="1.5" fill="#CC5500" opacity="0.5"/>
+            <path d="M8 44 C10 40 14 38 18 40 C14 42 10 44 8 44Z" fill="#1a3a1a" opacity="0.55"/>
+            <path d="M14 28 C16 24 20 23 24 26 C20 27 16 28 14 28Z" fill="#1a3a1a" opacity="0.50"/>
+            <path d="M28 10 C30 7 34 6 36 9 C33 10 30 10 28 10Z"   fill="#1a3a1a" opacity="0.45"/>
+          </svg>
+        </div>
+
+        <div class="corner-decor bl" aria-hidden="true">
+          <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 68 C4 40 4 20 4 4 L68 4" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
+            <path d="M4 52 C12 44 22 38 32 36" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M4 36 C16 30 28 26 40 24" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M18 4 C22 14 24 26 22 38" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M36 4 C38 12 38 24 34 34" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <circle cx="4"  cy="4"  r="2.5" fill="#CC5500" opacity="0.7"/>
+            <circle cx="32" cy="36" r="1.8" fill="#673147" opacity="0.6"/>
+            <circle cx="22" cy="38" r="1.5" fill="#CC5500" opacity="0.5"/>
+            <path d="M8 44 C10 40 14 38 18 40 C14 42 10 44 8 44Z" fill="#1a3a1a" opacity="0.55"/>
+            <path d="M14 28 C16 24 20 23 24 26 C20 27 16 28 14 28Z" fill="#1a3a1a" opacity="0.50"/>
+            <path d="M28 10 C30 7 34 6 36 9 C33 10 30 10 28 10Z"   fill="#1a3a1a" opacity="0.45"/>
+          </svg>
+        </div>
+
+        <div class="corner-decor br" aria-hidden="true">
+          <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 68 C4 40 4 20 4 4 L68 4" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
+            <path d="M4 52 C12 44 22 38 32 36" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M4 36 C16 30 28 26 40 24" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M18 4 C22 14 24 26 22 38" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <path d="M36 4 C38 12 38 24 34 34" stroke="#673147" stroke-width="0.8" stroke-linecap="round"/>
+            <circle cx="4"  cy="4"  r="2.5" fill="#CC5500" opacity="0.7"/>
+            <circle cx="32" cy="36" r="1.8" fill="#673147" opacity="0.6"/>
+            <circle cx="22" cy="38" r="1.5" fill="#CC5500" opacity="0.5"/>
+            <path d="M8 44 C10 40 14 38 18 40 C14 42 10 44 8 44Z" fill="#1a3a1a" opacity="0.55"/>
+            <path d="M14 28 C16 24 20 23 24 26 C20 27 16 28 14 28Z" fill="#1a3a1a" opacity="0.50"/>
+            <path d="M28 10 C30 7 34 6 36 9 C33 10 30 10 28 10Z"   fill="#1a3a1a" opacity="0.45"/>
+          </svg>
+        </div>
+
+        <!-- spark burst container -->
+        <div class="spark-burst" id="sparkBurst" aria-hidden="true"></div>
+
+        <!-- magic firefly converge on submit -->
+        <div class="magic-transition" id="magicTransition" aria-hidden="true">
+          <div class="magic-center" id="magicCenter"></div>
+        </div>
+
+        <!-- crown seal decoration -->
+        <div class="crown-seal" aria-hidden="true">
+          <svg viewBox="0 0 44 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 24 L8 8 L16 18 L22 4 L28 18 L36 8 L42 24 Z"
+              stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round"
+              fill="rgba(204,85,0,0.08)"/>
+            <circle cx="2"  cy="24" r="2" fill="#673147" opacity="0.8"/>
+            <circle cx="42" cy="24" r="2" fill="#673147" opacity="0.8"/>
+            <circle cx="22" cy="4"  r="2" fill="#CC5500" opacity="0.9"/>
+            <circle cx="8"  cy="8"  r="1.5" fill="#CC5500" opacity="0.7"/>
+            <circle cx="36" cy="8"  r="1.5" fill="#CC5500" opacity="0.7"/>
+            <line x1="2" y1="26" x2="42" y2="26"
+              stroke="#673147" stroke-width="0.8" opacity="0.5"/>
+          </svg>
+        </div>
+
+        <!-- title -->
+        <h1 class="grimoire-title">The Book of Names</h1>
+
+        <!-- intro copy -->
+        <p class="intro-copy">
+          The forest requires your name before it opens its gates.<br>
+          Speak truly. The trees are listening.
+        </p>
+
+        <!-- vine divider -->
+        <div class="vine-divider" aria-hidden="true">
+          <svg viewBox="0 0 420 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <line x1="0" y1="9" x2="155" y2="9" stroke="#673147" stroke-width="0.6" opacity="0.5"/>
+            <path d="M165 9 C172 4 180 14 188 9 C196 4 204 14 212 9 C220 4 228 14 236 9 C244 4 252 14 260 9"
+              stroke="#673147" stroke-width="0.8" opacity="0.55" fill="none"/>
+            <line x1="270" y1="9" x2="420" y2="9" stroke="#673147" stroke-width="0.6" opacity="0.5"/>
+            <circle cx="210" cy="9" r="2.5" fill="#CC5500" opacity="0.55"/>
+            <circle cx="160" cy="9" r="1.5" fill="#673147" opacity="0.45"/>
+            <circle cx="260" cy="9" r="1.5" fill="#673147" opacity="0.45"/>
+            <path d="M170 6 C172 3 175 2 177 4 C175 5 172 6 170 6Z" fill="#1a3a1a" opacity="0.5"/>
+            <path d="M242 6 C244 3 247 2 249 4 C247 5 244 6 242 6Z" fill="#1a3a1a" opacity="0.5"/>
+          </svg>
+        </div>
+
+        <!-- ============================================================
+             RSVP FORM
+        ============================================================ -->
+        <form id="rsvpForm" action="https://formspree.io/f/xqewzpgo" method="POST" novalidate>
+
+          <!-- guest name -->
+          <div class="field-group">
+            <label for="guestNames">Your name</label>
+            <input
+              id="guestNames"
+              type="text"
+              name="guests"
+              placeholder="who wanders here?"
+              autocomplete="name"
+              required
+            />
+          </div>
+
+          <!-- attendance -->
+          <div class="field-group">
+            <label for="attendance">Will you be joining us?</label>
+            <select id="attendance" name="attendance" required>
+              <option value="">the forest awaits your answer…</option>
+              <option value="yes">Yes, with joy</option>
+              <option value="no">Regretfully, no</option>
+            </select>
+            <p
+              id="attendanceReaction"
+              class="attendance-reaction hidden-reaction"
+              aria-live="polite"
+            ></p>
+          </div>
+
+          <!-- yes fields — shown only when attending -->
+          <div id="yesFields" class="yes-fields collapsed">
+
+            <!-- vine divider -->
+            <div class="vine-divider" aria-hidden="true" style="margin: 1rem 0 0.8rem;">
+              <svg viewBox="0 0 420 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <line x1="0" y1="9" x2="170" y2="9" stroke="#673147" stroke-width="0.5" opacity="0.35"/>
+                <circle cx="210" cy="9" r="2" fill="#CC5500" opacity="0.40"/>
+                <line x1="250" y1="9" x2="420" y2="9" stroke="#673147" stroke-width="0.5" opacity="0.35"/>
+              </svg>
+            </div>
+
+            <!-- plus one -->
+            <div class="field-group">
+              <label for="plusOne">Bringing a plus one?</label>
+              <select id="plusOne" name="plus_one">
+                <option value="">Select</option>
+                <option value="no">Just me</option>
+                <option value="yes">Yes, bringing someone</option>
+              </select>
+            </div>
+
+            <!-- plus one name — shown only if plus one selected -->
+            <div class="field-group hidden" id="plusOneNameWrap">
+              <label for="plusOneName">Plus one's name</label>
+              <input
+                id="plusOneName"
+                type="text"
+                name="plus_one_name"
+                placeholder="who travels beside you?"
+                autocomplete="off"
+              />
+            </div>
+
+            <!-- children count -->
+            <div class="field-group">
+              <label for="childrenCount">Little ones attending</label>
+              <input
+                id="childrenCount"
+                type="number"
+                name="children"
+                min="0"
+                max="20"
+                value="0"
+              />
+            </div>
+
+            <!-- dietary restrictions -->
+            <div class="checkbox-section">
+              <label>Dietary needs</label>
+              <div class="checkbox-grid">
+                <div class="checkbox-item">
+                  <input id="dietaryVegetarian" type="checkbox" name="dietary[]" value="vegetarian">
+                  <label for="dietaryVegetarian">Vegetarian</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryVegan" type="checkbox" name="dietary[]" value="vegan">
+                  <label for="dietaryVegan">Vegan</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryGlutenFree" type="checkbox" name="dietary[]" value="gluten-free">
+                  <label for="dietaryGlutenFree">Gluten-free</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryDairyFree" type="checkbox" name="dietary[]" value="dairy-free">
+                  <label for="dietaryDairyFree">Dairy-free</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryNutAllergy" type="checkbox" name="dietary[]" value="nut-allergy">
+                  <label for="dietaryNutAllergy">Nut allergy</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryOther" type="checkbox" name="dietary[]" value="other">
+                  <label for="dietaryOther">Other</label>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /yesFields -->
+
+          <!-- contact -->
+          <div class="field-group">
+            <label for="contactField">How to reach you</label>
+            <input
+              id="contactField"
+              name="contact"
+              type="text"
+              placeholder="email or phone number"
+              autocomplete="email"
+            />
+          </div>
+
+          <!-- vine divider before submit -->
+          <div class="vine-divider" aria-hidden="true" style="margin: 1.8rem 0 0.5rem;">
+            <svg viewBox="0 0 420 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="0" y1="9" x2="155" y2="9" stroke="#673147" stroke-width="0.6" opacity="0.4"/>
+              <path d="M165 9 C172 4 180 14 188 9 C196 4 204 14 212 9 C220 4 228 14 236 9 C244 4 252 14 260 9"
+                stroke="#CC5500" stroke-width="0.7" opacity="0.45" fill="none"/>
+              <line x1="270" y1="9" x2="420" y2="9" stroke="#673147" stroke-width="0.6" opacity="0.4"/>
+              <circle cx="210" cy="9" r="2.2" fill="#CC5500" opacity="0.50"/>
+            </svg>
+          </div>
+
+          <!-- WAX SEAL SUBMIT BUTTON -->
+          <button id="submitBtn" class="wax-seal-btn" type="submit">
+            <svg class="seal-icon" id="sealIcon" width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- wax seal shape — irregular circle with notches -->
+              <path d="M14 2
+                C17 2 19 0 21 2
+                C23 4 26 4 27 6
+                C28 8 28 11 27 13
+                C26 15 27 18 26 20
+                C25 22 23 24 21 25
+                C19 26 17 28 14 28
+                C11 28 9 26 7 25
+                C5 24 3 22 2 20
+                C1 18 2 15 1 13
+                C0 11 0 8 1 6
+                C2 4 5 4 7 2
+                C9 0 11 2 14 2Z"
+                fill="rgba(103,49,71,0.55)"
+                stroke="#673147"
+                stroke-width="0.8"/>
+              <!-- inner ring -->
+              <circle cx="14" cy="14" r="9"
+                stroke="rgba(204,85,0,0.50)"
+                stroke-width="0.7"
+                fill="none"/>
+              <!-- E & T monogram -->
+              <text x="14" y="18"
+                font-family="serif"
+                font-size="7"
+                text-anchor="middle"
+                fill="rgba(248,242,224,0.80)"
+                font-style="italic">E&amp;T</text>
+            </svg>
+            <span class="btn-text"  id="btnText">Present Yourself</span>
+            <span class="btn-loader" id="btnLoader" aria-hidden="true">
+              <span class="dot-pulse"></span>
+              <span class="dot-pulse"></span>
+              <span class="dot-pulse"></span>
+            </span>
+          </button>
+
+        </form><!-- /rsvpForm -->
+
+        <!-- ============================================================
+             RESPONSE STATE
+             Shown after successful submit
+        ============================================================ -->
+        <div class="response-wrap">
+          <div id="responseBox" class="response hidden" aria-live="polite">
+
+            <!-- crown decoration in response -->
+            <div class="crown-seal" aria-hidden="true" style="margin-bottom: 0.8rem;">
+              <svg viewBox="0 0 44 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M2 24 L8 8 L16 18 L22 4 L28 18 L36 8 L42 24 Z"
+                  stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round"
+                  fill="rgba(204,85,0,0.08)"/>
+                <circle cx="22" cy="4" r="2" fill="#CC5500" opacity="0.9"/>
+                <line x1="2" y1="26" x2="42" y2="26" stroke="#673147" stroke-width="0.8" opacity="0.5"/>
+              </svg>
+            </div>
+
+            <p class="response-title" id="responseTitle">Your name has been recorded.</p>
+            <p class="response-subtitle" id="responseSubtitle"></p>
+            <p class="approval-line" id="approvalLine">The forest will decide your path.</p>
+
+            <!-- registry for those who decline -->
+            <div id="registryWrapper" class="registry-wrapper hidden">
+              <p style="font-size: 0.92rem; color: var(--mist-faint); margin-top: 0.5rem;">
+                Still want to send a little love?
+              </p>
+              <a href="registry.html" class="registry-btn">Visit the Registry</a>
+            </div>
+
+            <!-- edit response -->
+            <div class="response-actions">
+              <button id="editResponse" class="edit-response" type="button">
+                Need to change something?
+              </button>
+            </div>
+
+          </div>
+        </div><!-- /response-wrap -->
+
+      </div><!-- /form-card -->
+    </div><!-- /content -->
+
+  </div><!-- /forest -->
+
+
+  <!-- ============================================================
+       POPUP
+  ============================================================ -->
+  <div id="popup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popupMessage">
+    <div class="popup-box">
+      <p id="popupMessage"></p>
+      <button class="popup-close-btn" type="button" onclick="closePopup()">understood</button>
     </div>
-
-    <!-- main content -->
-    <div class="content" id="content">
-      <h1>You've Been Summoned</h1>
-      <p class="sub">
-        Beyond the trees, a celebration is waiting.<br>
-        Step inside to begin your RSVP for Emily and Travis's wedding.
-      </p>
-      <a
-        href="transition.html"
-        class="btn-enter"
-        id="enterBtn"
-        aria-label="Step inside the forest"
-      >
-        <div class="btn-glow" aria-hidden="true"></div>
-        <span class="btn-label">Step Inside</span>
-      </a>
-    </div>
-
-  </div><!-- /hero -->
-
-
-  <!-- ============================================================
-       FOOTER WHISPER
-  ============================================================ -->
-  <div class="footer-whisper" aria-hidden="true">
-    <span class="footer-names">Emily &amp; Travis · September 23, 2028</span>
-    <span class="footer-countdown" id="countdown">loading…</span>
   </div>
-
-
-  <!-- ============================================================
-       IDLE MESSAGE
-  ============================================================ -->
-  <div class="idle-message" id="idleMessage" aria-hidden="true">
-    the forest stirs…
-  </div>
-
-
-  <!-- ============================================================
-       CURSOR DOT (desktop)
-  ============================================================ -->
-  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
 
   <!-- ============================================================
@@ -975,103 +1940,121 @@
     'use strict';
 
     /* ============================================================
-       CONSTANTS
+       STORAGE KEYS
     ============================================================ */
-    const WEDDING_DATE   = new Date('2028-09-23T00:00:00');
-    const REDIRECT_URL   = 'transition.html';
-    const IDLE_DELAY_MS  = 12000;
-    const REDIRECT_DELAY = 780;
+    const ATTEMPT_KEY        = 'forestAttempts';
+    const LOCK_KEY           = 'forestLockUntil';
+    const ACCESS_KEY         = 'rsvpAccess';
+    const GUEST_KEY          = 'guestName';
+    const GUEST_ATTEMPTS_KEY = 'guestAttempts';
+    const ATTENDANCE_KEY     = 'guestAttendance';
 
     /* ============================================================
        ELEMENTS
     ============================================================ */
-    const hero          = document.getElementById('hero');
-    const content       = document.getElementById('content');
-    const firefliesWrap = document.getElementById('fireflies');
-    const loadingScreen = document.getElementById('loadingScreen');
-    const countdown     = document.getElementById('countdown');
-    const idleMessage   = document.getElementById('idleMessage');
-    const enterBtn      = document.getElementById('enterBtn');
-    const cursorDot     = document.getElementById('cursorDot');
+    const forest          = document.getElementById('forest');
+    const firefliesWrap   = document.getElementById('fireflies');
+    const formCard        = document.getElementById('formCard');
+    const form            = document.getElementById('rsvpForm');
+    const responseBox     = document.getElementById('responseBox');
+    const responseTitle   = document.getElementById('responseTitle');
+    const responseSubtitle = document.getElementById('responseSubtitle');
+    const approvalLine    = document.getElementById('approvalLine');
+    const registryWrapper = document.getElementById('registryWrapper');
+    const loadingScreen   = document.getElementById('loadingScreen');
+
+    const guestNames      = document.getElementById('guestNames');
+    const attendance      = document.getElementById('attendance');
+    const attendanceReact = document.getElementById('attendanceReaction');
+    const yesFields       = document.getElementById('yesFields');
+    const plusOne         = document.getElementById('plusOne');
+    const plusOneNameWrap = document.getElementById('plusOneNameWrap');
+    const plusOneName     = document.getElementById('plusOneName');
+    const childrenCount   = document.getElementById('childrenCount');
+    const contactField    = document.getElementById('contactField');
+
+    const submitBtn       = document.getElementById('submitBtn');
+    const btnText         = document.getElementById('btnText');
+    const btnLoader       = document.getElementById('btnLoader');
+    const sealIcon        = document.getElementById('sealIcon');
+
+    const sparkBurst      = document.getElementById('sparkBurst');
+    const magicTransition = document.getElementById('magicTransition');
+    const magicCenter     = document.getElementById('magicCenter');
+    const editResponse    = document.getElementById('editResponse');
 
     /* ============================================================
-       DEVICE DETECTION
+       DETECTION
     ============================================================ */
-    const isMobile    = window.matchMedia('(hover: none)').matches;
-    const isReduced   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const isMobile  = window.matchMedia('(hover: none)').matches;
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     /* ============================================================
-       PAGE LOAD SEQUENCE
-       0ms    → black screen visible
-       200ms  → background image starts fading in
-       800ms  → fireflies begin spawning
-       1200ms → content block fades in
-       1400ms → headline animates up
-       1900ms → subtext animates up
-       2400ms → button animates up + hairlines open
-       3000ms → footer whisper fades in
+       POPUP
+    ============================================================ */
+    function showPopup(message) {
+      document.getElementById('popupMessage').textContent = message;
+      document.getElementById('popup').classList.add('show');
+    }
+
+    window.closePopup = function () {
+      document.getElementById('popup').classList.remove('show');
+    };
+
+    /* ============================================================
+       LOAD SEQUENCE
+       Page loads from black, card rises in
     ============================================================ */
     function initLoadSequence() {
       if (isReduced) {
-        loadingScreen.classList.add('done');
-        hero.classList.add('loaded');
-        content.classList.add('visible');
-        enterBtn.classList.add('lines-open');
+        loadingScreen.style.display = 'none';
+        formCard.classList.add('visible');
         return;
       }
 
-      // step 1: start hero fade in
       setTimeout(() => {
-        hero.classList.add('loaded');
         loadingScreen.classList.add('done');
       }, 200);
 
-      // step 2: show content
       setTimeout(() => {
-        content.classList.add('visible');
-      }, 1200);
-
-      // step 3: open button hairlines
-      setTimeout(() => {
-        enterBtn.classList.add('lines-open');
-      }, 2800);
+        formCard.classList.add('visible');
+      }, 500);
     }
 
     /* ============================================================
        FIREFLY GENERATOR
-       Desktop: 22 fireflies
-       Mobile:  14 fireflies (larger glow)
-       Types: standard drift, center-cluster, rising
+       True lightning bug colors — each firefly randomized
     ============================================================ */
+    const FIREFLY_COLORS = [
+      'color-yellowgreen',
+      'color-amber',
+      'color-gold',
+      'color-bluewhite',
+      'color-warmwhite'
+    ];
+
     function createFireflies() {
-      const count      = isMobile ? 14 : 22;
-      const centerCount = Math.floor(count * 0.25); // 25% cluster near center
-      const riseCount   = Math.floor(count * 0.15); // 15% rise from bottom
-      const fragment    = document.createDocumentFragment();
+      firefliesWrap.innerHTML = '';
+      const count     = isMobile ? 12 : 22;
+      const riseCount = Math.floor(count * 0.18);
+      const fragment  = document.createDocumentFragment();
 
       for (let i = 0; i < count; i++) {
-        const dot = document.createElement('span');
-        dot.className = 'firefly';
+        const dot     = document.createElement('span');
+        const color   = FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)];
+        dot.className = 'firefly ' + color;
 
-        const isCenter = i < centerCount;
-        const isRiser  = !isCenter && i < centerCount + riseCount;
+        const isRiser = i < riseCount;
 
-        if (isCenter) {
-          dot.classList.add('center-drift');
-          // cluster near middle of screen
-          const cx = 35 + Math.random() * 30;
-          const cy = 30 + Math.random() * 35;
-          dot.style.left = cx + '%';
-          dot.style.top  = cy + '%';
-        } else if (isRiser) {
+        if (isRiser) {
           dot.classList.add('rise');
-          dot.style.left   = (Math.random() * 90 + 5) + '%';
-          dot.style.bottom = (-5 + Math.random() * 12) + '%';
+          dot.style.left   = (Math.random() * 90 + 5).toFixed(1) + '%';
+          dot.style.bottom = (-4 + Math.random() * 8).toFixed(1) + '%';
           dot.style.top    = 'auto';
           dot.style.setProperty('--rx', (Math.random() * 60 - 30).toFixed(0) + 'px');
         } else {
           dot.style.left = (Math.random() * 97).toFixed(1) + '%';
-          dot.style.top  = (Math.random() * 88).toFixed(1) + '%';
+          dot.style.top  = (Math.random() * 92).toFixed(1) + '%';
         }
 
         const baseSize  = isMobile ? 3.5 : 2.5;
@@ -1079,12 +2062,12 @@
         const size      = (Math.random() * sizeRange + baseSize).toFixed(1);
 
         const driftDur   = (Math.random() * 10 + 10).toFixed(1);
-        const flickDur   = (Math.random() * 5  +  4).toFixed(1);
+        const flickDur   = (Math.random() * 5  + 4.0).toFixed(1);
         const driftDelay = (Math.random() * 8).toFixed(2);
         const flickDelay = (Math.random() * 5).toFixed(2);
 
-        dot.style.width  = size + 'px';
-        dot.style.height = size + 'px';
+        dot.style.width             = size + 'px';
+        dot.style.height            = size + 'px';
         dot.style.animationDuration = driftDur + 's, ' + flickDur + 's';
         dot.style.animationDelay    = driftDelay + 's, ' + flickDelay + 's';
 
@@ -1095,162 +2078,270 @@
     }
 
     /* ============================================================
-       COUNTDOWN
-       Updates every minute. Pulses like a heartbeat.
+       ATTENDANCE REACTIONS
+       Yes → forest brightens, orange/gold sparks burst
+       No  → forest darkens, plum leaves drift down
     ============================================================ */
-    function updateCountdown() {
-      const now   = new Date();
-      const diff  = WEDDING_DATE - now;
+    function clearMood() {
+      forest.classList.remove('attendance-yes', 'attendance-no');
+      attendanceReact.textContent = '';
+      attendanceReact.classList.add('hidden-reaction');
+      attendanceReact.classList.remove('mood-no');
+    }
 
-      if (diff <= 0) {
-        // wedding day — show breathing orb + text
-        countdown.innerHTML = '<span class="wedding-orb"></span>today is the day';
-        return;
+    function createSparkBurst() {
+      sparkBurst.innerHTML = '';
+      const amount  = 18;
+      const colors  = ['orange', 'gold', 'plum'];
+
+      for (let i = 0; i < amount; i++) {
+        const spark   = document.createElement('span');
+        const color   = colors[Math.floor(Math.random() * colors.length)];
+        spark.className = 'spark ' + color;
+
+        spark.style.left = (44 + Math.random() * 12) + '%';
+        spark.style.top  = (100 + Math.random() * 40) + 'px';
+        spark.style.setProperty('--tx', (Math.random() * 160 - 80).toFixed(0) + 'px');
+        spark.style.setProperty('--ty', (-20 - Math.random() * 80).toFixed(0) + 'px');
+        spark.style.animationDelay = (Math.random() * 0.14) + 's';
+        sparkBurst.appendChild(spark);
       }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      countdown.textContent = days === 1
-        ? '1 day away'
-        : days.toLocaleString() + ' days away';
+      setTimeout(() => { sparkBurst.innerHTML = ''; }, 1100);
     }
 
-    /* ============================================================
-       CURSOR SPARKLE (desktop only)
-    ============================================================ */
-    let lastSparkTime = 0;
-    let mouseX = -200;
-    let mouseY = -200;
+    function createLeafDrift() {
+      sparkBurst.innerHTML = '';
+      const amount = 8;
+      const types  = ['dark', 'plum'];
 
-    function initCursor() {
-      if (isMobile) {
-        cursorDot.style.display = 'none';
-        return;
+      for (let i = 0; i < amount; i++) {
+        const leaf  = document.createElement('span');
+        const type  = types[Math.floor(Math.random() * types.length)];
+        leaf.className = 'leaf ' + type;
+
+        leaf.style.left = (46 + Math.random() * 24) + '%';
+        leaf.style.top  = (100 + Math.random() * 20) + 'px';
+        leaf.style.setProperty('--leafX', (Math.random() * 44 - 22).toFixed(0) + 'px');
+        leaf.style.animationDelay = (Math.random() * 0.25) + 's';
+        sparkBurst.appendChild(leaf);
       }
 
-      document.addEventListener('mousemove', function (e) {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-
-        // move cursor dot
-        cursorDot.style.left = mouseX + 'px';
-        cursorDot.style.top  = mouseY + 'px';
-
-        // spawn sparks at rate limit
-        const now = Date.now();
-        if (now - lastSparkTime < 60) return;
-        lastSparkTime = now;
-
-        spawnSpark(mouseX, mouseY);
-      });
+      setTimeout(() => { sparkBurst.innerHTML = ''; }, 2600);
     }
 
-    function spawnSpark(x, y) {
-      const spark = document.createElement('div');
-      spark.className = 'cursor-spark';
-      spark.style.left = x + 'px';
-      spark.style.top  = y + 'px';
-      spark.style.setProperty('--sx', (Math.random() * 30 - 15).toFixed(0) + 'px');
-      spark.style.setProperty('--sy', (Math.random() * 30 - 15).toFixed(0) + 'px');
-      document.body.appendChild(spark);
+    function applyMood(value) {
+      clearMood();
 
-      // clean up after animation
-      setTimeout(() => {
-        if (spark.parentNode) spark.parentNode.removeChild(spark);
-      }, 650);
+      if (value === 'yes') {
+        forest.classList.add('attendance-yes');
+        attendanceReact.textContent = 'the forest brightens at your answer';
+        attendanceReact.classList.remove('hidden-reaction');
+        if (!isReduced) createSparkBurst();
+      } else if (value === 'no') {
+        forest.classList.add('attendance-no');
+        attendanceReact.classList.add('mood-no');
+        attendanceReact.textContent = "you'll be missed in the forest";
+        attendanceReact.classList.remove('hidden-reaction');
+        if (!isReduced) createLeafDrift();
+      }
     }
 
     /* ============================================================
-       TAP / CLICK RIPPLE
+       ATTENDANCE CHANGE HANDLER
     ============================================================ */
-    function spawnRipple(x, y) {
-      const ripple = document.createElement('div');
-      ripple.className = 'ripple';
+    attendance.addEventListener('change', () => {
+      const isYes = attendance.value === 'yes';
+      yesFields.classList.toggle('collapsed', !isYes);
+      plusOneName.required = plusOne.value === 'yes' && isYes;
+      applyMood(attendance.value);
+    });
 
-      const size = Math.min(window.innerWidth, window.innerHeight) * 0.7;
-      ripple.style.width  = size + 'px';
-      ripple.style.height = size + 'px';
-      ripple.style.left   = x + 'px';
-      ripple.style.top    = y + 'px';
+    /* ============================================================
+       PLUS ONE CHANGE HANDLER
+    ============================================================ */
+    plusOne.addEventListener('change', () => {
+      const show = plusOne.value === 'yes' && attendance.value === 'yes';
+      plusOneNameWrap.classList.toggle('hidden', !show);
+      plusOneName.required = show;
+    });
 
-      document.body.appendChild(ripple);
+    /* ============================================================
+       VALIDATION
+    ============================================================ */
+    function isValidContact(val) {
+      const phone = /^\+?[\d\s\-().]{10,}$/;
+      const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return phone.test(val) || email.test(val);
+    }
 
-      setTimeout(() => {
-        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
-      }, 900);
+    function trimFields() {
+      guestNames.value   = guestNames.value.trim();
+      plusOneName.value  = plusOneName.value.trim();
+      contactField.value = contactField.value.trim();
     }
 
     /* ============================================================
-       ENTER INTERACTION
-       Whole screen is clickable. One action only.
+       SUBMIT BUTTON STATE
     ============================================================ */
-    let hasEntered = false;
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
 
-    function handleEnter(x, y) {
-      if (hasEntered) return;
-      hasEntered = true;
-
-      // ripple at tap point
-      spawnRipple(x, y);
-
-      // zoom transition
-      setTimeout(() => {
-        hero.classList.add('zooming');
-      }, 80);
-
-      // redirect
-      setTimeout(() => {
-        window.location.href = REDIRECT_URL;
-      }, REDIRECT_DELAY);
+      if (isLoading) {
+        btnText.classList.add('hidden');
+        sealIcon.classList.add('hidden');
+        btnLoader.classList.add('active');
+      } else {
+        btnText.classList.remove('hidden');
+        sealIcon.classList.remove('hidden');
+        btnLoader.classList.remove('active');
+      }
     }
 
-    function initEnterInteraction() {
-      // click anywhere
-      hero.addEventListener('click', function (e) {
-        handleEnter(e.clientX, e.clientY);
-      });
+    /* ============================================================
+       MAGIC SUBMIT TRANSITION
+       Fireflies from the page converge to center on submit
+    ============================================================ */
+    function runMagicTransition() {
+      magicCenter.innerHTML = '';
+      const amount = 20;
+      const colors = ['orange', 'plum', 'green'];
 
-      // touch anywhere
-      hero.addEventListener('touchend', function (e) {
-        if (e.changedTouches.length > 0) {
-          const t = e.changedTouches[0];
-          handleEnter(t.clientX, t.clientY);
-        }
-      }, { passive: true });
+      for (let i = 0; i < amount; i++) {
+        const orb   = document.createElement('span');
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        orb.className = 'converge-firefly ' + color;
+        orb.style.setProperty('--startX', (Math.random() * 200 - 100).toFixed(0) + 'px');
+        orb.style.setProperty('--startY', (Math.random() * 200 - 100).toFixed(0) + 'px');
+        orb.style.animationDelay = (Math.random() * 0.14) + 's';
+        magicCenter.appendChild(orb);
+      }
 
-      // keyboard: Enter or Space
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleEnter(window.innerWidth / 2, window.innerHeight / 2);
-        }
-      });
+      magicTransition.classList.add('show');
+    }
+
+    function clearMagicTransition() {
+      magicTransition.classList.remove('show');
+      magicCenter.innerHTML = '';
     }
 
     /* ============================================================
        IDLE DETECTION
-       Shows "the forest stirs…" after 12s of no activity
+       After 45s on the response state → gentle nudge
     ============================================================ */
     let idleTimer;
 
     function resetIdleTimer() {
       clearTimeout(idleTimer);
-      idleMessage.classList.remove('visible');
-
       idleTimer = setTimeout(() => {
-        if (!hasEntered) {
-          idleMessage.classList.add('visible');
+        if (responseBox.classList.contains('show')) {
+          approvalLine.textContent = '…still here?';
         }
-      }, IDLE_DELAY_MS);
+      }, 45000);
     }
 
-    function initIdleDetection() {
-      ['mousemove', 'touchstart', 'keydown', 'click'].forEach(evt => {
-        document.addEventListener(evt, resetIdleTimer, { passive: true });
-      });
+    ['mousemove', 'keydown', 'click', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, resetIdleTimer, { passive: true });
+    });
+
+    resetIdleTimer();
+
+    /* ============================================================
+       FORM SUBMIT
+    ============================================================ */
+    form.addEventListener('submit', async function (e) {
+      e.preventDefault();
+      trimFields();
+
+      if (!attendance.value) {
+        showPopup('The forest awaits your answer. Please select if you are joining us.');
+        return;
+      }
+
+      if (attendance.value === 'yes') {
+        if (!isValidContact(contactField.value)) {
+          showPopup('Please leave an email or phone number so we can reach you in the woods.');
+          return;
+        }
+        if (plusOne.value === 'yes' && !plusOneName.value) {
+          showPopup('Please share your plus one\'s name so the forest can welcome them too.');
+          return;
+        }
+      }
+
+      setLoading(true);
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: { Accept: 'application/json' }
+        });
+
+        if (!res.ok) {
+          setLoading(false);
+          showPopup('Something went wrong in the forest. Please try again.');
+          return;
+        }
+
+        /* success */
+        if (!isReduced) runMagicTransition();
+
+        setTimeout(() => {
+          formCard.classList.add('form-hidden');
+        }, 100);
+
+        setTimeout(() => {
+          form.classList.add('hidden');
+          responseBox.classList.remove('hidden');
+          responseBox.classList.add('show');
+          formCard.classList.remove('form-hidden');
+          clearMagicTransition();
+
+          /* save attendance to session */
+          sessionStorage.setItem(ATTENDANCE_KEY, attendance.value);
+
+          /* personalize response */
+          const firstName = guestNames.value.split(' ')[0] || 'traveler';
+
+          if (attendance.value === 'yes') {
+            responseTitle.textContent    = firstName + ', your name has been recorded.';
+            responseSubtitle.textContent = 'Emily and Travis are so glad you\'re coming.';
+            approvalLine.textContent     = 'The forest will send word when the time draws near.';
+            registryWrapper.classList.add('hidden');
+          } else {
+            responseTitle.textContent    = firstName + ', you\'ll be missed.';
+            responseSubtitle.textContent = 'Even from afar, you remain part of the story.';
+            approvalLine.textContent     = 'A quieter path is still a path.';
+            registryWrapper.classList.remove('hidden');
+          }
+
+          resetIdleTimer();
+        }, 1100);
+
+      } catch (err) {
+        setLoading(false);
+        showPopup('A network error occurred. Please check your connection and try again.');
+      }
+    });
+
+    /* ============================================================
+       EDIT RESPONSE
+    ============================================================ */
+    editResponse.addEventListener('click', () => {
+      responseBox.classList.remove('show');
+      responseBox.classList.add('hidden');
+      form.classList.remove('hidden');
+      registryWrapper.classList.add('hidden');
+      setLoading(false);
+      btnText.textContent = 'Present Yourself';
+      clearMood();
+      attendance.value = '';
+      yesFields.classList.add('collapsed');
       resetIdleTimer();
-    }
-
-
+    });
 
     /* ============================================================
        INIT
@@ -1258,14 +2349,15 @@
     function init() {
       initLoadSequence();
       createFireflies();
-      updateCountdown();
-      setInterval(updateCountdown, 60000); // refresh every minute
-      initCursor();
-      initEnterInteraction();
-      initIdleDetection();
+
+      /* recreate fireflies on resize */
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(createFireflies, 300);
+      });
     }
 
-    // wait for DOM + fonts
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init);
     } else {
