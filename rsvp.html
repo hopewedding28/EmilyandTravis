@@ -1,316 +1,1384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Emily & Travis — RSVP</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emily & Travis — RSVP</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
 
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
+  <style>
+    :root {
+      --bg-dark: #0a0a0a;
+      --text-main: #e8e1c7;
+      --gold: #f3d37a;
+      --gold-soft: rgba(243, 211, 122, 0.3);
+      --gold-border: rgba(243, 211, 122, 0.15);
+      --card-bg: rgba(10, 15, 10, 0.55);
+      --field-bg: rgba(12, 18, 12, 0.72);
+      --field-border: rgba(243, 211, 122, 0.1);
+      --popup-bg: rgba(8, 10, 8, 0.92);
+      --danger-red: rgba(135, 18, 18, 0.28);
+      --overlay-default: radial-gradient(
+        circle at center,
+        rgba(10,10,10,0.25) 0%,
+        rgba(10,10,10,0.45) 60%,
+        rgba(10,10,10,0.6) 100%
+      );
+      --overlay-happy: radial-gradient(
+        circle at center,
+        rgba(18,18,10,0.18) 0%,
+        rgba(10,10,10,0.38) 58%,
+        rgba(10,10,10,0.52) 100%
+      );
+      --overlay-sad: radial-gradient(
+        circle at center,
+        rgba(10,10,10,0.38) 0%,
+        rgba(10,10,10,0.58) 60%,
+        rgba(10,10,10,0.75) 100%
+      );
+    }
 
-body {
-  font-family: 'Zen Loop', sans-serif;
-  background: #0a0a0a;
-  color: #e8e1c7;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.forest {
-  min-height: 100vh;
-  background: url("assets/backgrounds/inside-gate.png") center / cover no-repeat;
-  position: relative;
-  padding: 5rem 1.5rem;
-}
+    html, body {
+      min-height: 100%;
+    }
 
-.forest::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at center,
-    rgba(10,10,10,0.25) 0%,
-    rgba(10,10,10,0.45) 60%,
-    rgba(10,10,10,0.6) 100%);
-  z-index: 1;
-}
+    body {
+      font-family: 'Zen Loop', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
 
-.content {
-  position: relative;
-  z-index: 2;
-  max-width: 680px;
-  margin: 0 auto;
-}
+    .forest {
+      min-height: 100vh;
+      background: url("assets/backgrounds/inside-gate.png") center / cover no-repeat;
+      position: relative;
+      padding: 4rem 1.25rem;
+      overflow: hidden;
+      isolation: isolate;
+    }
 
-h1 {
-  font-family: 'Shadows Into Light Two', cursive;
-  color: #f3d37a;
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
+    .forest::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--overlay-default);
+      z-index: 1;
+      transition: background 0.5s ease, opacity 0.5s ease;
+    }
 
-label { display: block; margin-top: 1.5rem; }
+    .forest.attendance-yes::before {
+      background: var(--overlay-happy);
+    }
 
-input, select {
-  width: 100%;
-  padding: 0.75rem;
-  border-radius: 6px;
-  border: none;
-}
+    .forest.attendance-no::before {
+      background: var(--overlay-sad);
+    }
 
-button {
-  margin-top: 2rem;
-  width: 100%;
-  padding: 0.9rem;
-  background: #f3d37a;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
+    .forest.red-tint::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--danger-red);
+      z-index: 2;
+      animation: redFlash 0.55s ease;
+      pointer-events: none;
+    }
 
-.hidden { display: none; }
+    @keyframes redFlash {
+      0% { opacity: 0; }
+      20% { opacity: 1; }
+      100% { opacity: 0; }
+    }
 
-.response {
-  margin-top: 2rem;
-  padding: 2rem;
-  background: rgba(0,0,0,0.6);
-  border-radius: 8px;
-  text-align: center;
-}
+    .fireflies {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
 
-.registry-btn {
-  display: inline-block;
-  margin-top: 1rem;
-  padding: 0.7rem 1.4rem;
-  background: #f3d37a;
-  color: #000;
-  text-decoration: none;
-  border-radius: 6px;
-}
+    .firefly {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 245, 180, 0.9);
+      box-shadow:
+        0 0 10px rgba(255, 245, 180, 0.7),
+        0 0 18px rgba(255, 222, 120, 0.4);
+      opacity: 0;
+      animation-name: driftGlow;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+    }
 
-/* popup */
-.popup-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  align-items: center;
-  justify-content: center;
-}
+    @keyframes driftGlow {
+      0% {
+        transform: translate3d(0, 0, 0) scale(0.7);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.5;
+      }
+      50% {
+        transform: translate3d(var(--dx, 20px), var(--dy, -30px), 0) scale(1);
+        opacity: 1;
+      }
+      85% {
+        opacity: 0.35;
+      }
+      100% {
+        transform: translate3d(calc(var(--dx, 20px) * 1.4), calc(var(--dy, -30px) * 1.4), 0) scale(0.75);
+        opacity: 0;
+      }
+    }
 
-.popup-box {
-  background: #111;
-  padding: 1.5rem;
-  border-radius: 8px;
-}
-</style>
+    .content {
+      position: relative;
+      z-index: 3;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .form-card {
+      position: relative;
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid var(--gold-border);
+      border-radius: 16px;
+      padding: 2rem 1.35rem 1.6rem;
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.28),
+        inset 0 1px 0 rgba(255,255,255,0.03);
+      transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        opacity 0.45s ease,
+        filter 0.45s ease;
+      transform-origin: center center;
+    }
+
+    .form-card.chaos-shake {
+      animation: cardShake 0.35s ease;
+    }
+
+    @keyframes cardShake {
+      0%   { transform: translateX(0); }
+      20%  { transform: translateX(-6px); }
+      40%  { transform: translateX(5px); }
+      60%  { transform: translateX(-4px); }
+      80%  { transform: translateX(3px); }
+      100% { transform: translateX(0); }
+    }
+
+    .form-card.form-hidden {
+      opacity: 0;
+      filter: blur(2px);
+      transform: scale(0.988);
+      pointer-events: none;
+    }
+
+    h1 {
+      font-family: 'Shadows Into Light Two', cursive;
+      color: var(--gold);
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      text-shadow: 0 0 18px rgba(243,211,122,0.35);
+      line-height: 1.05;
+    }
+
+    .intro-copy {
+      text-align: center;
+      margin-bottom: 1.25rem;
+      font-size: 1.35rem;
+      color: rgba(232, 225, 199, 0.88);
+    }
+
+    .attendance-reaction {
+      min-height: 1.3em;
+      margin: 0.45rem 0 0.1rem;
+      font-size: 1.08rem;
+      color: rgba(232, 225, 199, 0.82);
+      font-style: italic;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .attendance-reaction.hidden-reaction {
+      opacity: 0;
+      transform: translateY(-6px);
+      pointer-events: none;
+    }
+
+    .spark-burst {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      overflow: visible;
+    }
+
+    .spark {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 240, 170, 0.95);
+      box-shadow: 0 0 10px rgba(255, 240, 170, 0.8);
+      animation: burstOut 0.9s ease forwards;
+    }
+
+    @keyframes burstOut {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(1.1);
+        opacity: 0;
+      }
+    }
+
+    .leaf {
+      position: absolute;
+      width: 10px;
+      height: 14px;
+      background: rgba(122, 84, 38, 0.6);
+      border-radius: 60% 40% 60% 40%;
+      transform: rotate(18deg);
+      animation: leafFall 2.2s ease forwards;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    @keyframes leafFall {
+      0% {
+        opacity: 0;
+        transform: translateY(-10px) rotate(0deg) scale(0.7);
+      }
+      15% {
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(160px) translateX(var(--leafX, 20px)) rotate(220deg) scale(1);
+      }
+    }
+
+    form {
+      margin-top: 0.4rem;
+    }
+
+    .field-group + .field-group {
+      margin-top: 0.5rem;
+    }
+
+    label {
+      display: block;
+      margin-top: 1rem;
+      margin-bottom: 0.32rem;
+      font-size: 1.24rem;
+      color: rgba(243, 232, 196, 0.95);
+      letter-spacing: 0.01em;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 0.82rem 0.95rem;
+      border-radius: 10px;
+      border: 1px solid var(--field-border);
+      font-size: 1rem;
+      background: var(--field-bg);
+      color: var(--text-main);
+      outline: none;
+      transition:
+        box-shadow 0.22s ease,
+        border-color 0.22s ease,
+        background 0.22s ease,
+        transform 0.18s ease;
+    }
+
+    input::placeholder {
+      color: rgba(232, 225, 199, 0.48);
+      font-style: italic;
+    }
+
+    select option {
+      color: #111;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: rgba(243, 211, 122, 0.36);
+      box-shadow: 0 0 10px rgba(243,211,122,0.3);
+      background: rgba(18, 25, 18, 0.82);
+    }
+
+    .checkbox-section {
+      margin-top: 1rem;
+    }
+
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.55rem 0.8rem;
+      margin-top: 0.45rem;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: rgba(12, 18, 12, 0.55);
+      border: 1px solid rgba(243, 211, 122, 0.08);
+      border-radius: 10px;
+      padding: 0.62rem 0.75rem;
+      min-height: 48px;
+    }
+
+    .checkbox-item label {
+      margin: 0;
+      font-size: 1.02rem;
+      line-height: 1;
+      color: rgba(232, 225, 199, 0.88);
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      width: auto;
+      accent-color: var(--gold);
+      transform: scale(1.05);
+      cursor: pointer;
+      padding: 0;
+      box-shadow: none;
+    }
+
+    .yes-fields {
+      overflow: hidden;
+      transition: max-height 0.35s ease, opacity 0.3s ease, transform 0.3s ease;
+      max-height: 700px;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .yes-fields.collapsed {
+      max-height: 0;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+    }
+
+    .primary-button {
+      position: relative;
+      margin-top: 1.4rem;
+      width: 100%;
+      padding: 0.95rem 1rem;
+      border-radius: 12px;
+      border: 1px solid rgba(243, 211, 122, 0.45);
+      background: rgba(10, 15, 10, 0.84);
+      color: var(--gold);
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 1.28rem;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        box-shadow 0.22s ease,
+        transform 0.12s ease,
+        border-color 0.22s ease;
+    }
+
+    .primary-button:hover:not(:disabled) {
+      background: var(--gold);
+      color: #111;
+      box-shadow: 0 0 16px rgba(243, 211, 122, 0.28);
+    }
+
+    .primary-button:active:not(:disabled) {
+      transform: scale(0.985);
+    }
+
+    .primary-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .button-text,
+    .button-loader {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      width: 100%;
+    }
+
+    .button-loader.hidden {
+      display: none;
+    }
+
+    .dot-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.9;
+      animation: dotPulse 1s infinite ease-in-out;
+    }
+
+    .dot-pulse:nth-child(2) { animation-delay: 0.12s; }
+    .dot-pulse:nth-child(3) { animation-delay: 0.24s; }
+
+    @keyframes dotPulse {
+      0%, 80%, 100% {
+        transform: scale(0.55);
+        opacity: 0.4;
+      }
+      40% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .response-wrap {
+      position: relative;
+      min-height: 40px;
+    }
+
+    .response {
+      margin-top: 1.4rem;
+      padding: 1.7rem 1.2rem 1.5rem;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(243, 211, 122, 0.1);
+      border-radius: 14px;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.985) translateY(10px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+
+    .response.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+
+    .response p {
+      font-size: 1.2rem;
+      line-height: 1.25;
+    }
+
+    .response p + p {
+      margin-top: 0.65rem;
+    }
+
+    .response-title {
+      font-size: 1.4rem;
+      color: rgba(243, 232, 196, 0.98);
+    }
+
+    .registry-wrapper {
+      margin-top: 1rem;
+    }
+
+    .registry-btn {
+      display: inline-block;
+      margin-top: 0.6rem;
+      padding: 0.7rem 1.4rem;
+      background: var(--gold);
+      color: #111;
+      text-decoration: none;
+      border-radius: 10px;
+      font-size: 1.08rem;
+      transition: transform 0.15s ease, box-shadow 0.2s ease;
+    }
+
+    .registry-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 12px rgba(243,211,122,0.22);
+    }
+
+    .response-actions {
+      margin-top: 1rem;
+    }
+
+    .edit-response {
+      cursor: pointer;
+      text-decoration: underline;
+      color: rgba(243, 232, 196, 0.88);
+      font-size: 1.05rem;
+    }
+
+    .code-section {
+      margin-top: 1.2rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid rgba(243, 211, 122, 0.08);
+    }
+
+    .code-label {
+      margin-bottom: 0.45rem;
+      font-size: 1.18rem;
+    }
+
+    .code-input {
+      letter-spacing: 0.08em;
+    }
+
+    .code-message {
+      min-height: 1.4em;
+      margin-top: 0.65rem;
+      font-size: 1.02rem;
+      opacity: 0.95;
+      transition: opacity 0.4s ease;
+    }
+
+    .code-message.locked {
+      animation: dramaticFadeIn 0.8s ease;
+    }
+
+    @keyframes dramaticFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .magic-transition {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .magic-transition.show {
+      display: flex;
+      opacity: 1;
+    }
+
+    .magic-center {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+
+    .converge-firefly {
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255,245,180,0.95);
+      box-shadow:
+        0 0 12px rgba(255,245,180,0.9),
+        0 0 20px rgba(255,220,120,0.55);
+      animation: convergeCenter 1.05s ease forwards;
+    }
+
+    @keyframes convergeCenter {
+      0% {
+        transform: translate(var(--startX), var(--startY)) scale(0.7);
+        opacity: 0;
+      }
+      20% {
+        opacity: 1;
+      }
+      100% {
+        transform: translate(0, 0) scale(1.25);
+        opacity: 0;
+      }
+    }
+
+    .flicker {
+      animation: screenFlicker 0.18s linear 1;
+    }
+
+    @keyframes screenFlicker {
+      0%   { opacity: 1; }
+      18%  { opacity: 0.15; }
+      40%  { opacity: 1; }
+      60%  { opacity: 0.2; }
+      100% { opacity: 1; }
+    }
+
+    .popup-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 15;
+      padding: 1rem;
+    }
+
+    .popup-box {
+      width: min(360px, 100%);
+      background: var(--popup-bg);
+      border: 1px solid rgba(243, 211, 122, 0.12);
+      padding: 1.35rem 1rem 1rem;
+      border-radius: 14px;
+      text-align: center;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.35);
+    }
+
+    .popup-box p {
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+
+    .popup-box button {
+      margin-top: 1rem;
+      width: auto;
+      min-width: 110px;
+      padding: 0.7rem 1rem;
+      border: 1px solid rgba(243, 211, 122, 0.4);
+      background: rgba(10, 15, 10, 0.9);
+      color: var(--gold);
+      border-radius: 10px;
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 1.12rem;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      border: 0;
+    }
+
+    @media (max-width: 720px) {
+      .forest {
+        padding: 2.4rem 0.9rem;
+      }
+
+      .form-card {
+        padding: 1.45rem 1rem 1.2rem;
+      }
+
+      .checkbox-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        margin-bottom: 0.5rem;
+      }
+
+      .intro-copy {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<div class="forest">
-<div class="content">
+  <div class="forest" id="forest">
+    <div class="fireflies" id="fireflies" aria-hidden="true"></div>
 
-<h1>RSVP</h1>
+    <div class="content" id="contentWrap">
+      <div class="form-card" id="formCard">
+        <div class="spark-burst" id="sparkBurst" aria-hidden="true"></div>
+        <div class="magic-transition" id="magicTransition" aria-hidden="true">
+          <div class="magic-center" id="magicCenter"></div>
+        </div>
 
-<form id="rsvpForm" action="https://formspree.io/f/xqewzpgo" method="POST">
+        <h1>RSVP</h1>
+        <p class="intro-copy">The path is open, if only for a moment.</p>
 
-<label>Guest name(s)</label>
-<input type="text" name="guests" required>
+        <form id="rsvpForm" action="https://formspree.io/f/xqewzpgo" method="POST" novalidate>
+          <div class="field-group">
+            <label for="guestNames">Guest name(s)</label>
+            <input
+              id="guestNames"
+              type="text"
+              name="guests"
+              placeholder="who wanders here?"
+              required
+            >
+          </div>
 
-<label>Will you be joining us?</label>
-<select id="attendance" name="attendance" required>
-<option value="">Select</option>
-<option value="yes">Yes, with joy</option>
-<option value="no">Regretfully, no</option>
-</select>
+          <div class="field-group">
+            <label for="attendance">Will you be joining us?</label>
+            <select id="attendance" name="attendance" required>
+              <option value="">Select</option>
+              <option value="yes">Yes, with joy</option>
+              <option value="no">Regretfully, no</option>
+            </select>
+            <p id="attendanceReaction" class="attendance-reaction hidden-reaction"></p>
+          </div>
 
-<div id="yesFields" class="hidden">
+          <div id="yesFields" class="yes-fields collapsed">
+            <div class="field-group">
+              <label for="plusOne">Plus one?</label>
+              <select id="plusOne" name="plus_one">
+                <option value="">Select</option>
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
 
-<label>Plus one?</label>
-<select id="plusOne">
-<option value="">Select</option>
-<option value="no">No</option>
-<option value="yes">Yes</option>
-</select>
+            <div class="field-group hidden" id="plusOneNameWrap">
+              <label for="plusOneName">Plus one name</label>
+              <input
+                id="plusOneName"
+                type="text"
+                name="plus_one_name"
+                placeholder="who travels beside you?"
+              >
+            </div>
 
-<div id="plusOneNameWrap" class="hidden">
-<label>Plus one name</label>
-<input type="text" id="plusOneName" name="plus_one_name">
-</div>
+            <div class="field-group">
+              <label for="childrenCount">Children attending</label>
+              <input id="childrenCount" type="number" name="children" min="0" value="0">
+            </div>
 
-<label>Children attending</label>
-<input type="number" name="children" min="0" value="0">
+            <div class="checkbox-section">
+              <label>Dietary restrictions</label>
+              <div class="checkbox-grid">
+                <div class="checkbox-item">
+                  <input id="dietaryVegetarian" type="checkbox" name="dietary[]" value="vegetarian">
+                  <label for="dietaryVegetarian">Vegetarian</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryVegan" type="checkbox" name="dietary[]" value="vegan">
+                  <label for="dietaryVegan">Vegan</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryGlutenFree" type="checkbox" name="dietary[]" value="gluten-free">
+                  <label for="dietaryGlutenFree">Gluten-free</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryDairyFree" type="checkbox" name="dietary[]" value="dairy-free">
+                  <label for="dietaryDairyFree">Dairy-free</label>
+                </div>
+                <div class="checkbox-item">
+                  <input id="dietaryNutAllergy" type="checkbox" name="dietary[]" value="nut-allergy">
+                  <label for="dietaryNutAllergy">Nut allergy</label>
+                </div>
+              </div>
+            </div>
+          </div>
 
-</div>
+          <div class="field-group">
+            <label for="contactField">Contact (email or phone)</label>
+            <input
+              id="contactField"
+              name="contact"
+              type="text"
+              placeholder="how do we reach you in the woods?"
+            >
+          </div>
 
-<label>Contact (email or phone)</label>
-<input id="contactField" name="contact" type="text">
+          <button id="submitBtn" class="primary-button" type="submit">
+            <span class="button-text" id="submitText">Send RSVP</span>
+            <span class="button-loader hidden" id="submitLoader" aria-hidden="true">
+              <span class="dot-pulse"></span>
+              <span class="dot-pulse"></span>
+              <span class="dot-pulse"></span>
+            </span>
+          </button>
+        </form>
 
-<button type="submit">Send RSVP</button>
+        <div class="response-wrap">
+          <div id="responseBox" class="response hidden" aria-live="polite">
+            <p class="response-title">Your request has been received.</p>
+            <p id="responseText"></p>
+            <p id="approvalLine">The forest will decide your path.</p>
 
-</form>
+            <div class="code-section">
+              <p class="code-label">Have a forest code?</p>
+              <input
+                id="forestCodeInput"
+                class="code-input"
+                type="text"
+                placeholder="ENTER YOUR CODE"
+                autocomplete="off"
+                autocapitalize="characters"
+                spellcheck="false"
+              >
+              <button id="forestCodeButton" class="primary-button" type="button">Enter</button>
+              <p id="codeMessage" class="code-message"></p>
+            </div>
 
-<div id="responseBox" class="response hidden">
-<p>Your RSVP has been received.</p>
-<p id="responseText"></p>
+            <div id="registryWrapper" class="registry-wrapper hidden">
+              <p>Still want to send a little love?</p>
+              <a href="registry.html" class="registry-btn">Visit the Registry</a>
+            </div>
 
-<p>The forest will reach out when your path is ready. You’ll receive your forest code soon.</p>
+            <div class="response-actions">
+              <p id="editResponse" class="edit-response">Need to update your response?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div>
-<p>Have a forest code?</p>
-<input id="forestCodeInput">
-<button id="forestCodeButton">Enter</button>
-<p id="codeMessage"></p>
-</div>
+  <div id="popup" class="popup-overlay" role="dialog" aria-modal="true" aria-labelledby="popupMessage">
+    <div class="popup-box">
+      <p id="popupMessage"></p>
+      <button type="button" onclick="closePopup()">OK</button>
+    </div>
+  </div>
 
-<div id="registryWrapper" class="hidden">
-<p>Still want to send a little love?</p>
-<a href="registry.html" class="registry-btn">Visit the Registry</a>
-</div>
+  <script>
+    // =========================================================
+    // ELEMENTS
+    // =========================================================
+    const forest = document.getElementById("forest");
+    const firefliesWrap = document.getElementById("fireflies");
+    const contentWrap = document.getElementById("contentWrap");
+    const formCard = document.getElementById("formCard");
+    const form = document.getElementById("rsvpForm");
+    const responseBox = document.getElementById("responseBox");
+    const responseText = document.getElementById("responseText");
+    const approvalLine = document.getElementById("approvalLine");
+    const registryWrapper = document.getElementById("registryWrapper");
 
-<p id="editResponse" style="cursor:pointer;">Need to update your response?</p>
-</div>
+    const guestNames = document.getElementById("guestNames");
+    const attendance = document.getElementById("attendance");
+    const attendanceReaction = document.getElementById("attendanceReaction");
+    const yesFields = document.getElementById("yesFields");
+    const plusOne = document.getElementById("plusOne");
+    const plusOneNameWrap = document.getElementById("plusOneNameWrap");
+    const plusOneName = document.getElementById("plusOneName");
+    const childrenCount = document.getElementById("childrenCount");
+    const contactField = document.getElementById("contactField");
 
-</div>
-</div>
+    const submitBtn = document.getElementById("submitBtn");
+    const submitText = document.getElementById("submitText");
+    const submitLoader = document.getElementById("submitLoader");
 
-<!-- popup -->
-<div id="popup" class="popup-overlay">
-<div class="popup-box">
-<p id="popupMessage"></p>
-<button onclick="closePopup()">OK</button>
-</div>
-</div>
+    const sparkBurst = document.getElementById("sparkBurst");
+    const magicTransition = document.getElementById("magicTransition");
+    const magicCenter = document.getElementById("magicCenter");
 
-<script>
-// ELEMENTS
-const attendance = document.getElementById("attendance");
-const yesFields = document.getElementById("yesFields");
-const plusOne = document.getElementById("plusOne");
-const plusOneNameWrap = document.getElementById("plusOneNameWrap");
-const plusOneName = document.getElementById("plusOneName");
-const contactField = document.getElementById("contactField");
-const form = document.getElementById("rsvpForm");
-const responseBox = document.getElementById("responseBox");
-const responseText = document.getElementById("responseText");
-const registryWrapper = document.getElementById("registryWrapper");
+    const codeInput = document.getElementById("forestCodeInput");
+    const codeButton = document.getElementById("forestCodeButton");
+    const codeMessage = document.getElementById("codeMessage");
+    const editResponse = document.getElementById("editResponse");
 
-// POPUP
-function showPopup(msg) {
-  document.getElementById("popupMessage").textContent = msg;
-  document.getElementById("popup").style.display = "flex";
-}
-function closePopup() {
-  document.getElementById("popup").style.display = "none";
-}
+    // =========================================================
+    // STORAGE KEYS
+    // =========================================================
+    const ATTEMPT_KEY = "forestAttempts";
+    const LOCK_KEY = "forestLockUntil";
+    const ACCESS_KEY = "rsvpAccess";
+    const GUEST_KEY = "guestName";
+    const GUEST_ATTEMPTS_KEY = "guestAttempts";
+    const GUEST_ATTENDANCE_KEY = "guestAttendance";
 
-// CONDITIONAL
-attendance.addEventListener("change", () => {
-  yesFields.classList.toggle("hidden", attendance.value !== "yes");
-});
-
-plusOne.addEventListener("change", () => {
-  plusOneNameWrap.classList.toggle("hidden", plusOne.value !== "yes");
-});
-
-// VALIDATION
-function isValidContact(val) {
-  const phone = /^\d{10}$/;
-  const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return phone.test(val) || email.test(val);
-}
-
-// SUBMIT
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  if (attendance.value === "") {
-    showPopup("Please select if you're attending.");
-    return;
-  }
-
-  if (attendance.value === "yes") {
-    if (!isValidContact(contactField.value.trim())) {
-      showPopup("Enter a valid phone or email.");
-      return;
+    // =========================================================
+    // POPUP
+    // =========================================================
+    function showPopup(message) {
+      document.getElementById("popupMessage").textContent = message;
+      document.getElementById("popup").style.display = "flex";
     }
-    if (plusOne.value === "yes" && plusOneName.value.trim() === "") {
-      showPopup("Enter your plus one’s name.");
-      return;
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
     }
-  }
 
-  const formData = new FormData(form);
+    // =========================================================
+    // FIRELIES
+    // =========================================================
+    function createFireflies() {
+      firefliesWrap.innerHTML = "";
+      const isMobile = window.innerWidth <= 720;
+      const count = isMobile ? 8 : 18;
 
-  try {
-    const res = await fetch(form.action, {
-      method: "POST",
-      body: formData,
-      headers: { Accept: "application/json" }
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement("span");
+        dot.className = "firefly";
+
+        const size = (Math.random() * 5) + 4;
+        const left = Math.random() * 100;
+        const top = Math.random() * 100;
+        const duration = (Math.random() * 8) + 9;
+        const delay = Math.random() * 8;
+        const dx = `${(Math.random() * 60 - 30).toFixed(0)}px`;
+        const dy = `${(-40 - Math.random() * 120).toFixed(0)}px`;
+
+        dot.style.width = `${size}px`;
+        dot.style.height = `${size}px`;
+        dot.style.left = `${left}%`;
+        dot.style.top = `${top}%`;
+        dot.style.animationDuration = `${duration}s`;
+        dot.style.animationDelay = `${delay}s`;
+        dot.style.setProperty("--dx", dx);
+        dot.style.setProperty("--dy", dy);
+
+        firefliesWrap.appendChild(dot);
+      }
+    }
+
+    createFireflies();
+    window.addEventListener("resize", createFireflies);
+
+    // =========================================================
+    // ATTENDANCE REACTIONS
+    // =========================================================
+    function clearAttendanceMood() {
+      forest.classList.remove("attendance-yes", "attendance-no");
+      attendanceReaction.textContent = "";
+      attendanceReaction.classList.add("hidden-reaction");
+    }
+
+    function createSparkBurst() {
+      sparkBurst.innerHTML = "";
+      const amount = 14;
+
+      for (let i = 0; i < amount; i++) {
+        const spark = document.createElement("span");
+        spark.className = "spark";
+        spark.style.left = `${48 + Math.random() * 8}%`;
+        spark.style.top = `${130 + Math.random() * 30}px`;
+        spark.style.setProperty("--tx", `${(Math.random() * 140 - 70).toFixed(0)}px`);
+        spark.style.setProperty("--ty", `${(-30 - Math.random() * 70).toFixed(0)}px`);
+        spark.style.animationDelay = `${Math.random() * 0.12}s`;
+        sparkBurst.appendChild(spark);
+      }
+
+      setTimeout(() => {
+        sparkBurst.innerHTML = "";
+      }, 1000);
+    }
+
+    function createLeafDrift() {
+      sparkBurst.innerHTML = "";
+      const amount = 6;
+
+      for (let i = 0; i < amount; i++) {
+        const leaf = document.createElement("span");
+        leaf.className = "leaf";
+        leaf.style.left = `${52 + Math.random() * 20}%`;
+        leaf.style.top = `${118 + Math.random() * 18}px`;
+        leaf.style.setProperty("--leafX", `${(Math.random() * 40 - 20).toFixed(0)}px`);
+        sparkBurst.appendChild(leaf);
+      }
+
+      setTimeout(() => {
+        sparkBurst.innerHTML = "";
+      }, 2300);
+    }
+
+    function applyAttendanceMood(value) {
+      clearAttendanceMood();
+
+      if (value === "yes") {
+        forest.classList.add("attendance-yes");
+        attendanceReaction.textContent = "the forest brightens at your answer";
+        attendanceReaction.classList.remove("hidden-reaction");
+        createSparkBurst();
+      } else if (value === "no") {
+        forest.classList.add("attendance-no");
+        attendanceReaction.textContent = "you’ll be missed in the forest";
+        attendanceReaction.classList.remove("hidden-reaction");
+        createLeafDrift();
+      }
+    }
+
+    attendance.addEventListener("change", () => {
+      const isYes = attendance.value === "yes";
+      yesFields.classList.toggle("collapsed", !isYes);
+      plusOneName.required = plusOne.value === "yes" && isYes;
+      applyAttendanceMood(attendance.value);
     });
 
-    if (res.ok) {
-      form.classList.add("hidden");
-      responseBox.classList.remove("hidden");
+    plusOne.addEventListener("change", () => {
+      const show = plusOne.value === "yes" && attendance.value === "yes";
+      plusOneNameWrap.classList.toggle("hidden", !show);
+      plusOneName.required = show;
+    });
+
+    // =========================================================
+    // VALIDATION
+    // =========================================================
+    function isValidContact(val) {
+      const phone = /^\d{10}$/;
+      const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return phone.test(val) || email.test(val);
+    }
+
+    function trimCoreFields() {
+      guestNames.value = guestNames.value.trim();
+      plusOneName.value = plusOneName.value.trim();
+      contactField.value = contactField.value.trim();
+      codeInput.value = codeInput.value.toUpperCase().trim();
+    }
+
+    // =========================================================
+    // IDLE DETECTION
+    // =========================================================
+    let idleTimer;
+
+    function resetIdleTimer() {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        if (!responseBox.classList.contains("show")) return;
+        if (codeMessage.textContent.trim() !== "") return;
+
+        codeMessage.textContent = "…hello?";
+      }, 45000);
+    }
+
+    document.addEventListener("mousemove", resetIdleTimer);
+    document.addEventListener("keydown", resetIdleTimer);
+    document.addEventListener("click", resetIdleTimer);
+    resetIdleTimer();
+
+    // =========================================================
+    // SUBMIT BUTTON STATE
+    // =========================================================
+    function setSubmitLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      submitText.classList.toggle("hidden", isLoading);
+      submitLoader.classList.toggle("hidden", !isLoading);
+    }
+
+    // =========================================================
+    // POST-SUBMIT MAGIC TRANSITION
+    // =========================================================
+    function runMagicSubmitTransition() {
+      magicCenter.innerHTML = "";
+      const amount = 18;
+
+      for (let i = 0; i < amount; i++) {
+        const orb = document.createElement("span");
+        orb.className = "converge-firefly";
+        const startX = `${(Math.random() * 180 - 90).toFixed(0)}px`;
+        const startY = `${(Math.random() * 180 - 90).toFixed(0)}px`;
+        orb.style.setProperty("--startX", startX);
+        orb.style.setProperty("--startY", startY);
+        orb.style.animationDelay = `${Math.random() * 0.12}s`;
+        magicCenter.appendChild(orb);
+      }
+
+      magicTransition.classList.add("show");
+    }
+
+    function clearMagicSubmitTransition() {
+      magicTransition.classList.remove("show");
+      magicCenter.innerHTML = "";
+    }
+
+    // =========================================================
+    // FORM SUBMIT
+    // =========================================================
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      trimCoreFields();
+
+      if (attendance.value === "") {
+        showPopup("Please select if you're attending.");
+        return;
+      }
 
       if (attendance.value === "yes") {
-        responseText.textContent = "We’re excited to have you there.";
-      } else {
-        responseText.textContent = "We’ll miss you, but we understand.";
-        registryWrapper.classList.remove("hidden");
+        if (!isValidContact(contactField.value)) {
+          showPopup("Please enter a valid phone or email so we can reach you.");
+          return;
+        }
+
+        if (plusOne.value === "yes" && plusOneName.value === "") {
+          showPopup("Please enter your plus one’s name so we can include them.");
+          return;
+        }
       }
-    } else {
-      showPopup("Submission failed.");
+
+      setSubmitLoading(true);
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch(form.action, {
+          method: "POST",
+          body: formData,
+          headers: { Accept: "application/json" }
+        });
+
+        if (!res.ok) {
+          setSubmitLoading(false);
+          showPopup("RSVP failed. Please try again.");
+          return;
+        }
+
+        runMagicSubmitTransition();
+
+        setTimeout(() => {
+          formCard.classList.add("form-hidden");
+        }, 120);
+
+        setTimeout(() => {
+          form.classList.add("hidden");
+          responseBox.classList.remove("hidden");
+          responseBox.classList.add("show");
+          formCard.classList.remove("form-hidden");
+          clearMagicSubmitTransition();
+
+          sessionStorage.setItem(GUEST_ATTENDANCE_KEY, attendance.value);
+
+          if (attendance.value === "yes") {
+            responseText.textContent = "The forest has received your reply.";
+            approvalLine.textContent = "The forest will decide your path.";
+            registryWrapper.classList.add("hidden");
+          } else {
+            responseText.textContent = "Even from afar, you remain part of the story.";
+            approvalLine.textContent = "A quieter path is still a path.";
+            registryWrapper.classList.remove("hidden");
+          }
+        }, 1050);
+
+      } catch {
+        setSubmitLoading(false);
+        showPopup("Network error. Please try again.");
+      }
+    });
+
+    // =========================================================
+    // EDIT RESPONSE
+    // =========================================================
+    editResponse.addEventListener("click", () => {
+      responseBox.classList.remove("show");
+      responseBox.classList.add("hidden");
+      form.classList.remove("hidden");
+      registryWrapper.classList.add("hidden");
+      setSubmitLoading(false);
+      submitText.textContent = "Send RSVP";
+      codeMessage.textContent = "";
+      resetIdleTimer();
+    });
+
+    // =========================================================
+    // CHAOS FOREST SYSTEM
+    // =========================================================
+    const VALID_CODES = {
+      "TACOSTESTCODE": "Taco Test"
+    };
+
+    let attempts = Number(sessionStorage.getItem(ATTEMPT_KEY)) || 0;
+
+    const tiers = [
+      {
+        max: 2,
+        messages: [
+          "The forest tilts its head.",
+          "That code does not belong here.",
+          "A branch creaks softly… no.",
+          "Something about that feels wrong."
+        ]
+      },
+      {
+        max: 5,
+        messages: [
+          "The forest pauses.",
+          "It senses hesitation.",
+          "That still isn’t correct.",
+          "The trees whisper… no."
+        ]
+      },
+      {
+        max: 9,
+        messages: [
+          "Bestie… check your messages.",
+          "That’s not the code you were given.",
+          "Try copying it exactly.",
+          "You were told the code. Use it."
+        ]
+      },
+      {
+        max: 19,
+        messages: [
+          "Are you guessing???",
+          "This is getting embarrassing.",
+          "Girl. Be serious.",
+          "We are starting to worry."
+        ]
+      },
+      {
+        max: 29,
+        messages: [
+          "WHY are you trying this hard???",
+          "We are concerned.",
+          "This feels personal now.",
+          "The forest is losing patience."
+        ]
+      }
+    ];
+
+    function isLocked() {
+      const lockUntil = Number(sessionStorage.getItem(LOCK_KEY)) || 0;
+      return Date.now() < lockUntil;
     }
-  } catch {
-    showPopup("Network error.");
-  }
-});
 
-// FOREST CODE SYSTEM (WITH MEMORY)
-const VALID_CODES = {
-  "TACOSTESTCODE": "Taco Test"
-};
+    function getRemainingLockMs() {
+      const lockUntil = Number(sessionStorage.getItem(LOCK_KEY)) || 0;
+      return Math.max(0, lockUntil - Date.now());
+    }
 
-const codeInput = document.getElementById("forestCodeInput");
-const codeButton = document.getElementById("forestCodeButton");
-const codeMessage = document.getElementById("codeMessage");
+    function formatRemaining(ms) {
+      const totalSeconds = Math.ceil(ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      if (minutes <= 0) return `${seconds}s`;
+      return `${minutes}m ${seconds}s`;
+    }
 
-let attempts = 0;
+    function getChaosMessage() {
+      for (const tier of tiers) {
+        if (attempts <= tier.max) {
+          return tier.messages[Math.floor(Math.random() * tier.messages.length)];
+        }
+      }
+      return "The forest refuses.";
+    }
 
-const messages = [
-  "That’s not the code.",
-  "Try again.",
-  "Are you sure you were invited?",
-  "Bestie… check your texts.",
-  "Girl… be serious right now."
-];
+    function shakeCardIfNeeded() {
+      if (attempts >= 10) {
+        formCard.classList.remove("chaos-shake");
+        void formCard.offsetWidth;
+        formCard.classList.add("chaos-shake");
+      }
+    }
 
-codeButton.addEventListener("click", () => {
-  const entered = codeInput.value.trim().toUpperCase();
+    function flickerScreen() {
+      forest.classList.remove("flicker");
+      void forest.offsetWidth;
+      forest.classList.add("flicker");
+    }
 
-  if (VALID_CODES[entered]) {
+    function redTintFlash() {
+      forest.classList.remove("red-tint");
+      void forest.offsetWidth;
+      forest.classList.add("red-tint");
+    }
 
-    // 🌲 SAVE SESSION MEMORY
-    sessionStorage.setItem("rsvpAccess", "true");
-    sessionStorage.setItem("guestName", VALID_CODES[entered]);
+    function updateLockUI() {
+      if (!isLocked()) {
+        codeButton.disabled = false;
+        codeMessage.classList.remove("locked");
+        return false;
+      }
 
-    window.location.href = "landing.html";
-    return;
-  }
+      const remaining = getRemainingLockMs();
+      codeButton.disabled = true;
+      codeMessage.classList.add("locked");
+      codeMessage.textContent = `The forest has closed itself to you. Return in ${formatRemaining(remaining)}.`;
+      return true;
+    }
 
-  attempts++;
-  codeMessage.textContent =
-    messages[Math.min(attempts - 1, messages.length - 1)];
-});
+    if (isLocked()) {
+      updateLockUI();
 
-// EDIT
-document.getElementById("editResponse").addEventListener("click", () => {
-  responseBox.classList.add("hidden");
-  form.classList.remove("hidden");
-});
-</script>
+      const lockInterval = setInterval(() => {
+        if (!isLocked()) {
+          clearInterval(lockInterval);
+          codeButton.disabled = false;
+          codeMessage.classList.remove("locked");
+          codeMessage.textContent = "The forest has loosened its grip.";
+          return;
+        }
+        updateLockUI();
+      }, 1000);
+    }
 
+    codeInput.addEventListener("input", () => {
+      codeInput.value = codeInput.value.toUpperCase().replace(/\s+/g, "");
+    });
+
+    codeButton.addEventListener("click", () => {
+      resetIdleTimer();
+
+      if (updateLockUI()) return;
+
+      const entered = codeInput.value.toUpperCase().trim();
+
+      if (VALID_CODES[entered]) {
+        sessionStorage.setItem(ACCESS_KEY, "true");
+        sessionStorage.setItem(GUEST_KEY, VALID_CODES[entered]);
+        sessionStorage.setItem(GUEST_ATTEMPTS_KEY, String(attempts));
+
+        codeInput.classList.add("glow");
+        codeMessage.textContent = "The forest recognizes you.";
+
+        setTimeout(() => {
+          codeMessage.textContent = "A path opens.";
+        }, 520);
+
+        setTimeout(() => {
+          window.location.href = "landing.html";
+        }, 1450);
+
+        return;
+      }
+
+      attempts++;
+      sessionStorage.setItem(ATTEMPT_KEY, String(attempts));
+
+      codeInput.classList.remove("glow");
+      codeInput.classList.add("shake");
+      setTimeout(() => codeInput.classList.remove("shake"), 300);
+
+      shakeCardIfNeeded();
+
+      if (attempts === 15) {
+        flickerScreen();
+        codeMessage.textContent = "Girl… are you even invited???";
+        return;
+      }
+
+      if (attempts === 25) {
+        redTintFlash();
+        codeMessage.textContent = "WHO TOLD YOU TO COME???";
+        return;
+      }
+
+      codeMessage.textContent = getChaosMessage();
+
+      if (attempts >= 30) {
+        sessionStorage.setItem(LOCK_KEY, String(Date.now() + (5 * 60 * 1000)));
+        codeMessage.classList.add("locked");
+        codeMessage.textContent = "The forest has closed itself to you.";
+        codeButton.disabled = true;
+
+        const lockInterval = setInterval(() => {
+          if (!isLocked()) {
+            clearInterval(lockInterval);
+            codeButton.disabled = false;
+            codeMessage.classList.remove("locked");
+            codeMessage.textContent = "The forest has loosened its grip.";
+            return;
+          }
+          updateLockUI();
+        }, 1000);
+      }
+    });
+  </script>
 </body>
 </html>
