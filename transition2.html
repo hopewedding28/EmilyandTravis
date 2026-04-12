@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <!-- ============================================================
+       EMILY & TRAVIS WEDDING SITE
+       FILE: transition2.html
+       PURPOSE: The acceptance. Guest just entered their code
+                and the forest has opened for them. More ceremonial
+                than transition.html — this is the moment they
+                officially belong here.
+                Auto-redirects to home.html.
+       BACKGROUND: inside-gate.png
+       PALETTE: Burnt Orange, Plum Purple, Dark Green
+  ============================================================ -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060b06" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <title>Emily and Travis</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/backgrounds/inside-gate.png" as="image" />
+
+  <style>
+
+    /* ============================================================
+       TABLE OF CONTENTS
+       1.  CSS VARIABLES / TOKENS
+       2.  RESET + BASE
+       3.  HERO + BACKGROUND
+       4.  OVERLAY SYSTEM
+       5.  MIST LAYER
+       6.  FIREFLY SYSTEM (true lightning bug colors)
+       7.  SCENE CONTENT
+       8.  GREETING TEXT
+       9.  SUB TEXT
+       10. SEPARATOR ORBS (wedding palette)
+       11. LOADING SCREEN
+       12. PAGE LEAVE TRANSITION
+       13. FALLBACK BUTTON
+       14. ANIMATIONS LIBRARY
+       15. MOBILE / RESPONSIVE
+       16. SAFE AREA INSETS
+       17. REDUCED MOTION
+    ============================================================ */
+
+
+    /* ============================================================
+       1. CSS VARIABLES / TOKENS
+    ============================================================ */
+    :root {
+      --burnt-orange:       #CC5500;
+      --burnt-orange-dim:   rgba(204, 85, 0, 0.55);
+      --burnt-orange-glow:  rgba(204, 85, 0, 0.28);
+
+      --plum:               #673147;
+      --plum-dim:           rgba(103, 49, 71, 0.65);
+      --plum-border:        rgba(103, 49, 71, 0.45);
+
+      --forest-green:       #1a3a1a;
+
+      --gold:               #f3d37a;
+      --gold-dim:           rgba(243, 211, 122, 0.45);
+      --mist:               rgba(248, 242, 224, 0.97);
+      --mist-soft:          rgba(242, 235, 212, 0.92);
+      --mist-faint:         rgba(240, 234, 214, 0.48);
+      --forest-deep:        #060b06;
+
+      --t-fast:             250ms;
+      --t-base:             450ms;
+      --t-slow:             700ms;
+
+      --ease-soft:          cubic-bezier(0.25, 0.8, 0.25, 1);
+      --ease-default:       cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out:           cubic-bezier(0.0, 0, 0.2, 1);
+
+      --sp-xs:  8px;
+      --sp-sm:  16px;
+      --sp-md:  24px;
+      --sp-lg:  32px;
+      --sp-xl:  48px;
+    }
+
+
+    /* ============================================================
+       2. RESET + BASE
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      width: 100%;
+      height: 100%;
+      overscroll-behavior: none;
+    }
+
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--forest-deep);
+      font-family: 'Zen Loop', sans-serif;
+    }
+
+
+    /* ============================================================
+       3. HERO + BACKGROUND
+       Same inside-gate.png — but this time it feels like
+       the forest is fully open for you specifically.
+    ============================================================ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100dvh;
+      background: url("assets/backgrounds/inside-gate.png") center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      will-change: opacity, filter;
+    }
+
+    .hero.loaded {
+      animation:
+        heroFadeIn 1.4s var(--ease-soft) forwards,
+        ambientPulse 14s ease-in-out 1.4s infinite alternate;
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes ambientPulse {
+      from { filter: brightness(1.00); }
+      to   { filter: brightness(1.05); }
+    }
+
+    /* leaving — bright warm fade like walking into sunlight */
+    .hero.leaving {
+      animation: heroLeave 0.9s var(--ease-default) forwards !important;
+    }
+
+    @keyframes heroLeave {
+      0%   { opacity: 1; filter: brightness(1.0); }
+      60%  { opacity: 1; filter: brightness(1.6); }
+      100% { opacity: 0; filter: brightness(2.2); }
+    }
+
+
+    /* ============================================================
+       4. OVERLAY SYSTEM
+       Slightly lighter than transition.html —
+       the forest is more open now, more welcoming
+    ============================================================ */
+
+    /* base vignette */
+    .overlay-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(6, 6, 6, 0.08)  0%,
+        rgba(6, 6, 6, 0.35)  55%,
+        rgba(6, 6, 6, 0.70)  100%
+      );
+      pointer-events: none;
+    }
+
+    /* breathing vignette */
+    .overlay-breathe {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 35%,
+        rgba(4, 8, 4, 0.14) 100%
+      );
+      pointer-events: none;
+      animation: breathePulse 10s ease-in-out infinite;
+    }
+
+    @keyframes breathePulse {
+      0%,  100% { opacity: 0.5; }
+      50%        { opacity: 1.0; }
+    }
+
+    /* warm burnt orange center glow — the wedding palette bleeds in */
+    .overlay-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse at 50% 42%,
+        rgba(204, 85, 0, 0.06) 0%,
+        transparent 55%
+      );
+      pointer-events: none;
+      animation: glowShift 14s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowShift {
+      0%   { opacity: 0.4; }
+      100% { opacity: 1.0; }
+    }
+
+    /* brightening layer — fires before redirect */
+    .overlay-brighten {
+      position: absolute;
+      inset: 0;
+      z-index: 9;
+      background: rgba(204, 85, 0, 0);
+      pointer-events: none;
+      transition: background 1.4s var(--ease-out);
+    }
+
+    .overlay-brighten.active {
+      background: rgba(204, 85, 0, 0.14);
+    }
+
+
+    /* ============================================================
+       5. MIST LAYER
+    ============================================================ */
+    .mist-layer {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 28vh;
+      z-index: 3;
+      background:
+        radial-gradient(ellipse at 25% 100%, rgba(255,255,255,0.022), transparent 38%),
+        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.034), transparent 44%),
+        radial-gradient(ellipse at 75% 100%, rgba(255,255,255,0.024), transparent 40%);
+      filter: blur(20px);
+      opacity: 0.85;
+      pointer-events: none;
+      animation: mistDrift 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes mistDrift {
+      0%   { transform: translateX(-1.5%) translateY(0);   opacity: 0.65; }
+      100% { transform: translateX(1.5%)  translateY(-1%); opacity: 0.92; }
+    }
+
+
+    /* ============================================================
+       6. FIREFLY SYSTEM
+       True lightning bug colors — consistent with rsvp + codepage
+    ============================================================ */
+    .fireflies {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .firefly {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation-name: driftFloat, flickerGlow;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+      will-change: transform, opacity;
+    }
+
+    .firefly.color-yellowgreen {
+      background: radial-gradient(circle, rgba(200,240,80,0.98) 0%, rgba(160,210,60,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(180,230,70,0.65), 0 0 20px rgba(160,210,50,0.28);
+    }
+
+    .firefly.color-amber {
+      background: radial-gradient(circle, rgba(255,180,60,0.98) 0%, rgba(240,150,30,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(255,170,50,0.65), 0 0 20px rgba(240,140,20,0.28);
+    }
+
+    .firefly.color-gold {
+      background: radial-gradient(circle, rgba(255,240,140,0.98) 0%, rgba(243,211,122,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(243,220,120,0.65), 0 0 20px rgba(230,200,100,0.28);
+    }
+
+    .firefly.color-bluewhite {
+      background: radial-gradient(circle, rgba(220,240,255,0.98) 0%, rgba(180,220,255,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(200,230,255,0.65), 0 0 20px rgba(160,210,255,0.28);
+    }
+
+    .firefly.color-warmwhite {
+      background: radial-gradient(circle, rgba(255,252,230,0.98) 0%, rgba(255,245,200,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(255,248,220,0.65), 0 0 20px rgba(255,240,190,0.28);
+    }
+
+    .firefly.rise {
+      animation-name: driftRise, flickerGlow;
+    }
+
+    @keyframes driftFloat {
+      0%   { transform: translate3d(0,0,0) scale(0.88); }
+      20%  { transform: translate3d(16px,-24px,0) scale(1.06); }
+      40%  { transform: translate3d(-11px,-40px,0) scale(0.94); }
+      60%  { transform: translate3d(14px,-28px,0) scale(1.10); }
+      80%  { transform: translate3d(-8px,-14px,0) scale(0.96); }
+      100% { transform: translate3d(-5px,0,0) scale(0.90); }
+    }
+
+    @keyframes driftRise {
+      0%   { transform: translate3d(0,0,0) scale(0.7); opacity: 0; }
+      8%   { opacity: 0.7; }
+      100% { transform: translate3d(var(--rx,20px),-130px,0) scale(1.1); opacity: 0; }
+    }
+
+    @keyframes flickerGlow {
+      0%,  100% { opacity: 0.04; }
+      10%        { opacity: 0.68; }
+      26%        { opacity: 0.10; }
+      48%        { opacity: 0.80; }
+      66%        { opacity: 0.16; }
+      82%        { opacity: 0.55; }
+    }
+
+
+    /* ============================================================
+       7. SCENE CONTENT
+    ============================================================ */
+    .scene {
+      position: relative;
+      z-index: 6;
+      text-align: center;
+      max-width: 560px;
+      width: 100%;
+      padding: var(--sp-lg) var(--sp-md);
+      opacity: 0;
+      transition: opacity 0.9s var(--ease-soft);
+    }
+
+    .scene.visible {
+      opacity: 1;
+    }
+
+    .scene.leaving {
+      opacity: 0;
+      transition: opacity 0.7s var(--ease-default);
+    }
+
+
+    /* ============================================================
+       8. GREETING TEXT
+       Larger than transition.html — this moment is earned
+    ============================================================ */
+    .greeting {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      color: var(--mist);
+      line-height: 1.55;
+      text-shadow:
+        0 0  4px  rgba(0, 0, 0, 0.98),
+        0 2px 12px rgba(0, 0, 0, 0.95),
+        0 4px 28px rgba(0, 0, 0, 0.85),
+        0 0  50px rgba(0, 0, 0, 0.60);
+      opacity: 0;
+      animation: riseIn 900ms var(--ease-soft) forwards;
+      animation-delay: 1400ms;
+    }
+
+
+    /* ============================================================
+       9. SUB TEXT
+    ============================================================ */
+    .sub {
+      margin-top: var(--sp-sm);
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.88rem, 1.7vw, 1.02rem);
+      color: var(--mist-soft);
+      letter-spacing: 0.05em;
+      line-height: 1.7;
+      font-style: italic;
+      text-shadow:
+        0 0  4px  rgba(0, 0, 0, 0.98),
+        0 1px 8px  rgba(0, 0, 0, 0.95),
+        0 2px 20px rgba(0, 0, 0, 0.80);
+      opacity: 0;
+      animation: riseIn 700ms var(--ease-soft) forwards;
+      animation-delay: 2000ms;
+    }
+
+
+    /* ============================================================
+       10. SEPARATOR ORBS — WEDDING PALETTE
+       Three orbs in burnt orange, plum, dark green
+       Instead of gold — signals the vibe is shifting to
+       Emily & Travis's world now
+    ============================================================ */
+    .orb-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.4rem;
+      margin-top: var(--sp-lg);
+      opacity: 0;
+      animation: riseIn 700ms var(--ease-soft) forwards;
+      animation-delay: 2600ms;
+    }
+
+    /* burnt orange orb */
+    .orb.orange {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(255, 140, 50,  0.96) 0%,
+        rgba(204, 85,  0,   0.60) 50%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 8px  rgba(204, 85, 0,  0.68),
+        0 0 18px rgba(204, 85, 0,  0.30);
+      animation: orbFloat 2.4s ease-in-out infinite;
+      animation-delay: 0.0s;
+    }
+
+    /* plum orb — slightly bigger, center */
+    .orb.plum {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(180, 100, 140, 0.96) 0%,
+        rgba(103, 49,  71,  0.60) 50%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 8px  rgba(103, 49, 71, 0.68),
+        0 0 18px rgba(103, 49, 71, 0.30);
+      animation: orbFloat 2.4s ease-in-out infinite;
+      animation-delay: 0.4s;
+    }
+
+    /* dark green orb */
+    .orb.green {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(circle,
+        rgba(80,  180, 80,  0.96) 0%,
+        rgba(26,  58,  26,  0.60) 50%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 8px  rgba(26, 58, 26, 0.68),
+        0 0 18px rgba(26, 58, 26, 0.30);
+      animation: orbFloat 2.4s ease-in-out infinite;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes orbFloat {
+      0%,  100% { transform: translateY(0)    scale(0.85); opacity: 0.50; }
+      50%        { transform: translateY(-8px) scale(1.18); opacity: 1.00; }
+    }
+
+
+    /* ============================================================
+       11. LOADING SCREEN
+    ============================================================ */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--forest-deep);
+      z-index: 100;
+      pointer-events: none;
+      transition: opacity 1.0s var(--ease-soft);
+    }
+
+    .loading-screen.done {
+      opacity: 0;
+    }
+
+
+    /* ============================================================
+       12. PAGE LEAVE TRANSITION
+       Handled via JS — .leaving classes on scene + hero
+    ============================================================ */
+
+
+    /* ============================================================
+       13. FALLBACK BUTTON
+       Appears after 6s if redirect somehow fails.
+       Wispy style — plum border to match wedding palette.
+    ============================================================ */
+    .fallback-btn {
+      display: inline-block;
+      position: relative;
+      margin-top: var(--sp-lg);
+      padding: 0.75rem 2.8rem;
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.75rem, 1.4vw, 0.85rem);
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mist);
+      text-shadow:
+        0 0  4px  rgba(0, 0, 0, 1.0),
+        0 1px 8px  rgba(0, 0, 0, 1.0);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      outline: none;
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        opacity 600ms var(--ease-soft),
+        color   400ms var(--ease-default);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .fallback-btn::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--burnt-orange-dim, rgba(204,85,0,0.55)), transparent);
+    }
+
+    .fallback-btn::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--burnt-orange-dim, rgba(204,85,0,0.55)), transparent);
+    }
+
+    .fallback-btn.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .fallback-btn:hover { color: rgba(204, 85, 0, 0.92); }
+
+
+    /* ============================================================
+       14. ANIMATIONS LIBRARY
+    ============================================================ */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInSoft {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+
+    /* ============================================================
+       15. MOBILE / RESPONSIVE
+    ============================================================ */
+    @media (max-width: 600px) {
+      .scene {
+        padding: var(--sp-md) var(--sp-sm);
+      }
+
+      .greeting {
+        font-size: clamp(1.5rem, 7vw, 2.0rem);
+      }
+
+      .sub {
+        font-size: 0.88rem;
+      }
+
+      .orb-row {
+        gap: 1.1rem;
+        margin-top: var(--sp-md);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .greeting { font-size: clamp(1.3rem, 8vw, 1.7rem); }
+      .sub      { font-size: 0.82rem; }
+    }
+
+
+    /* ============================================================
+       16. SAFE AREA INSETS
+    ============================================================ */
+    .scene {
+      padding-top:   max(var(--sp-lg), env(safe-area-inset-top));
+      padding-left:  max(var(--sp-md), env(safe-area-inset-left));
+      padding-right: max(var(--sp-md), env(safe-area-inset-right));
+    }
+
+
+    /* ============================================================
+       17. REDUCED MOTION
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero,
+      .hero.loaded              { animation: none; opacity: 1; }
+      .overlay-breathe          { animation: none; }
+      .overlay-glow             { animation: none; }
+      .mist-layer               { animation: none; }
+      .firefly                  { display: none; }
+      .orb                      { animation: none; opacity: 0.6; }
+      .greeting, .sub, .orb-row { animation: none; opacity: 1; transform: none; }
+      .scene                    { opacity: 1; }
+      .loading-screen           { display: none; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
+
+  <div class="hero" id="hero">
+
+    <div class="overlay-vignette" aria-hidden="true"></div>
+    <div class="overlay-breathe"  aria-hidden="true"></div>
+    <div class="overlay-glow"     aria-hidden="true"></div>
+    <div class="overlay-brighten" id="overlayBrighten" aria-hidden="true"></div>
+
+    <div class="mist-layer" aria-hidden="true"></div>
+
+    <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
+    <div class="scene" id="scene" aria-live="polite"></div>
+
+  </div>
+
+
+  <script>
+  (function () {
+    'use strict';
+
+    /* ============================================================
+       STORAGE KEYS — must match across all pages
+    ============================================================ */
+    const ACCESS_KEY     = 'rsvpAccess';
+    const GUEST_KEY      = 'guestName';
+    const ATTENDANCE_KEY = 'guestAttendance';
+    const VISIT_KEY      = 'transition2Visits';
+
+    /* ============================================================
+       REDIRECT URL
+    ============================================================ */
+    const URL_HOME = 'home.html';
+
+    /* ============================================================
+       ELEMENTS
+    ============================================================ */
+    const hero            = document.getElementById('hero');
+    const scene           = document.getElementById('scene');
+    const firefliesWrap   = document.getElementById('fireflies');
+    const loadingScreen   = document.getElementById('loadingScreen');
+    const overlayBrighten = document.getElementById('overlayBrighten');
+
+    /* ============================================================
+       DETECTION
+    ============================================================ */
+    const isMobile  = window.matchMedia('(hover: none)').matches;
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ============================================================
+       GUEST DATA
+       Pull from localStorage since codepage stored it there
+    ============================================================ */
+    const rawName    = localStorage.getItem(GUEST_KEY)      || '';
+    const attendance = localStorage.getItem(ATTENDANCE_KEY) || '';
+    const access     = localStorage.getItem(ACCESS_KEY)     || '';
+
+    /* ============================================================
+       VISIT COUNT
+       How many times has this guest come through transition2?
+       Increments each visit for personalized greetings.
+    ============================================================ */
+    let visitCount = Number(localStorage.getItem(VISIT_KEY)) || 0;
+    visitCount++;
+    localStorage.setItem(VISIT_KEY, String(visitCount));
+
+    /* ============================================================
+       NAME HELPERS
+    ============================================================ */
+    function formatName(name) {
+      return name
+        .trim()
+        .split(' ')
+        .map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    function firstName(name) {
+      return formatName(name).split(' ')[0] || 'friend';
+    }
+
+    function fullName(name) {
+      return formatName(name) || 'friend';
+    }
+
+    /* ============================================================
+       LOAD SEQUENCE
+    ============================================================ */
+    function initLoadSequence() {
+      if (isReduced) {
+        loadingScreen.classList.add('done');
+        hero.classList.add('loaded');
+        scene.classList.add('visible');
+        return;
+      }
+
+      setTimeout(() => {
+        hero.classList.add('loaded');
+        loadingScreen.classList.add('done');
+      }, 200);
+
+      setTimeout(() => {
+        scene.classList.add('visible');
+      }, 900);
+    }
+
+    /* ============================================================
+       FIREFLY GENERATOR — true lightning bug colors
+    ============================================================ */
+    const FIREFLY_COLORS = [
+      'color-yellowgreen',
+      'color-amber',
+      'color-gold',
+      'color-bluewhite',
+      'color-warmwhite'
+    ];
+
+    function createFireflies() {
+      firefliesWrap.innerHTML = '';
+      const count     = isMobile ? 14 : 24;
+      const riseCount = Math.floor(count * 0.18);
+      const fragment  = document.createDocumentFragment();
+
+      for (let i = 0; i < count; i++) {
+        const dot   = document.createElement('span');
+        const color = FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)];
+        dot.className = 'firefly ' + color;
+
+        if (i < riseCount) {
+          dot.classList.add('rise');
+          dot.style.left   = (Math.random() * 90 + 5).toFixed(1) + '%';
+          dot.style.bottom = (-4 + Math.random() * 10).toFixed(1) + '%';
+          dot.style.top    = 'auto';
+          dot.style.setProperty('--rx', (Math.random() * 60 - 30).toFixed(0) + 'px');
+        } else {
+          dot.style.left = (Math.random() * 97).toFixed(1) + '%';
+          dot.style.top  = (Math.random() * 90).toFixed(1) + '%';
+        }
+
+        const size       = (Math.random() * (isMobile ? 3.0 : 3.5) + (isMobile ? 3.5 : 2.5)).toFixed(1);
+        const driftDur   = (Math.random() * 10 + 10).toFixed(1);
+        const flickDur   = (Math.random() * 5  + 4.0).toFixed(1);
+        const driftDelay = (Math.random() * 8).toFixed(2);
+        const flickDelay = (Math.random() * 5).toFixed(2);
+
+        dot.style.width             = size + 'px';
+        dot.style.height            = size + 'px';
+        dot.style.animationDuration = driftDur + 's, ' + flickDur + 's';
+        dot.style.animationDelay    = driftDelay + 's, ' + flickDelay + 's';
+
+        fragment.appendChild(dot);
+      }
+
+      firefliesWrap.appendChild(fragment);
+    }
+
+    /* ============================================================
+       SCENE BUILDER
+    ============================================================ */
+    function buildScene(greeting, sub) {
+      scene.innerHTML = `
+        <p class="greeting">${greeting}</p>
+        <p class="sub">${sub}</p>
+        <div class="orb-row" aria-hidden="true">
+          <span class="orb orange"></span>
+          <span class="orb plum"></span>
+          <span class="orb green"></span>
+        </div>
+        <a href="#" class="fallback-btn" id="fallbackBtn">continue</a>
+      `;
+    }
+
+    /* ============================================================
+       LEAVE TRANSITION
+       Warm burnt orange wash before redirect
+    ============================================================ */
+    function leaveTo(url, delay) {
+      setTimeout(() => {
+        overlayBrighten.classList.add('active');
+      }, delay - 1400);
+
+      setTimeout(() => {
+        scene.classList.add('leaving');
+      }, delay - 900);
+
+      setTimeout(() => {
+        hero.classList.add('leaving');
+      }, delay - 600);
+
+      setTimeout(() => {
+        window.location.href = url;
+      }, delay);
+    }
+
+    /* ============================================================
+       FALLBACK BUTTON
+       Appears after 6s if redirect somehow fails
+    ============================================================ */
+    function initFallback(url) {
+      setTimeout(() => {
+        const btn = document.getElementById('fallbackBtn');
+        if (btn) {
+          btn.classList.add('visible');
+          btn.href = url;
+          btn.addEventListener('click', function (e) {
+            e.preventDefault();
+            overlayBrighten.classList.add('active');
+            scene.classList.add('leaving');
+            setTimeout(() => { hero.classList.add('leaving'); }, 300);
+            setTimeout(() => { window.location.href = url; }, 1000);
+          });
+        }
+      }, 6000);
+    }
+
+    /* ============================================================
+       GREETING SYSTEM
+       Personalized based on guest name + visit count
+    ============================================================ */
+    function getGreeting() {
+      const first = firstName(rawName);
+      const full  = fullName(rawName);
+      const hasName = rawName.trim().length > 0;
+
+      /* first time through transition2 */
+      if (visitCount === 1) {
+        if (hasName) {
+          return 'The forest welcomes you, ' + full + '.';
+        }
+        return 'The forest welcomes you.';
+      }
+
+      /* second visit */
+      if (visitCount === 2) {
+        if (hasName) {
+          return 'Back so soon, ' + first + '.';
+        }
+        return 'Back so soon.';
+      }
+
+      /* third visit */
+      if (visitCount === 3) {
+        if (hasName) {
+          return first + '. You know the way by now.';
+        }
+        return 'You know the way by now.';
+      }
+
+      /* fourth to sixth visit */
+      if (visitCount <= 6) {
+        if (hasName) {
+          return 'The forest knows your name, ' + first + '.';
+        }
+        return 'The forest knows you.';
+      }
+
+      /* seventh visit onward */
+      if (hasName) {
+        return first + '. Welcome home.';
+      }
+      return 'Welcome home.';
+    }
+
+    function getSubText() {
+      /* sub text varies slightly based on attendance and visit */
+      if (visitCount === 1) {
+        if (attendance === 'yes') {
+          return 'your path has been cleared';
+        } else if (attendance === 'no') {
+          return 'the forest is glad you stopped by';
+        }
+        return 'your path has been cleared';
+      }
+
+      if (visitCount === 2) {
+        return 'the forest missed you';
+      }
+
+      if (visitCount === 3) {
+        return 'walk freely';
+      }
+
+      if (visitCount <= 6) {
+        return 'this place is yours';
+      }
+
+      return 'welcome home';
+    }
+
+    /* ============================================================
+       FLOW LOGIC
+       Always redirects to home.html.
+       Delay is slightly shorter for returning visitors.
+    ============================================================ */
+    function initFlow() {
+      const greeting = getGreeting();
+      const sub      = getSubText();
+
+      buildScene(greeting, sub);
+
+      /* shorter wait for return visits */
+      const delay = visitCount === 1 ? 4200 : 2800;
+
+      leaveTo(URL_HOME, delay);
+      initFallback(URL_HOME);
+    }
+
+    /* ============================================================
+       INIT
+    ============================================================ */
+    function init() {
+      initLoadSequence();
+      createFireflies();
+      initFlow();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
