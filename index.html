@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emily and Travis</title>
+<title>Emily & Travis</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
 
@@ -18,6 +18,7 @@ body {
   overflow: hidden;
 }
 
+/* BACKGROUND */
 .hero {
   height: 100vh;
   background: url("assets/backgrounds/gate.png") center / cover no-repeat;
@@ -28,18 +29,22 @@ body {
   transition: transform 0.7s ease, filter 0.7s ease;
 }
 
+/* OVERLAY */
 .hero::before {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 1;
   background: radial-gradient(circle at center,
     rgba(10,10,10,0.3) 0%,
     rgba(10,10,10,0.6) 70%,
     rgba(10,10,10,0.8) 100%);
 }
 
+/* CONTENT */
 .content {
   position: relative;
+  z-index: 2;
   text-align: center;
   max-width: 600px;
   padding: 20px;
@@ -47,6 +52,7 @@ body {
   transform: translateY(-85px);
 }
 
+/* FADE-IN */
 .fade {
   opacity: 0;
   transform: translateY(10px);
@@ -64,6 +70,7 @@ body {
   }
 }
 
+/* HEADLINE */
 h1 {
   font-family: 'Shadows Into Light Two', cursive;
   font-size: 3.4rem;
@@ -72,6 +79,7 @@ h1 {
   text-shadow: 0 0 20px rgba(243,211,122,0.7);
 }
 
+/* SUBTEXT */
 p {
   font-family: 'Zen Loop', sans-serif;
   font-size: 1.05rem;
@@ -81,6 +89,7 @@ p {
   letter-spacing: 0.03em;
 }
 
+/* BUTTON */
 .button {
   font-family: 'Zen Loop', sans-serif;
   display: inline-block;
@@ -112,13 +121,13 @@ p {
 
 .button:hover {
   transform: translateY(-2px) scale(1.03);
-
   box-shadow:
     0 0 25px rgba(243,211,122,0.8),
     0 0 50px rgba(243,211,122,0.5),
     0 6px 18px rgba(0,0,0,0.8);
 }
 
+/* PULSE */
 @keyframes pulse {
   0%, 100% {
     box-shadow:
@@ -134,11 +143,13 @@ p {
   }
 }
 
+/* CLICK TRANSITION */
 .hero.zoom {
   transform: scale(1.12);
   filter: brightness(1.2);
 }
 
+/* MOBILE */
 @media (max-width: 768px) {
   h1 { font-size: 2.6rem; }
   p { font-size: 0.95rem; }
