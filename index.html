@@ -457,12 +457,15 @@
     h1 {
       font-family: 'Shadows Into Light Two', cursive;
       font-size: clamp(2.4rem, 6vw, 3.6rem);
-      color: var(--mist);
-      /* strong shadow lifts text off the gate ironwork */
+      /* soft ivory/cream — NOT gold, so it reads against the golden gate */
+      color: rgba(248, 242, 224, 0.97);
+      /* layered shadows create a dark halo so it lifts off ANY background */
       text-shadow:
-        0 2px 20px rgba(0, 0, 0, 0.92),
-        0 0  8px  rgba(0, 0, 0, 0.98),
-        0 0  36px rgba(243, 211, 122, 0.08);
+        0 0  4px  rgba(0, 0, 0, 1.0),
+        0 2px 8px  rgba(0, 0, 0, 1.0),
+        0 4px 20px rgba(0, 0, 0, 0.95),
+        0 0  40px rgba(0, 0, 0, 0.85),
+        0 0  60px rgba(0, 0, 0, 0.60);
       margin-bottom: var(--sp-sm);
       line-height: 1.1;
       letter-spacing: 0.01em;
@@ -502,13 +505,16 @@
     p.sub {
       font-family: 'Zen Loop', sans-serif;
       font-size: clamp(0.88rem, 1.8vw, 1.02rem);
-      color: var(--mist-soft);
+      /* slightly brighter than before so it's legible on the gate */
+      color: rgba(242, 235, 212, 0.92);
       line-height: 1.78;
       margin-bottom: var(--sp-lg);
       letter-spacing: 0.038em;
       text-shadow:
-        0 1px 10px rgba(0, 0, 0, 0.98),
-        0 2px 20px rgba(0, 0, 0, 0.85);
+        0 0  4px  rgba(0, 0, 0, 1.0),
+        0 1px 8px  rgba(0, 0, 0, 1.0),
+        0 2px 18px rgba(0, 0, 0, 0.95),
+        0 0  35px rgba(0, 0, 0, 0.80);
       opacity: 0;
       animation: riseIn var(--t-slow) var(--ease-soft) forwards;
       animation-delay: 1900ms;
@@ -530,10 +536,12 @@
       letter-spacing: 0.24em;
       text-transform: uppercase;
       text-decoration: none;
-      color: var(--mist);
+      color: rgba(248, 242, 224, 0.95);
       text-shadow:
-        0 1px 12px rgba(0, 0, 0, 0.99),
-        0 0  24px rgba(0, 0, 0, 0.90);
+        0 0  4px  rgba(0, 0, 0, 1.0),
+        0 1px 8px  rgba(0, 0, 0, 1.0),
+        0 0  22px rgba(0, 0, 0, 0.95),
+        0 0  40px rgba(0, 0, 0, 0.80);
       background: transparent;
       border: none;
       cursor: none;
@@ -695,6 +703,32 @@
       42%        { opacity: 0.62; transform: scale(1.02); }
     }
 
+    /* wedding day orb — only shown on 09.23.28 */
+    .wedding-orb {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 243, 194, 0.98) 0%,
+        rgba(243, 211, 122, 0.70) 50%,
+        transparent 100%
+      );
+      box-shadow:
+        0 0 8px  rgba(243, 211, 122, 0.80),
+        0 0 18px rgba(243, 211, 122, 0.40),
+        0 0 32px rgba(243, 211, 122, 0.20);
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      animation: orbBreath 2.2s ease-in-out infinite;
+    }
+
+    @keyframes orbBreath {
+      0%,  100% { transform: scale(0.85); opacity: 0.65; }
+      50%        { transform: scale(1.18); opacity: 1.00; }
+    }
+
 
     /* ============================================================
        15. IDLE MESSAGE
@@ -723,38 +757,7 @@
     }
 
 
-    /* ============================================================
-       16. SOUND TOGGLE
-       Tiny 🔊 in corner — off by default
-    ============================================================ */
-    .sound-toggle {
-      position: fixed;
-      top: max(1.2rem, env(safe-area-inset-top, 1.2rem));
-      right: 1.2rem;
-      z-index: 10;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-      padding: 0.5rem;
-      color: rgba(243, 211, 122, 0.38);
-      font-size: 1rem;
-      line-height: 1;
-      opacity: 0;
-      transition:
-        color   300ms var(--ease-default),
-        opacity 300ms var(--ease-default);
-      animation: fadeInSoft 1s var(--ease-soft) forwards;
-      animation-delay: 3200ms;
-      -webkit-tap-highlight-color: transparent;
-    }
 
-    .sound-toggle:hover {
-      color: rgba(243, 211, 122, 0.72);
-    }
-
-    .sound-toggle.on {
-      color: rgba(243, 211, 122, 0.70);
-    }
 
 
     /* ============================================================
@@ -896,15 +899,7 @@
   <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
 
 
-  <!-- ============================================================
-       SOUND TOGGLE
-  ============================================================ -->
-  <button
-    class="sound-toggle"
-    id="soundToggle"
-    aria-label="Toggle ambient sound"
-    title="Toggle ambient sound"
-  >🔇</button>
+
 
 
   <!-- ============================================================
@@ -997,7 +992,6 @@
     const countdown     = document.getElementById('countdown');
     const idleMessage   = document.getElementById('idleMessage');
     const enterBtn      = document.getElementById('enterBtn');
-    const soundToggle   = document.getElementById('soundToggle');
     const cursorDot     = document.getElementById('cursorDot');
 
     /* ============================================================
@@ -1109,16 +1103,15 @@
       const diff  = WEDDING_DATE - now;
 
       if (diff <= 0) {
-        countdown.textContent = 'today is the day ✨';
+        // wedding day — show breathing orb + text
+        countdown.innerHTML = '<span class="wedding-orb"></span>today is the day';
         return;
       }
 
-      const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const text  = days === 1
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      countdown.textContent = days === 1
         ? '1 day away'
         : days.toLocaleString() + ' days away';
-
-      countdown.textContent = text;
     }
 
     /* ============================================================
@@ -1257,40 +1250,7 @@
       resetIdleTimer();
     }
 
-    /* ============================================================
-       SOUND TOGGLE
-       Off by default. Ambient forest sounds.
-       (Audio file: assets/audio/forest-ambient.mp3)
-    ============================================================ */
-    let soundOn  = false;
-    let audioEl  = null;
 
-    soundToggle.addEventListener('click', function (e) {
-      e.stopPropagation(); // don't trigger hero enter
-      soundOn = !soundOn;
-
-      if (soundOn) {
-        if (!audioEl) {
-          audioEl = new Audio('assets/audio/forest-ambient.mp3');
-          audioEl.loop   = true;
-          audioEl.volume = 0.28;
-        }
-        audioEl.play().catch(() => {
-          // autoplay blocked — silently fail
-          soundOn = false;
-          soundToggle.textContent = '🔇';
-          soundToggle.classList.remove('on');
-        });
-        soundToggle.textContent = '🔊';
-        soundToggle.classList.add('on');
-      } else {
-        if (audioEl) {
-          audioEl.pause();
-        }
-        soundToggle.textContent = '🔇';
-        soundToggle.classList.remove('on');
-      }
-    });
 
     /* ============================================================
        INIT
