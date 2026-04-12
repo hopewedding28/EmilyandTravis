@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emily & Travis</title>
+
+<!-- 🌲 Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  overflow: hidden;
+}
+
+/* 🌲 BACKGROUND */
+.hero {
+  height: 100vh;
+  background: url("assets/backgrounds/gate.png") center / cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: transform 0.6s ease, filter 0.6s ease;
+}
+
+/* 🌫️ OVERLAY */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center,
+    rgba(10,10,10,0.3) 0%,
+    rgba(10,10,10,0.6) 70%,
+    rgba(10,10,10,0.8) 100%);
+}
+
+/* ✨ CONTENT */
+.content {
+  position: relative;
+  text-align: center;
+  max-width: 600px;
+  padding: 20px;
+  color: #f5e6b8;
+}
+
+/* 🌟 FADE-IN */
+.fade {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeIn 1.2s ease forwards;
+}
+
+.fade:nth-child(1) { animation-delay: 0.5s; }
+.fade:nth-child(2) { animation-delay: 1.2s; }
+.fade:nth-child(3) { animation-delay: 2s; }
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 🧚 HEADLINE */
+h1 {
+  font-family: 'Shadows Into Light Two', cursive;
+  font-size: 3.4rem;
+  margin-bottom: 1.5rem;
+  color: #f3d37a;
+  text-shadow: 0 0 20px rgba(243,211,122,0.7);
+}
+
+/* 🌙 SUBTEXT */
+p {
+  font-family: 'Zen Loop', sans-serif;
+  font-size: 1.05rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+  opacity: 0.9;
+  letter-spacing: 0.03em;
+}
+
+/* ✨ BUTTON */
+.button {
+  font-family: 'Zen Loop', sans-serif;
+  display: inline-block;
+  padding: 0.9rem 2.2rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+  border-radius: 999px;
+
+  color: #1a1a1a;
+  font-weight: bold;
+
+  background: radial-gradient(circle,
+    #f8e7a0 0%,
+    #e6c76b 60%,
+    #d4af37 100%
+  );
+
+  box-shadow:
+    0 0 15px rgba(243,211,122,0.5),
+    0 0 30px rgba(243,211,122,0.3),
+    0 4px 12px rgba(0,0,0,0.7);
+
+  transition: all 0.25s ease;
+}
+
+/* ✨ HOVER */
+.button:hover {
+  transform: translateY(-2px) scale(1.03);
+
+  box-shadow:
+    0 0 25px rgba(243,211,122,0.8),
+    0 0 50px rgba(243,211,122,0.5),
+    0 6px 18px rgba(0,0,0,0.8);
+}
+
+/* 🚪 CLICK TRANSITION */
+.hero.zoom {
+  transform: scale(1.15);
+  filter: brightness(1.2);
+}
+
+/* 📱 MOBILE */
+@media (max-width: 768px) {
+  h1 { font-size: 2.6rem; }
+  p { font-size: 0.95rem; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="hero" id="hero">
+  <div class="content">
+
+    <h1 class="fade">You’ve Been Summoned</h1>
+
+    <p class="fade">
+      Beyond the trees, a celebration is waiting.<br>
+      Step inside to begin your RSVP for Emily and Travis’s wedding.
+    </p>
+
+    <a href="transition.html" class="button fade" id="enterBtn">
+      STEP INSIDE
+    </a>
+
+  </div>
+</div>
+
+<script>
+const btn = document.getElementById("enterBtn");
+const hero = document.getElementById("hero");
+
+btn.addEventListener("click", function(e) {
+  e.preventDefault();
+  hero.classList.add("zoom");
+
+  setTimeout(() => {
+    window.location.href = "transition.html";
+  }, 500);
+});
+</script>
+
+</body>
+</html>
