@@ -29,6 +29,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
   <link rel="preload" href="assets/backgrounds/inside-gate.png" as="image" />
 
+  <!-- security gate — must be first script, before anything else -->
+  <script src="security.js"></script>
+
   <style>
 
     /* ============================================================
@@ -1569,35 +1572,6 @@
   <script>
   (function () {
     'use strict';
-
-    /* ============================================================
-       SECURITY CHECK
-       This runs BEFORE anything else.
-       Checks:
-       1. localStorage rsvpAccess === 'true'
-       2. Device ID exists and matches what was stored with the code
-       If either fails → bounce to index.html immediately.
-       Using replace() so back button can't get them back in.
-    ============================================================ */
-    const ACCESS_KEY  = 'rsvpAccess';
-    const DEVICE_KEY  = 'forestDeviceId';
-    const GUEST_KEY   = 'guestName';
-
-    function securityCheck() {
-      const access   = localStorage.getItem(ACCESS_KEY);
-      const deviceId = localStorage.getItem(DEVICE_KEY);
-
-      /* must have both access flag AND a device ID */
-      if (access !== 'true' || !deviceId) {
-        window.location.replace('index.html');
-        return false;
-      }
-
-      return true;
-    }
-
-    /* run security check immediately */
-    if (!securityCheck()) return;
 
     /* ============================================================
        AUTHORIZED — show the page
