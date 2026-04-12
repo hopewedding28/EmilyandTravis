@@ -4,174 +4,385 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emily and Travis</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
-
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
 
-body {
-  overflow: hidden;
-}
-
-/* BACKGROUND */
-.hero {
-  height: 100vh;
-  background: url("assets/backgrounds/gate.png") center / cover no-repeat;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  transition: transform 0.7s ease, filter 0.7s ease;
-}
-
-/* OVERLAY (BEHIND CONTENT NOW) */
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  background: radial-gradient(circle at center,
-    rgba(10,10,10,0.3) 0%,
-    rgba(10,10,10,0.6) 70%,
-    rgba(10,10,10,0.8) 100%);
-}
-
-/* CONTENT ABOVE EVERYTHING */
-.content {
-  position: relative;
-  z-index: 5;
-  text-align: center;
-  max-width: 600px;
-  padding: 20px;
-  color: #f5e6b8;
-  transform: translateY(-20px);
-}
-
-/* TEXT FADE ONLY */
-.fade {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: fadeIn 1.2s ease forwards;
-}
-
-h1.fade { animation-delay: 0.5s; }
-p.fade { animation-delay: 1.2s; }
-
-@keyframes fadeIn {
-  to {
-    opacity: 1;
-    transform: translateY(0);
+  :root {
+    --gold: #f3d37a;
+    --gold-dim: rgba(243, 211, 122, 0.45);
+    --gold-whisper: rgba(243, 211, 122, 0.15);
+    --gold-trace: rgba(243, 211, 122, 0.07);
+    --mist: rgba(245, 237, 210, 0.92);
+    --mist-soft: rgba(240, 234, 214, 0.68);
+    --ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
+    --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
   }
-}
 
-/* HEADLINE */
-h1 {
-  font-family: 'Shadows Into Light Two', cursive;
-  font-size: 3.4rem;
-  margin-bottom: 1.2rem;
-  color: #f3d37a;
-  text-shadow: 0 0 20px rgba(243,211,122,0.7);
-}
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-/* SUBTEXT */
-p {
-  font-family: 'Zen Loop', sans-serif;
-  font-size: 1.05rem;
-  margin-bottom: 1.6rem;
-  line-height: 1.6;
-  opacity: 0.9;
-  letter-spacing: 0.03em;
-}
+  html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
 
-/* BUTTON (VISIBLE + GOLD AGAIN) */
-.button {
-  font-family: 'Zen Loop', sans-serif;
-  display: inline-block;
-  padding: 1rem 2.5rem;
-  margin-top: 1.2rem;
+  /* =====================
+     HERO
+  ===================== */
+  .hero {
+    height: 100vh;
+    width: 100%;
+    background: url("assets/backgrounds/gate.png") center / cover no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: ambientZoom 30s ease-in-out infinite alternate;
+    will-change: transform;
+  }
 
-  background: radial-gradient(circle,
-    #f8e7a0 0%,
-    #e6c76b 60%,
-    #d4af37 100%
-  );
+  @keyframes ambientZoom {
+    from { transform: scale(1); }
+    to   { transform: scale(1.04); }
+  }
 
-  color: #1a1a1a;
-  font-weight: bold;
-  text-decoration: none;
-  border-radius: 999px;
+  .hero.zooming {
+    animation: none;
+    transform: scale(1.13) !important;
+    filter: brightness(1.18) !important;
+    transition: transform 1.0s var(--ease-default), filter 1.0s var(--ease-default);
+  }
 
-  position: relative;
-  z-index: 10;
+  /* =====================
+     OVERLAYS
+  ===================== */
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(8,8,8,0.15) 0%,
+      rgba(8,8,8,0.46) 52%,
+      rgba(8,8,8,0.76) 100%
+    );
+    pointer-events: none;
+  }
 
-  box-shadow:
-    0 0 20px rgba(243,211,122,0.6),
-    0 0 40px rgba(243,211,122,0.4),
-    0 4px 12px rgba(0,0,0,0.7);
+  /* =====================
+     FIREFLIES
+  ===================== */
+  .fireflies {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
 
-  transition: all 0.25s ease;
-}
+  .firefly {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(
+      circle,
+      rgba(255, 243, 194, 0.96) 0%,
+      rgba(243, 211, 122, 0.52) 50%,
+      transparent 100%
+    );
+    box-shadow:
+      0 0 7px rgba(243, 211, 122, 0.48),
+      0 0 16px rgba(243, 211, 122, 0.18);
+    opacity: 0;
+    animation-name: driftFloat, flickerGlow;
+    animation-timing-function: linear, ease-in-out;
+    animation-iteration-count: infinite, infinite;
+    will-change: transform, opacity;
+  }
 
-/* HOVER */
-.button:hover {
-  transform: translateY(-2px) scale(1.03);
-  box-shadow:
-    0 0 30px rgba(243,211,122,0.9),
-    0 0 60px rgba(243,211,122,0.6),
-    0 6px 18px rgba(0,0,0,0.8);
-}
+  @keyframes driftFloat {
+    0%   { transform: translate3d(0, 0, 0) scale(0.9); }
+    25%  { transform: translate3d(14px, -22px, 0) scale(1.06); }
+    50%  { transform: translate3d(-9px, -36px, 0) scale(0.96); }
+    75%  { transform: translate3d(11px, -16px, 0) scale(1.08); }
+    100% { transform: translate3d(-5px, 0, 0) scale(0.91); }
+  }
 
-/* CLICK TRANSITION */
-.hero.zoom {
-  transform: scale(1.12);
-  filter: brightness(1.2);
-}
+  @keyframes flickerGlow {
+    0%, 100% { opacity: 0.05; }
+    15%       { opacity: 0.60; }
+    35%       { opacity: 0.13; }
+    55%       { opacity: 0.75; }
+    75%       { opacity: 0.20; }
+    90%       { opacity: 0.48; }
+  }
 
-/* MOBILE */
-@media (max-width: 768px) {
-  h1 { font-size: 2.6rem; }
-  p { font-size: 0.95rem; }
-}
+  /* =====================
+     CONTENT
+  ===================== */
+  .content {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    max-width: 580px;
+    padding: 2rem 1.5rem;
+    transform: translateY(-16px);
+  }
+
+  /* =====================
+     HEADLINE
+  ===================== */
+  h1 {
+    font-family: 'Shadows Into Light Two', cursive;
+    font-size: clamp(2.4rem, 6vw, 3.6rem);
+    color: var(--mist);
+    text-shadow:
+      0 2px 14px rgba(0,0,0,0.72),
+      0 0 32px rgba(243, 211, 122, 0.10);
+    margin-bottom: 1rem;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+    opacity: 0;
+    animation: riseIn 700ms var(--ease-soft) forwards;
+    animation-delay: 500ms;
+  }
+
+  /* =====================
+     SUBTEXT
+  ===================== */
+  p.sub {
+    font-family: 'Zen Loop', sans-serif;
+    font-size: clamp(0.9rem, 1.7vw, 1.02rem);
+    color: var(--mist-soft);
+    line-height: 1.75;
+    margin-bottom: 1.8rem;
+    letter-spacing: 0.035em;
+    text-shadow: 0 1px 10px rgba(0,0,0,0.65);
+    opacity: 0;
+    animation: riseIn 700ms var(--ease-soft) forwards;
+    animation-delay: 1100ms;
+  }
+
+  /* =====================
+     BUTTON — WISPY
+  ===================== */
+  .btn-enter {
+    font-family: 'Zen Loop', sans-serif;
+    display: inline-block;
+    position: relative;
+    padding: 0.78rem 2.8rem;
+    font-size: clamp(0.78rem, 1.4vw, 0.88rem);
+    letter-spacing: 0.20em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--mist);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    opacity: 0;
+    animation: riseIn 700ms var(--ease-soft) forwards;
+    animation-delay: 1700ms;
+    transition:
+      color 400ms var(--ease-default),
+      transform 150ms var(--ease-default);
+  }
+
+  /* top hairline */
+  .btn-enter::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--gold-dim),
+      transparent
+    );
+    transition: opacity 400ms var(--ease-default), left 400ms var(--ease-default), right 400ms var(--ease-default);
+  }
+
+  /* bottom hairline */
+  .btn-enter::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--gold-dim),
+      transparent
+    );
+    transition: opacity 400ms var(--ease-default), left 400ms var(--ease-default), right 400ms var(--ease-default);
+  }
+
+  /* inner glow swell */
+  .btn-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      var(--gold-trace) 0%,
+      transparent 70%
+    );
+    opacity: 0;
+    transition: opacity 400ms var(--ease-default);
+    pointer-events: none;
+    border-radius: 2px;
+  }
+
+  .btn-label {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* hover */
+  .btn-enter:hover {
+    color: var(--gold);
+  }
+
+  .btn-enter:hover::before {
+    left: 0%;
+    right: 0%;
+    opacity: 1.3;
+  }
+
+  .btn-enter:hover::after {
+    left: 0%;
+    right: 0%;
+    opacity: 1.3;
+  }
+
+  .btn-enter:hover .btn-glow {
+    opacity: 1;
+  }
+
+  /* click */
+  .btn-enter:active {
+    transform: scale(0.97);
+  }
+
+  /* =====================
+     ANIMATIONS
+  ===================== */
+  @keyframes riseIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* =====================
+     MOBILE
+  ===================== */
+  @media (max-width: 600px) {
+    .content {
+      transform: translateY(-6px);
+      padding: 1.5rem 1rem;
+    }
+    h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
+    p.sub { font-size: 0.88rem; }
+    .btn-enter { padding: 0.72rem 2.2rem; }
+  }
+
+  /* =====================
+     REDUCED MOTION
+  ===================== */
+  @media (prefers-reduced-motion: reduce) {
+    .hero { animation: none; }
+    .firefly { display: none; }
+    h1, p.sub, .btn-enter {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
 </style>
 </head>
-
 <body>
 
 <div class="hero" id="hero">
+
+  <div class="overlay" aria-hidden="true"></div>
+  <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
   <div class="content">
-
-    <h1 class="fade">You’ve Been Summoned</h1>
-
-    <p class="fade">
+    <h1>You've Been Summoned</h1>
+    <p class="sub">
       Beyond the trees, a celebration is waiting.<br>
-      Step inside to begin your RSVP for Emily and Travis’s wedding.
+      Step inside to begin your RSVP for Emily and Travis's wedding.
     </p>
-
-    <a href="transition.html" class="button" id="enterBtn">
-      STEP INSIDE
+    <a href="transition.html" class="btn-enter" id="enterBtn" aria-label="Step inside">
+      <div class="btn-glow" aria-hidden="true"></div>
+      <span class="btn-label">Step Inside</span>
     </a>
-
   </div>
+
 </div>
 
 <script>
-const btn = document.getElementById("enterBtn");
-const hero = document.getElementById("hero");
+(function () {
 
-btn.addEventListener("click", function(e) {
-  e.preventDefault();
-  hero.classList.add("zoom");
+  /* =====================
+     FIREFLY GENERATOR
+  ===================== */
+  const wrap = document.getElementById("fireflies");
+  const isMobile = window.innerWidth <= 600;
+  const count = isMobile ? 10 : 20;
 
-  setTimeout(() => {
-    window.location.href = "transition.html";
-  }, 500);
-});
+  for (let i = 0; i < count; i++) {
+    const dot = document.createElement("span");
+    dot.className = "firefly";
+
+    const size       = (Math.random() * 3.5 + 2).toFixed(1);
+    const left       = (Math.random() * 97).toFixed(1);
+    const top        = (Math.random() * 95).toFixed(1);
+    const driftDur   = (Math.random() * 9 + 10).toFixed(1);
+    const flickDur   = (Math.random() * 4 + 4.5).toFixed(1);
+    const driftDelay = (Math.random() * 7).toFixed(2);
+    const flickDelay = (Math.random() * 4).toFixed(2);
+
+    dot.style.cssText = `
+      width:${size}px;
+      height:${size}px;
+      left:${left}%;
+      top:${top}%;
+      animation-duration:${driftDur}s, ${flickDur}s;
+      animation-delay:${driftDelay}s, ${flickDelay}s;
+    `;
+
+    wrap.appendChild(dot);
+  }
+
+  /* =====================
+     ENTER BUTTON
+  ===================== */
+  const btn  = document.getElementById("enterBtn");
+  const hero = document.getElementById("hero");
+
+  btn.addEventListener("click", function (e) {
+    e.preventDefault();
+    hero.classList.add("zooming");
+    setTimeout(() => {
+      window.location.href = "transition.html";
+    }, 750);
+  });
+
+})();
 </script>
-
 </body>
 </html>
