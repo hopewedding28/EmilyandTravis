@@ -5,13 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Emily & Travis — RSVP</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="css/base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -69,7 +63,6 @@
     .checkbox-group label {
       display: block;
       margin: 0.3rem 0;
-      font-size: 0.95rem;
     }
 
     button {
@@ -105,7 +98,6 @@
       font-weight: bold;
     }
 
-    /* Popup */
     .popup-overlay {
       position: fixed;
       inset: 0;
@@ -139,7 +131,6 @@
 
     <h1>RSVP</h1>
 
-    <!-- FORM -->
     <form id="rsvpForm" action="https://formspree.io/f/xqewzpgo" method="POST">
 
       <label>Guest name(s)</label>
@@ -175,7 +166,6 @@
           <label><input type="checkbox" name="dietary[]" value="vegan"> Vegan</label>
           <label><input type="checkbox" name="dietary[]" value="gluten-free"> Gluten-free</label>
           <label><input type="checkbox" name="dietary[]" value="dairy-free"> Dairy-free</label>
-          <label><input type="checkbox" name="dietary[]" value="nut-allergy"> Nut allergy</label>
         </div>
 
       </div>
@@ -187,35 +177,18 @@
       <button id="submitBtn" type="submit">Send RSVP</button>
     </form>
 
-    <!-- RESPONSE -->
     <div id="responseBox" class="response hidden">
       <p>Your RSVP has been received.</p>
       <p id="responseText"></p>
 
-      <p style="margin-top:1rem; opacity:0.9;">
+      <p style="margin-top:1rem;">
         The forest will reach out when your path is ready. You’ll receive your forest code soon.
       </p>
-
-      <div id="codeSection" style="margin-top: 1.5rem;">
-        <p>Have a forest code?</p>
-        <input id="forestCodeInput" type="text" placeholder="Enter your code">
-        <button id="forestCodeButton">Enter</button>
-        <p id="codeMessage"></p>
-        <p id="unlockStatus"></p>
-      </div>
-
-      <div id="registryWrapper" class="hidden">
-        <p style="margin-top:1.2rem;">Still want to send a little love?</p>
-        <a href="registry.html" class="registry-btn">Visit the Registry</a>
-      </div>
-
-      <span id="editResponse">Need to update your response?</span>
     </div>
 
   </div>
 </div>
 
-<!-- POPUP -->
 <div id="popup" class="popup-overlay hidden">
   <div class="popup-box">
     <p id="popupMessage"></p>
@@ -233,7 +206,6 @@ const contactField = document.getElementById("contactField");
 const form = document.getElementById("rsvpForm");
 const responseBox = document.getElementById("responseBox");
 const responseText = document.getElementById("responseText");
-const registryWrapper = document.getElementById("registryWrapper");
 const submitBtn = document.getElementById("submitBtn");
 
 function showPopup(msg) {
@@ -264,6 +236,14 @@ function isValidContact(val) {
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  // ✅ FIX: prevent ghost triggers
+  if (!e.isTrusted) return;
+
+  if (attendance.value !== "yes" && attendance.value !== "no") {
+    showPopup("Please select whether you will be attending.");
+    return;
+  }
 
   const contact = contactField.value.trim();
 
@@ -298,7 +278,6 @@ form.addEventListener("submit", async (e) => {
         responseText.textContent = "We’re excited to have you there.";
       } else {
         responseText.textContent = "We’ll miss you, but we understand.";
-        registryWrapper.classList.remove("hidden");
       }
     } else {
       showPopup("RSVP failed. Please try again.");
