@@ -1,942 +1,1901 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Home</title>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop:ital@0;1&display=swap"
-    rel="stylesheet"
-  />
+  <!-- ============================================================
+       EMILY & TRAVIS WEDDING SITE
+       FILE: home.html
+       PURPOSE: The hub. Guests land here after being let in.
+                Hero with names + date, botanical SVG garland,
+                horizontal nav on desktop, hamburger on mobile,
+                scrolling info sections, countdown, fireflies.
+                LOCKED DOWN — localStorage access + device ID check.
+                Anyone without a valid code gets bounced to index.html.
+       BACKGROUND: inside-gate.png
+       PALETTE: Burnt Orange #CC5500, Plum #673147,
+                Dark Green #1a3a1a, Black, Mist
+  ============================================================ -->
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060b06" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <title>Emily &amp; Travis · 09.23.28</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
+  <link rel="preload" href="assets/backgrounds/inside-gate.png" as="image" />
 
   <style>
+
+    /* ============================================================
+       TABLE OF CONTENTS
+       1.  CSS VARIABLES / TOKENS
+       2.  RESET + BASE
+       3.  LOADING SCREEN
+       4.  SITE WRAPPER
+       5.  HEADER + BOTANICAL GARLAND
+       6.  NAV BAR (desktop)
+       7.  HAMBURGER MENU (mobile)
+       8.  MOBILE NAV DRAWER
+       9.  HERO SECTION
+       10. HERO OVERLAYS
+       11. HERO CONTENT
+       12. COUPLE NAMES
+       13. WEDDING DATE + LOCATION
+       14. PERSONALIZED GREETING
+       15. COUNTDOWN
+       16. INFO CARDS SECTION
+       17. INFO CARD STYLES
+       18. SECTION DIVIDER
+       19. FOOTER
+       20. FIREFLY SYSTEM
+       21. MIST LAYER
+       22. ANIMATIONS LIBRARY
+       23. MOBILE / RESPONSIVE
+       24. SAFE AREA INSETS
+       25. REDUCED MOTION
+    ============================================================ */
+
+
+    /* ============================================================
+       1. CSS VARIABLES / TOKENS
+    ============================================================ */
     :root {
-      --gold: rgba(243, 211, 122, 0.92);
-      --gold-soft: rgba(243, 211, 122, 0.62);
-      --gold-faint: rgba(243, 211, 122, 0.24);
-      --mist: rgba(255, 245, 220, 0.86);
-      --mist-soft: rgba(255, 245, 220, 0.62);
-      --forest-deep: #081108;
-      --forest-mid: #122015;
-      --forest-soft: #1a281d;
-      --shadow: rgba(0, 0, 0, 0.72);
-      --shadow-soft: rgba(0, 0, 0, 0.38);
-      --white-soft: rgba(255, 255, 255, 0.92);
+      --burnt-orange:        #CC5500;
+      --burnt-orange-dim:    rgba(204, 85, 0, 0.55);
+      --burnt-orange-soft:   rgba(204, 85, 0, 0.28);
+      --burnt-orange-glow:   rgba(204, 85, 0, 0.18);
+      --burnt-orange-trace:  rgba(204, 85, 0, 0.08);
+
+      --plum:                #673147;
+      --plum-dim:            rgba(103, 49, 71, 0.65);
+      --plum-soft:           rgba(103, 49, 71, 0.28);
+      --plum-border:         rgba(103, 49, 71, 0.45);
+      --plum-trace:          rgba(103, 49, 71, 0.12);
+
+      --forest-green:        #1a3a1a;
+      --forest-green-deep:   #013220;
+      --forest-green-mid:    rgba(26, 58, 26, 0.65);
+      --forest-green-soft:   rgba(26, 58, 26, 0.28);
+
+      --gold:                #f3d37a;
+      --gold-dim:            rgba(243, 211, 122, 0.45);
+
+      --mist:                rgba(248, 242, 224, 0.97);
+      --mist-soft:           rgba(242, 235, 212, 0.88);
+      --mist-faint:          rgba(240, 234, 214, 0.55);
+      --text-main:           rgba(232, 225, 199, 0.92);
+
+      --forest-deep:         #060b06;
+      --card-bg:             rgba(6, 8, 6, 0.72);
+      --card-border:         rgba(103, 49, 71, 0.30);
+      --nav-bg:              rgba(4, 6, 4, 0.92);
+
+      --t-fast:              250ms;
+      --t-base:              450ms;
+      --t-slow:              700ms;
+
+      --ease-soft:           cubic-bezier(0.25, 0.8, 0.25, 1);
+      --ease-default:        cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-spring:         cubic-bezier(0.34, 1.56, 0.64, 1);
+
+      --sp-xs:   8px;
+      --sp-sm:   16px;
+      --sp-md:   24px;
+      --sp-lg:   32px;
+      --sp-xl:   48px;
+      --sp-xxl:  64px;
     }
 
-    * {
-      box-sizing: border-box;
+
+    /* ============================================================
+       2. RESET + BASE
+    ============================================================ */
+    *, *::before, *::after {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
 
-    html,
+    html {
+      width: 100%;
+      scroll-behavior: smooth;
+      overscroll-behavior-x: none;
+    }
+
     body {
       width: 100%;
-      min-height: 100%;
+      min-height: 100vh;
+      font-family: 'Zen Loop', sans-serif;
+      background: var(--forest-deep);
+      color: var(--text-main);
+      overflow-x: hidden;
+      /* body starts hidden — JS security check runs first */
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-soft);
     }
 
-    body {
-      min-height: 100vh;
+    body.authorized {
+      opacity: 1;
+    }
+
+
+    /* ============================================================
+       3. LOADING SCREEN
+    ============================================================ */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--forest-deep);
+      z-index: 200;
+      pointer-events: none;
+      transition: opacity 1.0s var(--ease-soft);
+    }
+
+    .loading-screen.done {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+
+    /* ============================================================
+       4. SITE WRAPPER
+    ============================================================ */
+    .site-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+
+    /* ============================================================
+       5. HEADER + BOTANICAL GARLAND
+       SVG botanical garland across the top in wedding palette.
+       Names and date centered below it.
+       Nav bar sits below the header.
+    ============================================================ */
+    .site-header {
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      text-align: center;
+      padding-top: max(0px, env(safe-area-inset-top));
+      background: linear-gradient(
+        to bottom,
+        rgba(4, 6, 4, 0.95) 0%,
+        rgba(4, 6, 4, 0.88) 60%,
+        rgba(4, 6, 4, 0.75) 100%
+      );
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(103, 49, 71, 0.18);
+    }
+
+    /* botanical garland SVG container */
+    .garland-wrap {
+      width: 100%;
       overflow: hidden;
-      position: relative;
+      line-height: 0;
+      opacity: 0;
+      animation: fadeInSoft 1.2s var(--ease-soft) forwards;
+      animation-delay: 300ms;
+    }
+
+    .garland-wrap svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* couple names */
+    .header-names {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
       color: var(--mist);
-      background:
-        radial-gradient(circle at 50% 18%, rgba(243, 211, 122, 0.08), transparent 28%),
-        radial-gradient(circle at 15% 22%, rgba(243, 211, 122, 0.04), transparent 24%),
-        radial-gradient(circle at 84% 28%, rgba(243, 211, 122, 0.04), transparent 25%),
-        linear-gradient(
-          to bottom,
-          #060b06 0%,
-          #091109 18%,
-          #0c160d 38%,
-          #101b12 58%,
-          #0b130d 76%,
-          #050805 100%
-        );
-      font-family: "Zen Loop", cursive;
-      letter-spacing: 0.02em;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at center, transparent 34%, rgba(0, 0, 0, 0.28) 72%, rgba(0, 0, 0, 0.7) 100%),
-        linear-gradient(to bottom, rgba(0, 0, 0, 0.34), rgba(0, 0, 0, 0.2) 28%, rgba(0, 0, 0, 0.36) 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(circle at 50% 12%, rgba(255, 240, 170, 0.08), transparent 22%),
-        radial-gradient(circle at 50% 72%, rgba(255, 240, 170, 0.03), transparent 32%);
-      mix-blend-mode: screen;
-      opacity: 0.8;
-      animation: breathingLight 9s ease-in-out infinite;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .background-veil {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background:
-        radial-gradient(circle at 50% 82%, rgba(9, 20, 10, 0.84), transparent 24%),
-        radial-gradient(circle at 20% 100%, rgba(0, 0, 0, 0.44), transparent 32%),
-        radial-gradient(circle at 80% 100%, rgba(0, 0, 0, 0.44), transparent 32%);
-      pointer-events: none;
-    }
-
-    .mist-layer {
-      position: fixed;
-      inset: auto 0 0 0;
-      height: 38vh;
-      z-index: 2;
-      background:
-        radial-gradient(circle at 20% 100%, rgba(255, 255, 255, 0.035), transparent 35%),
-        radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.05), transparent 40%),
-        radial-gradient(circle at 80% 100%, rgba(255, 255, 255, 0.04), transparent 38%);
-      filter: blur(24px);
-      opacity: 0.95;
-      pointer-events: none;
-      animation: mistShift 18s ease-in-out infinite alternate;
-    }
-
-    .page-shell {
-      position: relative;
-      z-index: 5;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 3rem 1.5rem 4rem;
-    }
-
-    .scene {
-      width: 100%;
-      max-width: 1200px;
-      min-height: 86vh;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .centerpiece {
-      width: min(760px, 92vw);
-      text-align: center;
-      position: relative;
-      padding: 2rem 1.5rem 2.5rem;
-      animation: fadeRise 1.8s ease forwards;
-      opacity: 0;
-      transform: translateY(18px);
-    }
-
-    .welcome-whisper {
-      font-family: "Shadows Into Light Two", cursive;
-      font-size: clamp(1rem, 1.6vw, 1.35rem);
-      color: rgba(255, 244, 214, 0.82);
-      text-shadow: 0 0 10px rgba(243, 211, 122, 0.22);
-      margin-bottom: 0.9rem;
-      opacity: 0.86;
-      letter-spacing: 0.06em;
-    }
-
-    .guest-line {
-      font-family: "Shadows Into Light Two", cursive;
-      font-size: clamp(1.65rem, 3vw, 2.35rem);
-      color: var(--gold);
-      line-height: 1.2;
-      text-shadow:
-        0 0 14px rgba(243, 211, 122, 0.28),
-        0 0 28px rgba(243, 211, 122, 0.16);
-      margin-bottom: 0.65rem;
-      opacity: 0.96;
-    }
-
-    .main-title {
-      font-size: clamp(3.2rem, 8vw, 6.8rem);
-      font-weight: 400;
-      line-height: 0.94;
-      color: rgba(255, 248, 231, 0.96);
-      text-shadow:
-        0 0 22px rgba(243, 211, 122, 0.16),
-        0 0 42px rgba(243, 211, 122, 0.08),
-        0 8px 24px rgba(0, 0, 0, 0.46);
-      margin-bottom: 1rem;
-    }
-
-    .sub-whisper {
-      max-width: 650px;
-      margin: 0 auto;
-      font-size: clamp(1.2rem, 2vw, 1.7rem);
-      line-height: 1.45;
-      color: rgba(255, 245, 220, 0.84);
-      text-shadow: 0 0 10px rgba(0, 0, 0, 0.36);
-      opacity: 0.92;
-    }
-
-    .sub-whisper span {
-      color: var(--gold);
-      text-shadow:
-        0 0 10px rgba(243, 211, 122, 0.22),
-        0 0 20px rgba(243, 211, 122, 0.08);
-    }
-
-    .attempt-note {
-      margin-top: 1rem;
-      font-family: "Shadows Into Light Two", cursive;
-      font-size: clamp(0.95rem, 1.4vw, 1.2rem);
-      color: rgba(255, 239, 197, 0.72);
-      opacity: 0;
-      transform: translateY(8px);
-      transition: opacity 1.2s ease, transform 1.2s ease;
-      text-shadow: 0 0 10px rgba(243, 211, 122, 0.18);
-      min-height: 1.6rem;
-    }
-
-    .attempt-note.visible {
-      opacity: 0.92;
-      transform: translateY(0);
-    }
-
-    .path-ring {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      min-height: 86vh;
-    }
-
-    .path {
-      position: absolute;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      color: rgba(255, 245, 225, 0.9);
-      font-family: "Shadows Into Light Two", cursive;
-      font-size: clamp(1.25rem, 2.1vw, 1.9rem);
+      letter-spacing: 0.04em;
       line-height: 1.1;
-      text-align: center;
-      padding: 0.4rem 0.8rem;
-      opacity: 0;
-      transform: translateY(14px) scale(0.985);
-      transition:
-        opacity 1.1s ease,
-        transform 1.1s ease,
-        text-shadow 0.4s ease,
-        color 0.4s ease,
-        letter-spacing 0.4s ease,
-        filter 0.4s ease;
       text-shadow:
-        0 0 8px rgba(243, 211, 122, 0.12),
-        0 0 18px rgba(243, 211, 122, 0.08);
-      z-index: 7;
+        0 0  4px  rgba(0, 0, 0, 0.95),
+        0 2px 14px rgba(0, 0, 0, 0.90),
+        0 0  30px rgba(204, 85, 0, 0.18);
+      padding: 0.8rem var(--sp-md) 0.3rem;
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 500ms;
+    }
+
+    /* wedding info line */
+    .header-info {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+      color: var(--mist-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem var(--sp-md) 0.8rem;
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 700ms;
+    }
+
+    .header-info span {
+      color: rgba(204, 85, 0, 0.72);
+      margin: 0 0.4em;
+    }
+
+
+    /* ============================================================
+       6. NAV BAR (desktop)
+       Horizontal links below the header.
+       Hidden on mobile — replaced by hamburger drawer.
+    ============================================================ */
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      padding: 0.5rem var(--sp-md);
+      border-top: 1px solid rgba(103, 49, 71, 0.12);
+      opacity: 0;
+      animation: fadeInSoft var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 900ms;
+    }
+
+    .nav-link {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.75rem, 1.2vw, 0.88rem);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mist-faint);
+      padding: 0.5rem 0.85rem;
+      border-radius: 2px;
+      position: relative;
+      transition:
+        color      0.25s var(--ease-default),
+        background 0.25s var(--ease-default);
       white-space: nowrap;
     }
 
-    .path::before {
+    /* active underline */
+    .nav-link::after {
       content: "";
       position: absolute;
-      inset: 50% auto auto 50%;
-      width: 140%;
-      height: 180%;
-      transform: translate(-50%, -50%);
-      background: radial-gradient(circle, rgba(243, 211, 122, 0.09), transparent 68%);
-      opacity: 0;
-      transition: opacity 0.35s ease, transform 0.35s ease;
-      pointer-events: none;
-      filter: blur(10px);
-      z-index: -1;
-    }
-
-    .path::after {
-      content: "";
-      position: absolute;
-      left: 14%;
-      right: 14%;
-      bottom: 0.15rem;
+      bottom: 0.2rem;
+      left: 20%;
+      right: 20%;
       height: 1px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        rgba(243, 211, 122, 0.42),
-        transparent
-      );
+      background: linear-gradient(to right, transparent, var(--burnt-orange-dim), transparent);
       opacity: 0;
-      transform: scaleX(0.65);
+      transition: opacity 0.25s var(--ease-default), left 0.25s var(--ease-default), right 0.25s var(--ease-default);
+    }
+
+    .nav-link:hover,
+    .nav-link.active {
+      color: var(--mist-soft);
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      opacity: 1;
+      left: 10%;
+      right: 10%;
+    }
+
+    /* dot separator between nav links */
+    .nav-dot {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(103, 49, 71, 0.40);
+      flex-shrink: 0;
+    }
+
+
+    /* ============================================================
+       7. HAMBURGER BUTTON (mobile only)
+       Three lines → X when open
+    ============================================================ */
+    .hamburger-btn {
+      display: none;
+      position: fixed;
+      top: max(1rem, env(safe-area-inset-top, 1rem));
+      left: 1rem;
+      z-index: 150;
+      width: 44px;
+      height: 44px;
+      background: rgba(4, 6, 4, 0.85);
+      border: 1px solid var(--plum-border);
+      border-radius: 3px;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 5px;
+      padding: 10px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition:
+        background    0.25s var(--ease-default),
+        border-color  0.25s var(--ease-default);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .hamburger-btn:hover {
+      background: rgba(103, 49, 71, 0.28);
+      border-color: rgba(204, 85, 0, 0.45);
+    }
+
+    /* the three lines */
+    .ham-line {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: var(--mist-soft);
+      border-radius: 1px;
+      transition:
+        transform  0.32s var(--ease-spring),
+        opacity    0.22s var(--ease-default),
+        background 0.25s var(--ease-default);
       transform-origin: center;
-      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    /* X state when open */
+    .hamburger-btn.open .ham-line:nth-child(1) {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .hamburger-btn.open .ham-line:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    .hamburger-btn.open .ham-line:nth-child(3) {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .hamburger-btn.open .ham-line {
+      background: rgba(204, 85, 0, 0.88);
+    }
+
+
+    /* ============================================================
+       8. MOBILE NAV DRAWER
+       Slides in from the left. Full height.
+       Wedding palette, botanical accents.
+    ============================================================ */
+    .nav-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: min(300px, 82vw);
+      height: 100%;
+      height: 100dvh;
+      background: rgba(4, 6, 4, 0.97);
+      border-right: 1px solid var(--plum-border);
+      z-index: 140;
+      transform: translateX(-100%);
+      transition: transform 0.38s var(--ease-soft);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      overflow-y: auto;
+      padding: max(5rem, calc(env(safe-area-inset-top) + 4rem)) var(--sp-lg) max(2rem, env(safe-area-inset-bottom));
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-drawer.open {
+      transform: translateX(0);
+    }
+
+    /* drawer backdrop */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: 130;
+      opacity: 0;
       pointer-events: none;
+      transition: opacity 0.38s var(--ease-default);
     }
 
-    .path.visible {
-      opacity: 0.94;
-      transform: translateY(0) scale(1);
+    .drawer-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    .path:hover,
-    .path:focus-visible {
-      color: rgba(255, 249, 235, 1);
-      text-shadow:
-        0 0 10px rgba(243, 211, 122, 0.3),
-        0 0 18px rgba(243, 211, 122, 0.25),
-        0 0 34px rgba(243, 211, 122, 0.12);
-      letter-spacing: 0.04em;
-      filter: brightness(1.05);
+    /* drawer header — names inside the drawer */
+    .drawer-header {
+      margin-bottom: var(--sp-xl);
+    }
+
+    .drawer-names {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.4rem, 5vw, 1.8rem);
+      color: var(--mist);
+      text-shadow: 0 0 12px rgba(204, 85, 0, 0.22);
+      line-height: 1.2;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .drawer-date {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.78rem;
+      color: var(--mist-faint);
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+    }
+
+    /* drawer divider */
+    .drawer-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to right, var(--burnt-orange-dim), transparent);
+      margin-bottom: var(--sp-lg);
+      opacity: 0.55;
+    }
+
+    /* drawer nav links */
+    .drawer-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+    }
+
+    .drawer-link {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-sm);
+      text-decoration: none;
+      padding: 0.88rem var(--sp-sm);
+      border-radius: 3px;
+      color: var(--mist-soft);
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      border: 1px solid transparent;
+      transition:
+        color        0.25s var(--ease-default),
+        background   0.25s var(--ease-default),
+        border-color 0.25s var(--ease-default),
+        padding-left 0.25s var(--ease-default);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .drawer-link:hover,
+    .drawer-link:focus {
+      color: var(--mist);
+      background: rgba(204, 85, 0, 0.08);
+      border-color: rgba(204, 85, 0, 0.22);
+      padding-left: calc(var(--sp-sm) + 6px);
       outline: none;
     }
 
-    .path:hover::before,
-    .path:focus-visible::before {
+    /* SVG icon in each drawer link */
+    .drawer-link svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+      opacity: 0.65;
+      transition: opacity 0.25s var(--ease-default);
+    }
+
+    .drawer-link:hover svg,
+    .drawer-link:focus svg {
       opacity: 1;
-      transform: translate(-50%, -50%) scale(1.03);
     }
 
-    .path:hover::after,
-    .path:focus-visible::after {
-      opacity: 1;
-      transform: scaleX(1);
+    /* drawer footer */
+    .drawer-footer {
+      margin-top: auto;
+      padding-top: var(--sp-lg);
+      border-top: 1px solid rgba(103, 49, 71, 0.18);
     }
 
-    .path small {
-      display: block;
-      font-family: "Zen Loop", cursive;
-      font-size: 0.95rem;
-      letter-spacing: 0.03em;
-      opacity: 0.72;
-      margin-top: 0.12rem;
+    .drawer-footer-text {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: 0.82rem;
+      color: rgba(204, 85, 0, 0.45);
+      letter-spacing: 0.08em;
     }
 
-    .path-details {
-      top: 18%;
-      left: 8%;
-      animation-delay: 1.15s;
+
+    /* ============================================================
+       9. HERO SECTION
+       inside-gate.png full width background.
+       Contains the main greeting + countdown.
+    ============================================================ */
+    .hero-section {
+      position: relative;
+      width: 100%;
+      min-height: 88vh;
+      min-height: 88dvh;
+      background: url("assets/backgrounds/inside-gate.png") center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
 
-    .path-schedule {
-      top: 18%;
-      right: 8%;
-      animation-delay: 1.35s;
-    }
-
-    .path-registry {
-      left: 7%;
-      bottom: 18%;
-      animation-delay: 1.55s;
-    }
-
-    .path-activities {
-      right: 7%;
-      bottom: 18%;
-      animation-delay: 1.75s;
-    }
-
-    .path-welcome {
-      bottom: 7%;
-      left: 50%;
-      transform: translateX(-50%) translateY(14px) scale(0.985);
-      animation-delay: 1.95s;
-    }
-
-    .path-welcome.visible {
-      transform: translateX(-50%) translateY(0) scale(1);
-    }
-
-    .constellation-line {
+    /* firefly field lives inside hero */
+    .fireflies {
       position: absolute;
-      border-radius: 999px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        rgba(243, 211, 122, 0.18),
-        transparent
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* mist at bottom of hero */
+    .hero-mist {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 35vh;
+      z-index: 3;
+      background:
+        radial-gradient(ellipse at 20% 100%, rgba(255,255,255,0.022), transparent 36%),
+        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.034), transparent 42%),
+        radial-gradient(ellipse at 80% 100%, rgba(255,255,255,0.024), transparent 38%);
+      filter: blur(22px);
+      opacity: 0.88;
+      pointer-events: none;
+      animation: mistDrift 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes mistDrift {
+      0%   { transform: translateX(-2%) translateY(0);   opacity: 0.68; }
+      100% { transform: translateX(2%)  translateY(-1%); opacity: 0.95; }
+    }
+
+
+    /* ============================================================
+       10. HERO OVERLAYS
+    ============================================================ */
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(6, 6, 6, 0.12) 0%,
+        rgba(6, 6, 6, 0.42) 55%,
+        rgba(6, 6, 6, 0.78) 100%
       );
       pointer-events: none;
-      opacity: 0.24;
-      filter: blur(0.5px);
-      z-index: 4;
     }
 
-    .line-1 {
-      top: 24%;
-      left: 19%;
-      width: 18%;
-      height: 1px;
-      transform: rotate(9deg);
-    }
-
-    .line-2 {
-      top: 24%;
-      right: 19%;
-      width: 18%;
-      height: 1px;
-      transform: rotate(-9deg);
-    }
-
-    .line-3 {
-      left: 18%;
-      bottom: 24%;
-      width: 17%;
-      height: 1px;
-      transform: rotate(-12deg);
-    }
-
-    .line-4 {
-      right: 18%;
-      bottom: 24%;
-      width: 17%;
-      height: 1px;
-      transform: rotate(12deg);
-    }
-
-    .line-5 {
-      bottom: 12%;
-      left: 41%;
-      width: 18%;
-      height: 1px;
-      transform: rotate(0deg);
-    }
-
-    .glow-orb {
+    .hero-breathe {
       position: absolute;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 240, 185, 0.95), rgba(243, 211, 122, 0.35) 55%, transparent 76%);
-      box-shadow:
-        0 0 10px rgba(243, 211, 122, 0.45),
-        0 0 22px rgba(243, 211, 122, 0.2);
-      opacity: 0.42;
-      pointer-events: none;
-      z-index: 4;
-      animation: emberPulse 4.6s ease-in-out infinite;
-    }
-
-    .orb-1 { top: 24%; left: 36%; animation-delay: 0.4s; }
-    .orb-2 { top: 24%; right: 36%; animation-delay: 1.2s; }
-    .orb-3 { bottom: 24%; left: 35%; animation-delay: 1.8s; }
-    .orb-4 { bottom: 24%; right: 35%; animation-delay: 2.4s; }
-    .orb-5 { bottom: 12%; left: 50%; margin-left: -5px; animation-delay: 3s; }
-
-    .firefly-field {
-      position: fixed;
       inset: 0;
-      overflow: hidden;
+      z-index: 2;
+      background: radial-gradient(ellipse at center, transparent 32%, rgba(4,8,4,0.18) 100%);
       pointer-events: none;
-      z-index: 3;
+      animation: breathePulse 10s ease-in-out infinite;
     }
 
+    @keyframes breathePulse {
+      0%,  100% { opacity: 0.5; }
+      50%        { opacity: 1.0; }
+    }
+
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(ellipse at 50% 40%, rgba(204,85,0,0.05) 0%, transparent 55%);
+      pointer-events: none;
+      animation: glowShift 16s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowShift {
+      0%   { opacity: 0.4; }
+      100% { opacity: 1.0; }
+    }
+
+
+    /* ============================================================
+       11. HERO CONTENT
+    ============================================================ */
+    .hero-content {
+      position: relative;
+      z-index: 5;
+      text-align: center;
+      max-width: 680px;
+      width: 100%;
+      padding: var(--sp-xl) var(--sp-lg);
+    }
+
+
+    /* ============================================================
+       12. COUPLE NAMES (in hero)
+    ============================================================ */
+    .hero-names {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      color: var(--mist);
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      text-shadow:
+        0 0  6px  rgba(0, 0, 0, 0.98),
+        0 3px 18px rgba(0, 0, 0, 0.92),
+        0 0  40px rgba(204, 85, 0, 0.14),
+        0 0  70px rgba(204, 85, 0, 0.06);
+      margin-bottom: var(--sp-sm);
+      opacity: 0;
+      animation: riseIn 900ms var(--ease-soft) forwards;
+      animation-delay: 400ms;
+    }
+
+    /* the ampersand — in plum */
+    .hero-names .amp {
+      color: rgba(180, 100, 140, 0.88);
+      font-size: 0.75em;
+      vertical-align: middle;
+      display: inline-block;
+      margin: 0 0.1em;
+    }
+
+
+    /* ============================================================
+       13. WEDDING DATE + LOCATION (in hero)
+    ============================================================ */
+    .hero-date {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.78rem, 1.6vw, 0.96rem);
+      color: var(--mist-faint);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-shadow:
+        0 1px 8px rgba(0, 0, 0, 0.98),
+        0 0  20px rgba(0, 0, 0, 0.80);
+      margin-bottom: var(--sp-lg);
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 700ms;
+    }
+
+    .hero-date .date-sep {
+      color: rgba(204, 85, 0, 0.60);
+      margin: 0 0.5em;
+    }
+
+
+    /* ============================================================
+       14. PERSONALIZED GREETING (in hero)
+    ============================================================ */
+    .hero-greeting {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: rgba(248, 242, 224, 0.82);
+      font-style: italic;
+      text-shadow:
+        0 0  4px  rgba(0, 0, 0, 0.98),
+        0 1px 10px rgba(0, 0, 0, 0.90);
+      margin-bottom: var(--sp-md);
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 950ms;
+      min-height: 1.8em;
+    }
+
+
+    /* ============================================================
+       15. COUNTDOWN (in hero)
+    ============================================================ */
+    .countdown-wrap {
+      display: inline-flex;
+      gap: var(--sp-md);
+      justify-content: center;
+      align-items: flex-end;
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 1200ms;
+    }
+
+    .countdown-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.2rem;
+    }
+
+    .countdown-number {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--mist);
+      line-height: 1;
+      text-shadow:
+        0 0  4px  rgba(0, 0, 0, 0.95),
+        0 0  16px rgba(204, 85, 0, 0.20);
+      animation: numberPulse 2.4s ease-in-out infinite;
+    }
+
+    .countdown-unit:nth-child(2) .countdown-number { animation-delay: 0.2s; }
+    .countdown-unit:nth-child(3) .countdown-number { animation-delay: 0.4s; }
+    .countdown-unit:nth-child(4) .countdown-number { animation-delay: 0.6s; }
+
+    @keyframes numberPulse {
+      0%,  100% { opacity: 0.88; }
+      50%        { opacity: 1.00; }
+    }
+
+    .countdown-label {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.60rem, 1.1vw, 0.72rem);
+      color: rgba(204, 85, 0, 0.65);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.80);
+    }
+
+    /* separator dots between countdown units */
+    .countdown-sep {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: rgba(103, 49, 71, 0.50);
+      line-height: 1;
+      padding-bottom: 0.3rem;
+      animation: sepBlink 2s ease-in-out infinite;
+    }
+
+    @keyframes sepBlink {
+      0%,  100% { opacity: 0.5; }
+      50%        { opacity: 1.0; }
+    }
+
+    /* wedding day message */
+    .wedding-day-msg {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: rgba(204, 85, 0, 0.92);
+      text-shadow: 0 0 20px rgba(204, 85, 0, 0.40);
+      animation: weddingDayGlow 2s ease-in-out infinite;
+    }
+
+    @keyframes weddingDayGlow {
+      0%,  100% { text-shadow: 0 0 20px rgba(204,85,0,0.40); }
+      50%        { text-shadow: 0 0 35px rgba(204,85,0,0.65); }
+    }
+
+    /* wedding day orb */
+    .wedding-orb {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,140,50,0.96) 0%, rgba(204,85,0,0.60) 50%, transparent 100%);
+      box-shadow: 0 0 10px rgba(204,85,0,0.68), 0 0 22px rgba(204,85,0,0.30);
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      animation: orbBreath 2.2s ease-in-out infinite;
+    }
+
+    @keyframes orbBreath {
+      0%,  100% { transform: scale(0.85); opacity: 0.65; }
+      50%        { transform: scale(1.18); opacity: 1.00; }
+    }
+
+
+    /* ============================================================
+       16. INFO CARDS SECTION
+       Scrollable section below the hero.
+       Quick info bites — not panels, more like floating cards
+       that tease what's on each inner page.
+    ============================================================ */
+    .info-section {
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(
+        to bottom,
+        rgba(4, 6, 4, 0.95) 0%,
+        rgba(6, 8, 6, 0.98) 100%
+      );
+      padding: var(--sp-xxl) var(--sp-lg);
+      border-top: 1px solid rgba(103, 49, 71, 0.20);
+    }
+
+    /* section title */
+    .section-title {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: var(--mist-faint);
+      text-align: center;
+      letter-spacing: 0.06em;
+      margin-bottom: var(--sp-xl);
+      text-shadow: 0 0 12px rgba(204, 85, 0, 0.15);
+    }
+
+    /* cards grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--sp-md);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+
+    /* ============================================================
+       17. INFO CARD STYLES
+    ============================================================ */
+    .info-card {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 4px;
+      padding: var(--sp-lg) var(--sp-md) var(--sp-md);
+      text-decoration: none;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-xs);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+
+      box-shadow:
+        0 0 0   1px rgba(103, 49, 71, 0.08),
+        0 8px 24px  rgba(0, 0, 0, 0.40),
+        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+      transition:
+        border-color 0.28s var(--ease-default),
+        box-shadow   0.28s var(--ease-default),
+        transform    0.22s var(--ease-default),
+        background   0.28s var(--ease-default);
+
+      opacity: 0;
+      transform: translateY(16px);
+    }
+
+    .info-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition:
+        opacity      0.6s var(--ease-soft),
+        transform    0.6s var(--ease-soft),
+        border-color 0.28s var(--ease-default),
+        box-shadow   0.28s var(--ease-default),
+        background   0.28s var(--ease-default);
+    }
+
+    .info-card:hover {
+      border-color: rgba(204, 85, 0, 0.38);
+      background: rgba(10, 14, 10, 0.82);
+      box-shadow:
+        0 0 0   1px rgba(204, 85, 0, 0.15),
+        0 0 24px    rgba(204, 85, 0, 0.10),
+        0 12px 32px rgba(0, 0, 0, 0.50),
+        inset 0 1px 0 rgba(255, 255, 255, 0.02);
+      transform: translateY(-3px);
+    }
+
+    /* card icon SVG */
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      margin-bottom: var(--sp-xs);
+      opacity: 0.70;
+      transition: opacity 0.25s var(--ease-default);
+      filter: drop-shadow(0 0 4px rgba(204, 85, 0, 0.30));
+    }
+
+    .info-card:hover .card-icon {
+      opacity: 1;
+      filter: drop-shadow(0 0 8px rgba(204, 85, 0, 0.55));
+    }
+
+    /* card title */
+    .card-title {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+      color: var(--mist);
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 10px rgba(204, 85, 0, 0.15);
+      line-height: 1.2;
+    }
+
+    /* card description */
+    .card-desc {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.80rem, 1.4vw, 0.90rem);
+      color: var(--mist-faint);
+      line-height: 1.6;
+      font-style: italic;
+      letter-spacing: 0.02em;
+    }
+
+    /* card arrow */
+    .card-arrow {
+      margin-top: auto;
+      padding-top: var(--sp-sm);
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(204, 85, 0, 0.55);
+      transition: color 0.25s var(--ease-default), letter-spacing 0.25s var(--ease-default);
+    }
+
+    .info-card:hover .card-arrow {
+      color: rgba(204, 85, 0, 0.88);
+      letter-spacing: 0.16em;
+    }
+
+    /* card corner accent */
+    .card-corner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40px;
+      height: 40px;
+      opacity: 0.30;
+      pointer-events: none;
+    }
+
+
+    /* ============================================================
+       18. SECTION DIVIDER
+    ============================================================ */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-md);
+      padding: var(--sp-xl) var(--sp-lg);
+      opacity: 0.55;
+    }
+
+    .divider-line {
+      flex: 1;
+      max-width: 200px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(103, 49, 71, 0.40), transparent);
+    }
+
+    .divider-orb {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(204,85,0,0.80) 0%, rgba(103,49,71,0.40) 60%, transparent 100%);
+      box-shadow: 0 0 8px rgba(204,85,0,0.35);
+    }
+
+
+    /* ============================================================
+       19. FOOTER
+    ============================================================ */
+    .site-footer {
+      position: relative;
+      z-index: 10;
+      background: rgba(4, 6, 4, 0.98);
+      border-top: 1px solid rgba(103, 49, 71, 0.15);
+      padding: var(--sp-lg) var(--sp-md);
+      padding-bottom: max(var(--sp-lg), env(safe-area-inset-bottom));
+      text-align: center;
+    }
+
+    .footer-names {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: rgba(204, 85, 0, 0.55);
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 12px rgba(204, 85, 0, 0.15);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .footer-date {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.72rem;
+      color: var(--mist-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.55;
+      display: block;
+    }
+
+    .footer-location {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.70rem;
+      color: rgba(103, 49, 71, 0.55);
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+      display: block;
+      font-style: italic;
+    }
+
+
+    /* ============================================================
+       20. FIREFLY SYSTEM — true lightning bug colors
+    ============================================================ */
     .firefly {
       position: absolute;
       border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        rgba(255, 243, 194, 0.96) 0%,
-        rgba(243, 211, 122, 0.62) 48%,
-        rgba(243, 211, 122, 0.12) 70%,
-        transparent 100%
-      );
-      box-shadow:
-        0 0 8px rgba(243, 211, 122, 0.42),
-        0 0 20px rgba(243, 211, 122, 0.16);
       opacity: 0;
       animation-name: driftFloat, flickerGlow;
-      animation-timing-function: ease-in-out, ease-in-out;
+      animation-timing-function: linear, ease-in-out;
       animation-iteration-count: infinite, infinite;
       will-change: transform, opacity;
     }
 
-    .firefly:nth-child(1)  { left: 7%;  top: 16%; width: 4px; height: 4px; animation-duration: 14s, 4.3s; animation-delay: 0s, 0.2s; }
-    .firefly:nth-child(2)  { left: 15%; top: 28%; width: 5px; height: 5px; animation-duration: 16s, 5.2s; animation-delay: 1s, 0.6s; }
-    .firefly:nth-child(3)  { left: 23%; top: 63%; width: 3px; height: 3px; animation-duration: 13s, 3.8s; animation-delay: 1.8s, 1.1s; }
-    .firefly:nth-child(4)  { left: 31%; top: 14%; width: 6px; height: 6px; animation-duration: 17s, 4.7s; animation-delay: 0.8s, 1.4s; }
-    .firefly:nth-child(5)  { left: 39%; top: 76%; width: 4px; height: 4px; animation-duration: 15s, 4.9s; animation-delay: 2.1s, 0.9s; }
-    .firefly:nth-child(6)  { left: 47%; top: 10%; width: 5px; height: 5px; animation-duration: 18s, 5.5s; animation-delay: 2.8s, 1.8s; }
-    .firefly:nth-child(7)  { left: 54%; top: 61%; width: 3px; height: 3px; animation-duration: 12.5s, 4.1s; animation-delay: 0.6s, 1.2s; }
-    .firefly:nth-child(8)  { left: 62%; top: 24%; width: 6px; height: 6px; animation-duration: 16.4s, 5.8s; animation-delay: 1.2s, 0.7s; }
-    .firefly:nth-child(9)  { left: 69%; top: 72%; width: 4px; height: 4px; animation-duration: 14.6s, 4.6s; animation-delay: 2.5s, 1.7s; }
-    .firefly:nth-child(10) { left: 76%; top: 17%; width: 5px; height: 5px; animation-duration: 17.5s, 5.3s; animation-delay: 3.2s, 1.1s; }
-    .firefly:nth-child(11) { left: 84%; top: 38%; width: 4px; height: 4px; animation-duration: 15.8s, 4.4s; animation-delay: 0.4s, 0.8s; }
-    .firefly:nth-child(12) { left: 90%; top: 66%; width: 3px; height: 3px; animation-duration: 13.8s, 4.1s; animation-delay: 1.7s, 1.5s; }
-    .firefly:nth-child(13) { left: 11%; top: 79%; width: 5px; height: 5px; animation-duration: 18.2s, 5.4s; animation-delay: 0.9s, 1.9s; }
-    .firefly:nth-child(14) { left: 27%; top: 42%; width: 3px; height: 3px; animation-duration: 12.8s, 3.7s; animation-delay: 2.4s, 0.4s; }
-    .firefly:nth-child(15) { left: 43%; top: 33%; width: 4px; height: 4px; animation-duration: 16.8s, 4.8s; animation-delay: 3.1s, 0.9s; }
-    .firefly:nth-child(16) { left: 58%; top: 84%; width: 5px; height: 5px; animation-duration: 19s, 5.9s; animation-delay: 1.3s, 1.2s; }
-    .firefly:nth-child(17) { left: 73%; top: 48%; width: 3px; height: 3px; animation-duration: 13.6s, 4.2s; animation-delay: 2.2s, 1.6s; }
-    .firefly:nth-child(18) { left: 87%; top: 12%; width: 4px; height: 4px; animation-duration: 15.4s, 4.7s; animation-delay: 0.7s, 0.5s; }
-    .firefly:nth-child(19) { left: 50%; top: 47%; width: 6px; height: 6px; animation-duration: 17.2s, 5.4s; animation-delay: 1.9s, 1.4s; }
-    .firefly:nth-child(20) { left: 5%;  top: 52%; width: 4px; height: 4px; animation-duration: 14.8s, 4.5s; animation-delay: 2.6s, 0.8s; }
-
-    .footer-hum {
-      position: fixed;
-      left: 50%;
-      bottom: 1rem;
-      transform: translateX(-50%);
-      z-index: 8;
-      font-family: "Shadows Into Light Two", cursive;
-      font-size: 0.95rem;
-      color: rgba(255, 240, 201, 0.52);
-      letter-spacing: 0.08em;
-      text-shadow: 0 0 10px rgba(243, 211, 122, 0.08);
-      opacity: 0;
-      animation: fadeInSoft 2.2s ease forwards;
-      animation-delay: 2.5s;
-      pointer-events: none;
-      white-space: nowrap;
+    .firefly.color-yellowgreen {
+      background: radial-gradient(circle, rgba(200,240,80,0.98) 0%, rgba(160,210,60,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(180,230,70,0.65), 0 0 20px rgba(160,210,50,0.28);
     }
 
-    @keyframes fadeRise {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .firefly.color-amber {
+      background: radial-gradient(circle, rgba(255,180,60,0.98) 0%, rgba(240,150,30,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(255,170,50,0.65), 0 0 20px rgba(240,140,20,0.28);
     }
 
-    @keyframes fadeInSoft {
-      to {
-        opacity: 1;
-      }
+    .firefly.color-gold {
+      background: radial-gradient(circle, rgba(255,240,140,0.98) 0%, rgba(243,211,122,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(243,220,120,0.65), 0 0 20px rgba(230,200,100,0.28);
     }
 
-    @keyframes breathingLight {
-      0%, 100% {
-        opacity: 0.72;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.02);
-      }
+    .firefly.color-bluewhite {
+      background: radial-gradient(circle, rgba(220,240,255,0.98) 0%, rgba(180,220,255,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(200,230,255,0.65), 0 0 20px rgba(160,210,255,0.28);
     }
 
-    @keyframes emberPulse {
-      0%, 100% {
-        opacity: 0.28;
-        transform: scale(0.9);
-      }
-      50% {
-        opacity: 0.58;
-        transform: scale(1.18);
-      }
+    .firefly.color-warmwhite {
+      background: radial-gradient(circle, rgba(255,252,230,0.98) 0%, rgba(255,245,200,0.55) 48%, transparent 100%);
+      box-shadow: 0 0 8px rgba(255,248,220,0.65), 0 0 20px rgba(255,240,190,0.28);
     }
 
-    @keyframes mistShift {
-      0% {
-        transform: translateX(-1.8%) translateY(0);
-        opacity: 0.78;
-      }
-      100% {
-        transform: translateX(1.8%) translateY(-1.2%);
-        opacity: 0.96;
-      }
+    .firefly.rise {
+      animation-name: driftRise, flickerGlow;
     }
 
     @keyframes driftFloat {
-      0% {
-        transform: translate3d(0, 0, 0) scale(0.95);
-      }
-      25% {
-        transform: translate3d(12px, -18px, 0) scale(1.06);
-      }
-      50% {
-        transform: translate3d(-8px, -30px, 0) scale(0.98);
-      }
-      75% {
-        transform: translate3d(10px, -14px, 0) scale(1.08);
-      }
-      100% {
-        transform: translate3d(-6px, 0, 0) scale(0.94);
-      }
+      0%   { transform: translate3d(0,0,0) scale(0.88); }
+      20%  { transform: translate3d(18px,-26px,0) scale(1.07); }
+      40%  { transform: translate3d(-12px,-42px,0) scale(0.94); }
+      60%  { transform: translate3d(15px,-30px,0) scale(1.11); }
+      80%  { transform: translate3d(-9px,-15px,0) scale(0.97); }
+      100% { transform: translate3d(-5px,0,0) scale(0.90); }
+    }
+
+    @keyframes driftRise {
+      0%   { transform: translate3d(0,0,0) scale(0.7); opacity: 0; }
+      8%   { opacity: 0.7; }
+      100% { transform: translate3d(var(--rx,18px),-140px,0) scale(1.1); opacity: 0; }
     }
 
     @keyframes flickerGlow {
-      0%, 100% {
-        opacity: 0.08;
-      }
-      15% {
-        opacity: 0.65;
-      }
-      35% {
-        opacity: 0.18;
-      }
-      55% {
-        opacity: 0.8;
-      }
-      75% {
-        opacity: 0.25;
-      }
-      90% {
-        opacity: 0.52;
-      }
+      0%,  100% { opacity: 0.04; }
+      10%        { opacity: 0.68; }
+      26%        { opacity: 0.10; }
+      48%        { opacity: 0.80; }
+      66%        { opacity: 0.16; }
+      82%        { opacity: 0.55; }
     }
 
-    @media (max-width: 980px) {
-      .scene,
-      .path-ring {
-        min-height: 92vh;
-      }
 
-      .path {
-        font-size: clamp(1.2rem, 3vw, 1.65rem);
-      }
+    /* ============================================================
+       21. MIST LAYER (already defined in hero section above)
+    ============================================================ */
 
-      .path-details {
-        top: 13%;
-        left: 7%;
-      }
 
-      .path-schedule {
-        top: 13%;
-        right: 7%;
-      }
-
-      .path-registry {
-        left: 8%;
-        bottom: 20%;
-      }
-
-      .path-activities {
-        right: 8%;
-        bottom: 20%;
-      }
+    /* ============================================================
+       22. ANIMATIONS LIBRARY
+    ============================================================ */
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
+    @keyframes fadeInSoft {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+
+    /* ============================================================
+       23. MOBILE / RESPONSIVE
+    ============================================================ */
+
+    /* show hamburger, hide desktop nav on mobile */
     @media (max-width: 720px) {
-      body {
-        overflow-y: auto;
-      }
-
-      .page-shell {
-        align-items: flex-start;
-        padding: 2rem 1rem 5rem;
-      }
-
-      .scene {
-        min-height: auto;
-      }
-
-      .path-ring {
-        min-height: auto;
+      .hamburger-btn {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: flex-start;
-        gap: 1rem;
-        padding-top: 2rem;
-        padding-bottom: 3rem;
       }
 
-      .centerpiece {
-        width: 100%;
-        padding: 2.5rem 1rem 1.5rem;
-        margin-bottom: 1rem;
-      }
-
-      .main-title {
-        font-size: clamp(2.6rem, 12vw, 4rem);
-      }
-
-      .sub-whisper {
-        font-size: clamp(1.15rem, 4.6vw, 1.5rem);
-      }
-
-      .path {
-        position: relative;
-        top: auto !important;
-        right: auto !important;
-        left: auto !important;
-        bottom: auto !important;
-        transform: translateY(14px) scale(0.985);
-        width: auto;
-        white-space: normal;
-      }
-
-      .path.visible,
-      .path-welcome.visible {
-        transform: translateY(0) scale(1);
-      }
-
-      .path-welcome {
-        transform: translateY(14px) scale(0.985);
-      }
-
-      .constellation-line,
-      .glow-orb {
+      .nav-bar {
         display: none;
       }
 
-      .footer-hum {
-        bottom: 0.7rem;
-        font-size: 0.82rem;
+      .hero-content {
+        padding: var(--sp-xl) var(--sp-md);
+      }
+
+      .hero-names {
+        font-size: clamp(2.4rem, 12vw, 4rem);
+      }
+
+      .countdown-wrap {
+        gap: var(--sp-sm);
+      }
+
+      .countdown-number {
+        font-size: clamp(1.6rem, 8vw, 2.4rem);
+      }
+
+      .info-section {
+        padding: var(--sp-xl) var(--sp-md);
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-sm);
       }
     }
 
+    @media (max-width: 420px) {
+      .hero-names    { font-size: clamp(2rem, 12vw, 3rem); }
+      .hero-greeting { font-size: clamp(0.95rem, 4vw, 1.2rem); }
+    }
+
+
+    /* ============================================================
+       24. SAFE AREA INSETS
+    ============================================================ */
+    .hero-content {
+      padding-left:  max(var(--sp-lg), env(safe-area-inset-left));
+      padding-right: max(var(--sp-lg), env(safe-area-inset-right));
+    }
+
+    .info-section {
+      padding-left:  max(var(--sp-lg), env(safe-area-inset-left));
+      padding-right: max(var(--sp-lg), env(safe-area-inset-right));
+    }
+
+
+    /* ============================================================
+       25. REDUCED MOTION
+    ============================================================ */
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.001ms !important;
-        scroll-behavior: auto !important;
-      }
-
-      .firefly {
-        opacity: 0.28 !important;
-      }
-
-      .path,
-      .centerpiece,
-      .attempt-note,
-      .footer-hum {
-        opacity: 1 !important;
-        transform: none !important;
-      }
+      .hero-breathe   { animation: none; }
+      .hero-glow      { animation: none; }
+      .hero-mist      { animation: none; }
+      .firefly        { display: none; }
+      .garland-wrap,
+      .header-names,
+      .header-info,
+      .nav-bar,
+      .hero-names,
+      .hero-date,
+      .hero-greeting,
+      .countdown-wrap { animation: none; opacity: 1; transform: none; }
+      .loading-screen { display: none; }
+      body            { opacity: 1; }
     }
+
   </style>
 </head>
 <body>
-  <div class="background-veil"></div>
-  <div class="firefly-field" aria-hidden="true">
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-    <span class="firefly"></span>
-  </div>
-  <div class="mist-layer"></div>
 
-  <main class="page-shell">
-    <section class="scene">
-      <div class="path-ring">
-        <div class="centerpiece">
-          <p class="welcome-whisper" id="welcomeWhisper">you’ve made it through</p>
-          <p class="guest-line" id="guestLine">hello, lovely guest</p>
-          <h1 class="main-title">Come In</h1>
-          <p class="sub-whisper" id="subWhisper">
-            The path opens a little further now.
-            <span>Take your time.</span>
-            Wander where you’d like.
-          </p>
-          <p class="attempt-note" id="attemptNote"></p>
+  <!-- loading screen -->
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
+
+  <!-- drawer backdrop -->
+  <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
+
+  <!-- hamburger button -->
+  <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation menu" aria-expanded="false">
+    <span class="ham-line"></span>
+    <span class="ham-line"></span>
+    <span class="ham-line"></span>
+  </button>
+
+  <!-- mobile nav drawer -->
+  <nav class="nav-drawer" id="navDrawer" aria-label="Site navigation">
+    <div class="drawer-header">
+      <span class="drawer-names">Emily &amp; Travis</span>
+      <span class="drawer-date">September 23, 2028 · Lums Pond, DE</span>
+    </div>
+    <div class="drawer-divider"></div>
+    <div class="drawer-nav">
+
+      <a href="home.html" class="drawer-link active">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 8L9 2L16 8V16H12V11H6V16H2V8Z" stroke="#CC5500" stroke-width="1" stroke-linejoin="round" fill="rgba(204,85,0,0.12)"/>
+        </svg>
+        Home
+      </a>
+
+      <a href="details.html" class="drawer-link">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="7" r="4" stroke="#CC5500" stroke-width="1" fill="rgba(204,85,0,0.12)"/>
+          <path d="M3 16C3 13.2 5.7 11 9 11C12.3 11 15 13.2 15 16" stroke="#CC5500" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        Details
+      </a>
+
+      <a href="schedule.html" class="drawer-link">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="9" cy="9" r="7" stroke="#CC5500" stroke-width="1" fill="rgba(204,85,0,0.12)"/>
+          <path d="M9 5V9L12 11" stroke="#CC5500" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        Schedule
+      </a>
+
+      <a href="menu.html" class="drawer-link">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 3V15M4 9H10M10 3V15" stroke="#CC5500" stroke-width="1" stroke-linecap="round"/>
+          <path d="M14 3C14 3 16 5 14 8C12 11 14 15 14 15" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+        Menu
+      </a>
+
+      <a href="registry.html" class="drawer-link">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 15L3.5 9.5C2.5 8.5 2.5 6.9 3.5 5.9C4.5 4.9 6.1 4.9 7.1 5.9L9 7.8L10.9 5.9C11.9 4.9 13.5 4.9 14.5 5.9C15.5 6.9 15.5 8.5 14.5 9.5L9 15Z" stroke="#CC5500" stroke-width="1" stroke-linejoin="round" fill="rgba(204,85,0,0.12)"/>
+        </svg>
+        Registry
+      </a>
+
+      <a href="activities.html" class="drawer-link">
+        <svg viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 2L10.8 7H16L11.6 10.2L13.4 15.2L9 12L4.6 15.2L6.4 10.2L2 7H7.2L9 2Z" stroke="#CC5500" stroke-width="1" stroke-linejoin="round" fill="rgba(204,85,0,0.12)"/>
+        </svg>
+        Activities
+      </a>
+
+    </div>
+
+    <div class="drawer-footer">
+      <span class="drawer-footer-text">Emily &amp; Travis · 09.23.28</span>
+    </div>
+  </nav>
+
+  <div class="site-wrap">
+
+    <!-- ============================================================
+         HEADER
+    ============================================================ -->
+    <header class="site-header" id="siteHeader">
+
+      <!-- botanical garland SVG -->
+      <div class="garland-wrap" aria-hidden="true">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="xMidYMid meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- main vine stem -->
+          <path d="M0 80 C100 60 200 90 300 70 C400 50 500 85 600 65 C700 45 800 80 900 60 C1000 40 1100 75 1200 55"
+            stroke="#1a3a1a" stroke-width="1.8" opacity="0.7" fill="none"/>
+
+          <!-- LEFT SIDE foliage -->
+          <!-- large dark green leaves -->
+          <path d="M30 72 C20 55 8 48 5 35 C15 40 28 50 30 72Z" fill="#1a3a1a" opacity="0.75"/>
+          <path d="M55 65 C48 48 60 32 68 25 C70 38 65 52 55 65Z" fill="#1a3a1a" opacity="0.70"/>
+          <path d="M80 74 C72 58 78 42 85 32 C90 44 88 60 80 74Z" fill="#013220" opacity="0.65"/>
+          <path d="M15 68 C5 55 2 40 8 28 C16 36 20 52 15 68Z" fill="#1a3a1a" opacity="0.60"/>
+
+          <!-- plum accent leaves left -->
+          <path d="M45 70 C38 56 42 42 50 35 C54 46 52 60 45 70Z" fill="#673147" opacity="0.45"/>
+          <path d="M95 68 C88 52 94 38 102 30 C106 42 102 56 95 68Z" fill="#673147" opacity="0.40"/>
+
+          <!-- burnt orange berry clusters left -->
+          <circle cx="25"  cy="58" r="3.5" fill="#CC5500" opacity="0.70"/>
+          <circle cx="22"  cy="53" r="2.5" fill="#CC5500" opacity="0.60"/>
+          <circle cx="29"  cy="52" r="2"   fill="#CC5500" opacity="0.55"/>
+          <circle cx="70"  cy="55" r="3"   fill="#CC5500" opacity="0.65"/>
+          <circle cx="67"  cy="50" r="2"   fill="#CC5500" opacity="0.55"/>
+
+          <!-- small fern-like sprigs left -->
+          <path d="M38 72 C34 65 30 58 32 50" stroke="#1a3a1a" stroke-width="1" opacity="0.55" fill="none"/>
+          <path d="M32 60 C28 57 26 53 30 50" stroke="#1a3a1a" stroke-width="0.8" opacity="0.50" fill="none"/>
+          <path d="M34 64 C38 61 40 57 38 53" stroke="#1a3a1a" stroke-width="0.8" opacity="0.50" fill="none"/>
+
+          <path d="M110 70 C106 62 102 55 104 46" stroke="#1a3a1a" stroke-width="1" opacity="0.50" fill="none"/>
+          <path d="M104 56 C100 53 98 49 102 46" stroke="#1a3a1a" stroke-width="0.8" opacity="0.45" fill="none"/>
+
+          <!-- CENTER foliage -->
+          <path d="M560 62 C552 44 558 28 566 18 C572 32 570 48 560 62Z" fill="#1a3a1a" opacity="0.72"/>
+          <path d="M580 68 C574 50 580 35 588 26 C593 40 590 55 580 68Z" fill="#013220" opacity="0.65"/>
+          <path d="M540 66 C533 50 538 35 546 26 C551 40 548 54 540 66Z" fill="#1a3a1a" opacity="0.68"/>
+          <path d="M600 60 C595 44 600 30 608 22 C612 36 610 50 600 60Z" fill="#673147" opacity="0.42"/>
+          <path d="M520 64 C515 48 520 34 528 26 C532 40 530 54 520 64Z" fill="#673147" opacity="0.38"/>
+
+          <!-- center berry cluster -->
+          <circle cx="570" cy="42" r="4"   fill="#CC5500" opacity="0.72"/>
+          <circle cx="566" cy="36" r="2.5" fill="#CC5500" opacity="0.62"/>
+          <circle cx="575" cy="38" r="2"   fill="#CC5500" opacity="0.58"/>
+          <circle cx="562" cy="44" r="2"   fill="#673147" opacity="0.55"/>
+
+          <!-- center vine tendrils -->
+          <path d="M550 55 C545 48 542 40 546 32" stroke="#1a3a1a" stroke-width="1" opacity="0.55" fill="none"/>
+          <path d="M590 58 C595 50 598 42 594 34" stroke="#1a3a1a" stroke-width="1" opacity="0.55" fill="none"/>
+
+          <!-- RIGHT SIDE foliage (mirror of left) -->
+          <path d="M1170 72 C1180 55 1192 48 1195 35 C1185 40 1172 50 1170 72Z" fill="#1a3a1a" opacity="0.75"/>
+          <path d="M1145 65 C1152 48 1140 32 1132 25 C1130 38 1135 52 1145 65Z" fill="#1a3a1a" opacity="0.70"/>
+          <path d="M1120 74 C1128 58 1122 42 1115 32 C1110 44 1112 60 1120 74Z" fill="#013220" opacity="0.65"/>
+          <path d="M1185 68 C1195 55 1198 40 1192 28 C1184 36 1180 52 1185 68Z" fill="#1a3a1a" opacity="0.60"/>
+
+          <!-- plum leaves right -->
+          <path d="M1155 70 C1162 56 1158 42 1150 35 C1146 46 1148 60 1155 70Z" fill="#673147" opacity="0.45"/>
+          <path d="M1105 68 C1112 52 1106 38 1098 30 C1094 42 1098 56 1105 68Z" fill="#673147" opacity="0.40"/>
+
+          <!-- berries right -->
+          <circle cx="1175" cy="58" r="3.5" fill="#CC5500" opacity="0.70"/>
+          <circle cx="1178" cy="53" r="2.5" fill="#CC5500" opacity="0.60"/>
+          <circle cx="1171" cy="52" r="2"   fill="#CC5500" opacity="0.55"/>
+          <circle cx="1130" cy="55" r="3"   fill="#CC5500" opacity="0.65"/>
+          <circle cx="1133" cy="50" r="2"   fill="#CC5500" opacity="0.55"/>
+
+          <!-- sprigs right -->
+          <path d="M1162 72 C1166 65 1170 58 1168 50" stroke="#1a3a1a" stroke-width="1" opacity="0.55" fill="none"/>
+          <path d="M1168 60 C1172 57 1174 53 1170 50" stroke="#1a3a1a" stroke-width="0.8" opacity="0.50" fill="none"/>
+          <path d="M1166 64 C1162 61 1160 57 1162 53" stroke="#1a3a1a" stroke-width="0.8" opacity="0.50" fill="none"/>
+
+          <!-- secondary vine layer -->
+          <path d="M0 90 C150 75 300 95 450 80 C600 65 750 88 900 73 C1050 58 1150 82 1200 70"
+            stroke="#013220" stroke-width="1.2" opacity="0.45" fill="none"/>
+
+          <!-- scattered small leaves along vine -->
+          <path d="M200 76 C196 68 200 60 206 55 C209 63 207 71 200 76Z" fill="#1a3a1a" opacity="0.55"/>
+          <path d="M350 72 C346 63 350 55 357 50 C360 58 358 67 350 72Z" fill="#673147" opacity="0.40"/>
+          <path d="M750 72 C746 64 750 56 756 51 C759 59 757 67 750 72Z" fill="#1a3a1a" opacity="0.55"/>
+          <path d="M900 68 C896 60 900 52 906 47 C909 55 907 63 900 68Z" fill="#673147" opacity="0.38"/>
+          <path d="M1050 74 C1046 66 1050 58 1056 53 C1059 61 1057 69 1050 74Z" fill="#1a3a1a" opacity="0.52"/>
+
+          <!-- additional berry dots scattered -->
+          <circle cx="180"  cy="72" r="2" fill="#CC5500" opacity="0.50"/>
+          <circle cx="400"  cy="68" r="2" fill="#CC5500" opacity="0.48"/>
+          <circle cx="800"  cy="70" r="2" fill="#CC5500" opacity="0.50"/>
+          <circle cx="1000" cy="66" r="2" fill="#CC5500" opacity="0.48"/>
+        </svg>
+      </div>
+
+      <!-- couple names -->
+      <h1 class="header-names">Emily &amp; Travis</h1>
+
+      <!-- info line -->
+      <p class="header-info">
+        September 23, 2028
+        <span>·</span>
+        Lums Pond State Park
+        <span>·</span>
+        Bear, Delaware
+      </p>
+
+      <!-- desktop nav bar -->
+      <nav class="nav-bar" aria-label="Site navigation">
+        <a href="home.html"       class="nav-link active">Home</a>
+        <span class="nav-dot" aria-hidden="true"></span>
+        <a href="details.html"    class="nav-link">Details</a>
+        <span class="nav-dot" aria-hidden="true"></span>
+        <a href="schedule.html"   class="nav-link">Schedule</a>
+        <span class="nav-dot" aria-hidden="true"></span>
+        <a href="menu.html"       class="nav-link">Menu</a>
+        <span class="nav-dot" aria-hidden="true"></span>
+        <a href="registry.html"   class="nav-link">Registry</a>
+        <span class="nav-dot" aria-hidden="true"></span>
+        <a href="activities.html" class="nav-link">Activities</a>
+      </nav>
+
+    </header>
+
+
+    <!-- ============================================================
+         HERO SECTION
+    ============================================================ -->
+    <section class="hero-section" id="heroSection">
+
+      <div class="hero-vignette" aria-hidden="true"></div>
+      <div class="hero-breathe"  aria-hidden="true"></div>
+      <div class="hero-glow"     aria-hidden="true"></div>
+      <div class="hero-mist"     aria-hidden="true"></div>
+      <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
+      <div class="hero-content">
+
+        <!-- personalized greeting -->
+        <p class="hero-greeting" id="heroGreeting"></p>
+
+        <!-- big names in hero -->
+        <h2 class="hero-names">
+          Emily
+          <span class="amp">&amp;</span>
+          Travis
+        </h2>
+
+        <!-- date + location -->
+        <p class="hero-date">
+          September 23, 2028
+          <span class="date-sep">·</span>
+          Lums Pond State Park
+          <span class="date-sep">·</span>
+          Bear, Delaware
+        </p>
+
+        <!-- countdown -->
+        <div class="countdown-wrap" id="countdownWrap" aria-live="polite">
+          <!-- JS fills this in -->
         </div>
 
-        <span class="constellation-line line-1"></span>
-        <span class="constellation-line line-2"></span>
-        <span class="constellation-line line-3"></span>
-        <span class="constellation-line line-4"></span>
-        <span class="constellation-line line-5"></span>
-
-        <span class="glow-orb orb-1"></span>
-        <span class="glow-orb orb-2"></span>
-        <span class="glow-orb orb-3"></span>
-        <span class="glow-orb orb-4"></span>
-        <span class="glow-orb orb-5"></span>
-
-        <a class="path path-details" href="details.html" aria-label="View the details">
-          <span>
-            view the details
-            <small>the little things, gently gathered</small>
-          </span>
-        </a>
-
-        <a class="path path-schedule" href="schedule.html" aria-label="See the day unfold">
-          <span>
-            see the day unfold
-            <small>follow the rhythm of the hours</small>
-          </span>
-        </a>
-
-        <a class="path path-registry" href="registry.html" aria-label="Explore the registry">
-          <span>
-            explore the registry
-            <small>with love, if you wish</small>
-          </span>
-        </a>
-
-        <a class="path path-activities" href="activities.html" aria-label="Find the activities">
-          <span>
-            find the activities
-            <small>small joys waiting nearby</small>
-          </span>
-        </a>
-
-        <a class="path path-welcome" href="landing.html" aria-label="Return to the welcome path">
-          <span>
-            return to the welcome path
-            <small>just for another look</small>
-          </span>
-        </a>
       </div>
-    </section>
-  </main>
 
-  <div class="footer-hum">Emily &amp; Travis</div>
+    </section>
+
+
+    <!-- ============================================================
+         INFO CARDS SECTION
+    ============================================================ -->
+    <section class="info-section" aria-label="Wedding information">
+
+      <h2 class="section-title">Wander where you'd like</h2>
+
+      <div class="cards-grid" id="cardsGrid">
+
+        <!-- Details card -->
+        <a href="details.html" class="info-card" data-reveal>
+          <div class="card-corner" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
+            </svg>
+          </div>
+          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 4H20L26 10V28H6V4Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.08)"/>
+            <path d="M20 4V10H26" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+            <line x1="10" y1="15" x2="22" y2="15" stroke="#673147" stroke-width="0.8" opacity="0.7"/>
+            <line x1="10" y1="19" x2="22" y2="19" stroke="#673147" stroke-width="0.8" opacity="0.7"/>
+            <line x1="10" y1="23" x2="18" y2="23" stroke="#673147" stroke-width="0.8" opacity="0.7"/>
+          </svg>
+          <h3 class="card-title">The Details</h3>
+          <p class="card-desc">Everything you need to know — where to go, what to expect, and the little things worth knowing.</p>
+          <span class="card-arrow">explore →</span>
+        </a>
+
+        <!-- Schedule card -->
+        <a href="schedule.html" class="info-card" data-reveal>
+          <div class="card-corner" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
+            </svg>
+          </div>
+          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="16" cy="16" r="12" stroke="#CC5500" stroke-width="1.2" fill="rgba(204,85,0,0.08)"/>
+            <path d="M16 8V16L21 20" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round"/>
+            <line x1="16" y1="4" x2="16" y2="7" stroke="#673147" stroke-width="0.8" opacity="0.6"/>
+            <line x1="28" y1="16" x2="25" y2="16" stroke="#673147" stroke-width="0.8" opacity="0.6"/>
+          </svg>
+          <h3 class="card-title">The Schedule</h3>
+          <p class="card-desc">Follow the rhythm of the day. From arrival to the last slice of cake — here's how it unfolds.</p>
+          <span class="card-arrow">explore →</span>
+        </a>
+
+        <!-- Menu card -->
+        <a href="menu.html" class="info-card" data-reveal>
+          <div class="card-corner" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
+            </svg>
+          </div>
+          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 6V26M8 16H18M18 6V26" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M24 6C24 6 27 10 24 15C21 20 24 26 24 26" stroke="#673147" stroke-width="1.2" stroke-linecap="round"/>
+          </svg>
+          <h3 class="card-title">The Menu</h3>
+          <p class="card-desc">Mission BBQ, cake, and all the good stuff. Yes, really. No fancy plated dinner here — just food we actually love.</p>
+          <span class="card-arrow">explore →</span>
+        </a>
+
+        <!-- Registry card -->
+        <a href="registry.html" class="info-card" data-reveal>
+          <div class="card-corner" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
+            </svg>
+          </div>
+          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 27L8 19C5.8 16.8 5.8 13.2 8 11C10.2 8.8 13.8 8.8 16 11L16 11L16 11C18.2 8.8 21.8 8.8 24 11C26.2 13.2 26.2 16.8 24 19L16 27Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.08)"/>
+          </svg>
+          <h3 class="card-title">The Registry</h3>
+          <p class="card-desc">With love, if you wish. No pressure — your presence is the gift. But if you'd like to send a little something extra.</p>
+          <span class="card-arrow">explore →</span>
+        </a>
+
+        <!-- Activities card -->
+        <a href="activities.html" class="info-card" data-reveal>
+          <div class="card-corner" aria-hidden="true">
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
+              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
+            </svg>
+          </div>
+          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 4L18.5 12H27L20.5 17L23 25L16 20L9 25L11.5 17L5 12H13.5L16 4Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.08)"/>
+          </svg>
+          <h3 class="card-title">The Activities</h3>
+          <p class="card-desc">We don't dance — we DO things. Pavilion 1B is packed with fun for everyone. Come see what we've got planned.</p>
+          <span class="card-arrow">explore →</span>
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- section divider -->
+    <div class="section-divider" aria-hidden="true">
+      <span class="divider-line"></span>
+      <span class="divider-orb"></span>
+      <span class="divider-line"></span>
+    </div>
+
+
+    <!-- ============================================================
+         FOOTER
+    ============================================================ -->
+    <footer class="site-footer">
+      <span class="footer-names">Emily &amp; Travis</span>
+      <span class="footer-date">September 23, 2028</span>
+      <span class="footer-location">Lums Pond State Park · Bear, Delaware</span>
+    </footer>
+
+  </div><!-- /site-wrap -->
+
 
   <script>
-    (function () {
-      const access = sessionStorage.getItem("rsvpAccess");
+  (function () {
+    'use strict';
 
-      if (access !== "true") {
-        window.location.href = "rsvp.html";
+    /* ============================================================
+       SECURITY CHECK
+       This runs BEFORE anything else.
+       Checks:
+       1. localStorage rsvpAccess === 'true'
+       2. Device ID exists and matches what was stored with the code
+       If either fails → bounce to index.html immediately.
+       Using replace() so back button can't get them back in.
+    ============================================================ */
+    const ACCESS_KEY  = 'rsvpAccess';
+    const DEVICE_KEY  = 'forestDeviceId';
+    const GUEST_KEY   = 'guestName';
+
+    function securityCheck() {
+      const access   = localStorage.getItem(ACCESS_KEY);
+      const deviceId = localStorage.getItem(DEVICE_KEY);
+
+      /* must have both access flag AND a device ID */
+      if (access !== 'true' || !deviceId) {
+        window.location.replace('index.html');
+        return false;
+      }
+
+      return true;
+    }
+
+    /* run security check immediately */
+    if (!securityCheck()) return;
+
+    /* ============================================================
+       AUTHORIZED — show the page
+    ============================================================ */
+    document.body.classList.add('authorized');
+
+    /* ============================================================
+       CONSTANTS
+    ============================================================ */
+    const WEDDING_DATE = new Date('2028-09-23T00:00:00');
+
+    /* ============================================================
+       ELEMENTS
+    ============================================================ */
+    const loadingScreen  = document.getElementById('loadingScreen');
+    const firefliesWrap  = document.getElementById('fireflies');
+    const heroGreeting   = document.getElementById('heroGreeting');
+    const countdownWrap  = document.getElementById('countdownWrap');
+    const hamburgerBtn   = document.getElementById('hamburgerBtn');
+    const navDrawer      = document.getElementById('navDrawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const cardsGrid      = document.getElementById('cardsGrid');
+
+    /* ============================================================
+       DETECTION
+    ============================================================ */
+    const isMobile  = window.matchMedia('(hover: none)').matches;
+    const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* ============================================================
+       GUEST DATA
+    ============================================================ */
+    const rawName = localStorage.getItem(GUEST_KEY) || '';
+
+    function formatName(name) {
+      return name.trim().split(' ')
+        .map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    function firstName(name) {
+      return formatName(name).split(' ')[0] || '';
+    }
+
+    /* ============================================================
+       LOAD SEQUENCE
+    ============================================================ */
+    function initLoadSequence() {
+      if (isReduced) {
+        loadingScreen.style.display = 'none';
         return;
       }
 
-      const rawGuestName = sessionStorage.getItem("guestName") || "";
-      const rawAttempts = sessionStorage.getItem("guestAttempts");
-      const attempts = Number.parseInt(rawAttempts || "0", 10);
-      const safeAttempts = Number.isNaN(attempts) ? 0 : attempts;
+      setTimeout(() => {
+        loadingScreen.classList.add('done');
+      }, 300);
+    }
 
-      const welcomeWhisper = document.getElementById("welcomeWhisper");
-      const guestLine = document.getElementById("guestLine");
-      const subWhisper = document.getElementById("subWhisper");
-      const attemptNote = document.getElementById("attemptNote");
-      const paths = document.querySelectorAll(".path");
+    /* ============================================================
+       PERSONALIZED GREETING
+    ============================================================ */
+    function initGreeting() {
+      const first = firstName(rawName);
 
-      function formatGuestName(name) {
-        return name
-          .trim()
-          .replace(/\s+/g, " ")
-          .split(" ")
-          .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-          .join(" ");
-      }
-
-      function firstNameOnly(name) {
-        const formatted = formatGuestName(name);
-        return formatted.split(" ")[0] || "";
-      }
-
-      const guestName = rawGuestName.trim() ? formatGuestName(rawGuestName) : "";
-      const guestFirst = rawGuestName.trim() ? firstNameOnly(rawGuestName) : "";
-
-      if (guestName) {
-        guestLine.textContent = `hello, ${guestFirst}`;
+      if (first) {
+        heroGreeting.textContent = 'welcome in, ' + first + '.';
       } else {
-        guestLine.textContent = "hello, lovely guest";
+        heroGreeting.textContent = 'welcome in.';
       }
+    }
 
-      if (guestName) {
-        welcomeWhisper.textContent = "the forest remembers your name";
-      } else {
-        welcomeWhisper.textContent = "you’ve made it through";
-      }
+    /* ============================================================
+       COUNTDOWN
+    ============================================================ */
+    function updateCountdown() {
+      const now  = new Date();
+      const diff = WEDDING_DATE - now;
 
-      if (guestName) {
-        subWhisper.innerHTML = `
-          ${guestFirst}, the path opens a little further now.
-          <span>Take your time.</span>
-          Wander where you’d like.
+      if (diff <= 0) {
+        countdownWrap.innerHTML = `
+          <span class="wedding-day-msg">
+            <span class="wedding-orb"></span>
+            today is the day
+          </span>
         `;
+        return;
+      }
+
+      const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      countdownWrap.innerHTML = `
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-days">${days.toLocaleString()}</span>
+          <span class="countdown-label">days</span>
+        </div>
+        <span class="countdown-sep" aria-hidden="true">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-hours">${String(hours).padStart(2,'0')}</span>
+          <span class="countdown-label">hours</span>
+        </div>
+        <span class="countdown-sep" aria-hidden="true">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-mins">${String(minutes).padStart(2,'0')}</span>
+          <span class="countdown-label">minutes</span>
+        </div>
+        <span class="countdown-sep" aria-hidden="true">:</span>
+        <div class="countdown-unit">
+          <span class="countdown-number" id="cd-secs">${String(seconds).padStart(2,'0')}</span>
+          <span class="countdown-label">seconds</span>
+        </div>
+      `;
+    }
+
+    /* tick every second */
+    function tickCountdown() {
+      const now  = new Date();
+      const diff = WEDDING_DATE - now;
+      if (diff <= 0) return;
+
+      const days    = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours   = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      const dEl = document.getElementById('cd-days');
+      const hEl = document.getElementById('cd-hours');
+      const mEl = document.getElementById('cd-mins');
+      const sEl = document.getElementById('cd-secs');
+
+      if (dEl) dEl.textContent = days.toLocaleString();
+      if (hEl) hEl.textContent = String(hours).padStart(2,'0');
+      if (mEl) mEl.textContent = String(minutes).padStart(2,'0');
+      if (sEl) sEl.textContent = String(seconds).padStart(2,'0');
+    }
+
+    /* ============================================================
+       HAMBURGER MENU
+    ============================================================ */
+    function openDrawer() {
+      navDrawer.classList.add('open');
+      drawerBackdrop.classList.add('show');
+      hamburgerBtn.classList.add('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeDrawer() {
+      navDrawer.classList.remove('open');
+      drawerBackdrop.classList.remove('show');
+      hamburgerBtn.classList.remove('open');
+      hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    hamburgerBtn.addEventListener('click', () => {
+      if (navDrawer.classList.contains('open')) {
+        closeDrawer();
       } else {
-        subWhisper.innerHTML = `
-          The path opens a little further now.
-          <span>Take your time.</span>
-          Wander where you’d like.
-        `;
+        openDrawer();
       }
+    });
 
-      let subtleAttemptMessage = "";
+    drawerBackdrop.addEventListener('click', closeDrawer);
 
-      if (safeAttempts >= 2 && safeAttempts <= 3) {
-        subtleAttemptMessage = "it took a moment, but you found your way in.";
-      } else if (safeAttempts >= 4) {
-        subtleAttemptMessage = "some paths take a few tries. you’re here now, and that’s what matters.";
-      }
-
-      if (subtleAttemptMessage) {
-        attemptNote.textContent = subtleAttemptMessage;
-        window.setTimeout(() => {
-          attemptNote.classList.add("visible");
-        }, 1450);
-      }
-
-      const revealBaseDelay = 850;
-
-      paths.forEach((path, index) => {
-        const delay = revealBaseDelay + index * 220;
-        window.setTimeout(() => {
-          path.classList.add("visible");
-        }, delay);
+    /* close drawer on link click */
+    navDrawer.querySelectorAll('.drawer-link').forEach(link => {
+      link.addEventListener('click', () => {
+        closeDrawer();
       });
+    });
 
-      const title = document.querySelector(".main-title");
-      let shimmerDirection = 1;
-      let shimmerValue = 0;
+    /* close on escape key */
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && navDrawer.classList.contains('open')) {
+        closeDrawer();
+      }
+    });
 
-      function ambientTitleGlow() {
-        shimmerValue += 0.01 * shimmerDirection;
+    /* ============================================================
+       SCROLL REVEAL FOR CARDS
+       Cards fade in as they enter the viewport
+    ============================================================ */
+    function initScrollReveal() {
+      const cards = document.querySelectorAll('[data-reveal]');
 
-        if (shimmerValue >= 1) shimmerDirection = -1;
-        if (shimmerValue <= 0) shimmerDirection = 1;
+      if (!cards.length) return;
 
-        const blurA = 22 + shimmerValue * 10;
-        const blurB = 42 + shimmerValue * 12;
-        const alphaA = 0.16 + shimmerValue * 0.08;
-        const alphaB = 0.08 + shimmerValue * 0.05;
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, i) => {
+          if (entry.isIntersecting) {
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, i * 120);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
 
-        title.style.textShadow =
-          `0 0 ${blurA}px rgba(243, 211, 122, ${alphaA}), ` +
-          `0 0 ${blurB}px rgba(243, 211, 122, ${alphaB}), ` +
-          `0 8px 24px rgba(0, 0, 0, 0.46)`;
+      cards.forEach(card => observer.observe(card));
+    }
 
-        window.requestAnimationFrame(ambientTitleGlow);
+    /* ============================================================
+       FIREFLY GENERATOR — true lightning bug colors
+    ============================================================ */
+    const FIREFLY_COLORS = [
+      'color-yellowgreen',
+      'color-amber',
+      'color-gold',
+      'color-bluewhite',
+      'color-warmwhite'
+    ];
+
+    function createFireflies() {
+      firefliesWrap.innerHTML = '';
+      const count     = isMobile ? 14 : 24;
+      const riseCount = Math.floor(count * 0.15);
+      const fragment  = document.createDocumentFragment();
+
+      for (let i = 0; i < count; i++) {
+        const dot   = document.createElement('span');
+        const color = FIREFLY_COLORS[Math.floor(Math.random() * FIREFLY_COLORS.length)];
+        dot.className = 'firefly ' + color;
+
+        if (i < riseCount) {
+          dot.classList.add('rise');
+          dot.style.left   = (Math.random() * 90 + 5).toFixed(1) + '%';
+          dot.style.bottom = (-4 + Math.random() * 8).toFixed(1) + '%';
+          dot.style.top    = 'auto';
+          dot.style.setProperty('--rx', (Math.random() * 60 - 30).toFixed(0) + 'px');
+        } else {
+          dot.style.left = (Math.random() * 97).toFixed(1) + '%';
+          dot.style.top  = (Math.random() * 92).toFixed(1) + '%';
+        }
+
+        const size       = (Math.random() * (isMobile ? 3.0 : 3.5) + (isMobile ? 3.5 : 2.5)).toFixed(1);
+        const driftDur   = (Math.random() * 10 + 10).toFixed(1);
+        const flickDur   = (Math.random() * 5  + 4.0).toFixed(1);
+        const driftDelay = (Math.random() * 8).toFixed(2);
+        const flickDelay = (Math.random() * 5).toFixed(2);
+
+        dot.style.width             = size + 'px';
+        dot.style.height            = size + 'px';
+        dot.style.animationDuration = driftDur + 's, ' + flickDur + 's';
+        dot.style.animationDelay    = driftDelay + 's, ' + flickDelay + 's';
+
+        fragment.appendChild(dot);
       }
 
-      if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        window.requestAnimationFrame(ambientTitleGlow);
-      }
+      firefliesWrap.appendChild(fragment);
+    }
 
-      paths.forEach((path) => {
-        path.addEventListener("mouseenter", () => {
-          path.style.transform = path.classList.contains("path-welcome")
-            ? "translateX(-50%) translateY(-2px) scale(1.015)"
-            : "translateY(-2px) scale(1.015)";
-        });
-
-        path.addEventListener("mouseleave", () => {
-          path.style.transform = path.classList.contains("path-welcome")
-            ? "translateX(-50%) translateY(0) scale(1)"
-            : "translateY(0) scale(1)";
-        });
-
-        path.addEventListener("focus", () => {
-          path.style.transform = path.classList.contains("path-welcome")
-            ? "translateX(-50%) translateY(-2px) scale(1.015)"
-            : "translateY(-2px) scale(1.015)";
-        });
-
-        path.addEventListener("blur", () => {
-          path.style.transform = path.classList.contains("path-welcome")
-            ? "translateX(-50%) translateY(0) scale(1)"
-            : "translateY(0) scale(1)";
-        });
+    /* ============================================================
+       ACTIVE NAV LINK
+       Highlights the current page in both nav bar + drawer
+    ============================================================ */
+    function setActiveNav() {
+      const current = window.location.pathname.split('/').pop() || 'home.html';
+      document.querySelectorAll('.nav-link, .drawer-link').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === current) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
       });
-    })();
+    }
+
+    /* ============================================================
+       INIT
+    ============================================================ */
+    function init() {
+      initLoadSequence();
+      initGreeting();
+      updateCountdown();
+      setInterval(tickCountdown, 1000);
+      createFireflies();
+      initScrollReveal();
+      setActiveNav();
+
+      /* resize handler */
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(createFireflies, 300);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+  })();
   </script>
+
 </body>
 </html>
