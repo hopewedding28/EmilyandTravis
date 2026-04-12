@@ -8,8 +8,25 @@
 <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
 
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* =========================
+   ROOT + RESET
+========================= */
+:root {
+  --bg-dark: #0a0a0a;
+  --text-main: #f0ead6;
+  --gold: #f3d37a;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* =========================
+   BODY + FOREST
+========================= */
 body {
   min-height: 100vh;
   background: url("assets/backgrounds/gate.png") center / cover no-repeat;
@@ -18,144 +35,168 @@ body {
   justify-content: center;
   font-family: 'Zen Loop', sans-serif;
   overflow: hidden;
+  position: relative;
 }
 
+/* dark vignette */
 body::before {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at center,
-    rgba(10,10,10,0.3) 0%,
-    rgba(10,10,10,0.7) 100%);
+  background: radial-gradient(
+    circle at center,
+    rgba(10,10,10,0.2) 0%,
+    rgba(10,10,10,0.5) 60%,
+    rgba(10,10,10,0.75) 100%
+  );
+  z-index: 1;
 }
 
+/* =========================
+   FIREFLY FIELD
+========================= */
+.fireflies {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.firefly {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255,245,180,0.9);
+  box-shadow:
+    0 0 10px rgba(255,245,180,0.7),
+    0 0 20px rgba(255,220,120,0.3);
+  opacity: 0;
+  animation: driftGlow infinite ease-in-out;
+}
+
+@keyframes driftGlow {
+  0% { opacity: 0; transform: scale(0.6); }
+  20% { opacity: 0.6; }
+  50% { opacity: 1; transform: translateY(-20px); }
+  80% { opacity: 0.5; }
+  100% { opacity: 0; transform: translateY(-40px); }
+}
+
+/* =========================
+   SCENE
+========================= */
 .scene {
   position: relative;
+  z-index: 3;
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
   text-align: center;
-  padding: 2rem;
-  color: #f0ead6;
+  padding: 3rem 2rem;
+  color: var(--text-main);
 }
 
+/* =========================
+   TEXT
+========================= */
 .greeting {
   font-family: 'Shadows Into Light Two', cursive;
-  font-size: clamp(1.5rem, 3vw, 1.9rem);
-  line-height: 1.7;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  line-height: 1.6;
   opacity: 0;
   animation: fadeIn 1.4s ease forwards 0.4s;
+  text-shadow:
+    0 2px 10px rgba(0,0,0,0.7),
+    0 0 20px rgba(243,211,122,0.15);
 }
 
 .sub {
-  margin-top: 0.6rem;
-  font-size: 0.95rem;
+  margin-top: 0.8rem;
+  font-size: 1.1rem;
   opacity: 0;
   animation: fadeIn 1.2s ease forwards 1.8s;
-  color: rgba(240,234,214,0.7);
+  color: rgba(240,234,214,0.75);
 }
 
-.fairies {
-  margin-top: 2.5rem;
-  height: 40px;
-  position: relative;
-  opacity: 0;
-  animation: fadeIn 1s ease forwards 2.4s;
-}
-
-.dot {
-  position: absolute;
-  top: 50%;
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(255,245,180,0.9);
-  box-shadow: 0 0 10px rgba(255,245,180,0.7);
-  transform: translateY(-50%);
-  animation: fairyFloat var(--dur) ease-in-out infinite var(--delay);
-}
-
-.dot:nth-child(1) { left: calc(50% - 60px); --dur: 2.1s; --delay: 0s; }
-.dot:nth-child(2) { left: calc(50% - 10px); --dur: 2.6s; --delay: 0.4s; }
-.dot:nth-child(3) { left: calc(50% + 40px); --dur: 1.9s; --delay: 0.8s; }
-.dot:nth-child(4) { left: calc(50% - 110px); --dur: 2.4s; --delay: 0.2s; }
-.dot:nth-child(5) { left: calc(50% + 90px); --dur: 2.2s; --delay: 0.6s; }
-
-@keyframes fairyFloat {
-  0%, 100% { transform: translateY(-50%); opacity: 0.4; }
-  50% { transform: translateY(calc(-50% - 10px)); opacity: 1; }
-}
-
+/* =========================
+   FADE ANIMATIONS
+========================= */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(12px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeOut {
-  to { opacity: 0; }
+  to { opacity: 0; transform: scale(0.98); }
 }
 
 .scene.leaving {
-  animation: fadeOut 0.8s ease forwards;
+  animation: fadeOut 0.9s ease forwards;
 }
+
+/* =========================
+   SUBTLE GLOW PULSE
+========================= */
+.glow {
+  animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { text-shadow: 0 0 10px rgba(243,211,122,0.2); }
+  50% { text-shadow: 0 0 20px rgba(243,211,122,0.4); }
+}
+
 </style>
 </head>
 
 <body>
 
+<div class="fireflies" id="fireflies"></div>
+
 <div class="scene" id="scene"></div>
 
 <script>
-// =========================
-// STORAGE KEYS
-// =========================
-const ACCESS_KEY = "rsvpAccess";
-const NAME_KEY = "guestName";
-const ATTEMPTS_KEY = "guestAttempts";
 
-// =========================
-// SESSION DATA
-// =========================
-const access = sessionStorage.getItem(ACCESS_KEY);
-const name = sessionStorage.getItem(NAME_KEY) || "guest";
-const attempts = Number(sessionStorage.getItem(ATTEMPTS_KEY)) || 0;
-const hasVisited = sessionStorage.getItem("visitedLanding");
+/* =========================
+   STORAGE
+========================= */
+const access = sessionStorage.getItem("rsvpAccess");
+const name = sessionStorage.getItem("guestName") || "guest";
+const attempts = Number(sessionStorage.getItem("guestAttempts")) || 0;
+const visited = sessionStorage.getItem("visitedLanding");
 
-// =========================
-// ACCESS GATING
-// =========================
+/* =========================
+   ACCESS GATE
+========================= */
 if (access !== "true") {
-  // ❌ Not allowed in
-  setTimeout(() => {
-    window.location.href = "rsvp.html";
-  }, 1200);
-
   document.getElementById("scene").innerHTML = `
     <p class="greeting">The forest does not recognize you.</p>
     <p class="sub">you are sent back</p>
   `;
+  setTimeout(() => {
+    window.location.href = "rsvp.html";
+  }, 1500);
   throw new Error("Access denied");
 }
 
-// =========================
-// JUDGMENT MODE
-// =========================
-function getSceneContent() {
+/* =========================
+   JUDGMENT SYSTEM
+========================= */
+function getContent() {
 
-  // 🌿 RETURNING USER
-  if (hasVisited) {
+  if (visited) {
     return {
       greeting: `Welcome back, ${name}.`,
       sub: "the forest remembers you",
-      delay: 2500
+      delay: 2200
     };
   }
 
-  // 🌿 FIRST TIME (JUDGMENT)
   if (attempts <= 3) {
     return {
       greeting: `Oh hi there!<br>Emily and Travis have been expecting you.`,
       sub: "you found the path easily",
-      delay: 4000
+      delay: 3600
     };
   }
 
@@ -163,7 +204,7 @@ function getSceneContent() {
     return {
       greeting: `Oh… hi there, ${name}.`,
       sub: "you got there eventually",
-      delay: 4200
+      delay: 4000
     };
   }
 
@@ -171,7 +212,7 @@ function getSceneContent() {
     return {
       greeting: `${name}…`,
       sub: "the forest noticed the struggle",
-      delay: 4500
+      delay: 4400
     };
   }
 
@@ -182,38 +223,51 @@ function getSceneContent() {
   };
 }
 
-// =========================
-// RENDER
-// =========================
+/* =========================
+   RENDER
+========================= */
 const scene = document.getElementById("scene");
-const data = getSceneContent();
+const data = getContent();
 
 scene.innerHTML = `
-  <p class="greeting">${data.greeting}</p>
+  <p class="greeting glow">${data.greeting}</p>
   <p class="sub">${data.sub}</p>
-
-  <div class="fairies">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-  </div>
 `;
 
-// mark as visited AFTER first render
 sessionStorage.setItem("visitedLanding", "true");
 
-// =========================
-// TRANSITION FLOW
-// =========================
+/* =========================
+   FIREFLY GENERATOR
+========================= */
+function createFireflies() {
+  const wrap = document.getElementById("fireflies");
+  wrap.innerHTML = "";
+
+  for (let i = 0; i < 20; i++) {
+    const dot = document.createElement("span");
+    dot.className = "firefly";
+
+    dot.style.left = Math.random() * 100 + "%";
+    dot.style.top = Math.random() * 100 + "%";
+    dot.style.animationDuration = (Math.random() * 8 + 6) + "s";
+    dot.style.animationDelay = Math.random() * 5 + "s";
+
+    wrap.appendChild(dot);
+  }
+}
+
+createFireflies();
+
+/* =========================
+   TRANSITION → HOME
+========================= */
 setTimeout(() => {
   scene.classList.add("leaving");
 }, data.delay);
 
 setTimeout(() => {
-  window.location.href = "transition.html";
-}, data.delay + 800);
+  window.location.href = "home.html";
+}, data.delay + 900);
 
 </script>
 
