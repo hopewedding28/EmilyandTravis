@@ -3,7 +3,7 @@
 <head>
 
   <!-- ============================================================
-       EMILY & TRAVIS WEDDING SITE
+       EMILY AND TRAVIS WEDDING SITE
        FILE: transition.html
        PURPOSE: The bridge. Guest just stepped through the gate.
                 No buttons. No choices. Just the forest receiving them.
@@ -603,7 +603,7 @@
        REDIRECT URLS
     ============================================================ */
     const URL_RSVP    = 'rsvp.html';
-    const URL_LANDING = 'landing.html';
+    const URL_LANDING = 'home.html';
 
     /* ============================================================
        ELEMENTS
@@ -623,10 +623,10 @@
     /* ============================================================
        SESSION DATA
     ============================================================ */
-    const access     = sessionStorage.getItem(ACCESS_KEY);
-    const rawName    = sessionStorage.getItem(NAME_KEY) || '';
-    const attempts   = Number(sessionStorage.getItem(ATTEMPTS_KEY)) || 0;
-    const attendance = sessionStorage.getItem(ATTENDANCE_KEY) || '';
+    const access     = localStorage.getItem(ACCESS_KEY);
+    const rawName    = localStorage.getItem(NAME_KEY) || '';
+    const attempts   = Number(localStorage.getItem(ATTEMPTS_KEY)) || 0;
+    const attendance = localStorage.getItem(ATTENDANCE_KEY) || '';
 
     /* ============================================================
        VISIT COUNT (option 4A)
