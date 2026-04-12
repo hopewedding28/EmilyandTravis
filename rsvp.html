@@ -189,7 +189,7 @@
   </div>
 </div>
 
-<div id="popup" class="popup-overlay hidden">
+<div id="popup" class="popup-overlay" style="display: none;">
   <div class="popup-box">
     <p id="popupMessage"></p>
     <button onclick="closePopup()">OK</button>
@@ -210,10 +210,10 @@ const submitBtn = document.getElementById("submitBtn");
 
 function showPopup(msg) {
   document.getElementById("popupMessage").textContent = msg;
-  document.getElementById("popup").classList.remove("hidden");
+  document.getElementById("popup").style.display = "flex";
 }
 function closePopup() {
-  document.getElementById("popup").classList.add("hidden");
+  document.getElementById("popup").style.display = "none";
 }
 
 attendance.addEventListener("change", () => {
