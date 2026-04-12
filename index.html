@@ -1,388 +1,1319 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Emily and Travis</title>
-<link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet">
-<style>
 
-  :root {
-    --gold: #f3d37a;
-    --gold-dim: rgba(243, 211, 122, 0.45);
-    --gold-whisper: rgba(243, 211, 122, 0.15);
-    --gold-trace: rgba(243, 211, 122, 0.07);
-    --mist: rgba(245, 237, 210, 0.92);
-    --mist-soft: rgba(240, 234, 214, 0.68);
-    --ease-soft: cubic-bezier(0.25, 0.8, 0.25, 1);
-    --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
-  }
+  <!-- ============================================================
+       EMILY & TRAVIS WEDDING SITE
+       FILE: index.html
+       PURPOSE: Entry portal — the gate. First thing any guest sees.
+       PHILOSOPHY: Atmosphere first. One action. No choices.
+                   The forest is alive before you touch it.
+       LAST UPDATED: 2026
+  ============================================================ -->
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060b06" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Emily & Travis" />
 
-  html, body {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
+  <!-- Open Graph — so sharing the link looks beautiful -->
+  <meta property="og:title" content="You've Been Summoned — Emily & Travis" />
+  <meta property="og:description" content="Beyond the trees, a celebration is waiting. September 23, 2028." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="assets/backgrounds/gate.png" />
 
-  /* =====================
-     HERO
-  ===================== */
-  .hero {
-    height: 100vh;
-    width: 100%;
-    background: url("assets/backgrounds/gate.png") center / cover no-repeat;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    animation: ambientZoom 30s ease-in-out infinite alternate;
-    will-change: transform;
-  }
+  <title>Emily and Travis · 09.23.28</title>
 
-  @keyframes ambientZoom {
-    from { transform: scale(1); }
-    to   { transform: scale(1.04); }
-  }
+  <!-- Font preconnect for faster load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
 
-  .hero.zooming {
-    animation: none;
-    transform: scale(1.13) !important;
-    filter: brightness(1.18) !important;
-    transition: transform 1.0s var(--ease-default), filter 1.0s var(--ease-default);
-  }
+  <!-- Preload the background so it's ready instantly -->
+  <link rel="preload" href="assets/backgrounds/gate.png" as="image" />
 
-  /* =====================
-     OVERLAYS
-  ===================== */
-  .overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    background: radial-gradient(
-      ellipse at center,
-      rgba(8,8,8,0.15) 0%,
-      rgba(8,8,8,0.46) 52%,
-      rgba(8,8,8,0.76) 100%
-    );
-    pointer-events: none;
-  }
+  <style>
 
-  /* =====================
-     FIREFLIES
-  ===================== */
-  .fireflies {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    overflow: hidden;
-  }
+    /* ============================================================
+       TABLE OF CONTENTS
+       1. CSS VARIABLES / TOKENS
+       2. RESET + BASE
+       3. HERO + BACKGROUND
+       4. OVERLAY SYSTEM
+       5. MIST LAYER
+       6. FIREFLY SYSTEM
+       7. CURSOR SPARKLE (desktop)
+       8. TAP RIPPLE (mobile + desktop)
+       9. CONTENT BLOCK
+       10. HEADLINE
+       11. SUBTEXT
+       12. BUTTON — WISPY
+       13. MONOGRAM WATERMARK
+       14. FOOTER WHISPER (date + countdown)
+       15. IDLE MESSAGE
+       16. SOUND TOGGLE
+       17. PAGE LOAD SEQUENCE
+       18. BREATHING VIGNETTE
+       19. ANIMATIONS LIBRARY
+       20. MOBILE / RESPONSIVE
+       21. SAFE AREA INSETS
+       22. REDUCED MOTION
+    ============================================================ */
 
-  .firefly {
-    position: absolute;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      rgba(255, 243, 194, 0.96) 0%,
-      rgba(243, 211, 122, 0.52) 50%,
-      transparent 100%
-    );
-    box-shadow:
-      0 0 7px rgba(243, 211, 122, 0.48),
-      0 0 16px rgba(243, 211, 122, 0.18);
-    opacity: 0;
-    animation-name: driftFloat, flickerGlow;
-    animation-timing-function: linear, ease-in-out;
-    animation-iteration-count: infinite, infinite;
-    will-change: transform, opacity;
-  }
 
-  @keyframes driftFloat {
-    0%   { transform: translate3d(0, 0, 0) scale(0.9); }
-    25%  { transform: translate3d(14px, -22px, 0) scale(1.06); }
-    50%  { transform: translate3d(-9px, -36px, 0) scale(0.96); }
-    75%  { transform: translate3d(11px, -16px, 0) scale(1.08); }
-    100% { transform: translate3d(-5px, 0, 0) scale(0.91); }
-  }
+    /* ============================================================
+       1. CSS VARIABLES / TOKENS
+    ============================================================ */
+    :root {
+      /* Colors */
+      --gold:           #f3d37a;
+      --gold-dim:       rgba(243, 211, 122, 0.55);
+      --gold-soft:      rgba(243, 211, 122, 0.28);
+      --gold-whisper:   rgba(243, 211, 122, 0.12);
+      --gold-trace:     rgba(243, 211, 122, 0.07);
+      --gold-glow:      rgba(243, 211, 122, 0.40);
+      --mist:           rgba(245, 237, 210, 0.96);
+      --mist-soft:      rgba(240, 234, 214, 0.82);
+      --mist-faint:     rgba(240, 234, 214, 0.48);
+      --forest-deep:    #060b06;
+      --forest-mid:     #0c160d;
 
-  @keyframes flickerGlow {
-    0%, 100% { opacity: 0.05; }
-    15%       { opacity: 0.60; }
-    35%       { opacity: 0.13; }
-    55%       { opacity: 0.75; }
-    75%       { opacity: 0.20; }
-    90%       { opacity: 0.48; }
-  }
+      /* Timing tokens */
+      --t-fast:         250ms;
+      --t-base:         450ms;
+      --t-slow:         700ms;
+      --t-ambient:      9s;
 
-  /* =====================
-     CONTENT
-  ===================== */
-  .content {
-    position: relative;
-    z-index: 5;
-    text-align: center;
-    max-width: 580px;
-    padding: 2rem 1.5rem;
-    transform: translateY(-16px);
-  }
+      /* Easing curves */
+      --ease-soft:      cubic-bezier(0.25, 0.8, 0.25, 1);
+      --ease-default:   cubic-bezier(0.4, 0, 0.2, 1);
+      --ease-out:       cubic-bezier(0.0, 0, 0.2, 1);
+      --ease-spring:    cubic-bezier(0.34, 1.56, 0.64, 1);
 
-  /* =====================
-     HEADLINE
-  ===================== */
-  h1 {
-    font-family: 'Shadows Into Light Two', cursive;
-    font-size: clamp(2.4rem, 6vw, 3.6rem);
-    color: var(--mist);
-    text-shadow:
-      0 2px 14px rgba(0,0,0,0.72),
-      0 0 32px rgba(243, 211, 122, 0.10);
-    margin-bottom: 1rem;
-    line-height: 1.1;
-    letter-spacing: 0.01em;
-    opacity: 0;
-    animation: riseIn 700ms var(--ease-soft) forwards;
-    animation-delay: 500ms;
-  }
+      /* Spacing scale (8px base) */
+      --sp-xs:  8px;
+      --sp-sm:  16px;
+      --sp-md:  24px;
+      --sp-lg:  32px;
+      --sp-xl:  48px;
+      --sp-xxl: 64px;
+    }
 
-  /* =====================
-     SUBTEXT
-  ===================== */
-  p.sub {
-    font-family: 'Zen Loop', sans-serif;
-    font-size: clamp(0.9rem, 1.7vw, 1.02rem);
-    color: var(--mist-soft);
-    line-height: 1.75;
-    margin-bottom: 1.8rem;
-    letter-spacing: 0.035em;
-    text-shadow: 0 1px 10px rgba(0,0,0,0.65);
-    opacity: 0;
-    animation: riseIn 700ms var(--ease-soft) forwards;
-    animation-delay: 1100ms;
-  }
 
-  /* =====================
-     BUTTON — WISPY
-  ===================== */
-  .btn-enter {
-    font-family: 'Zen Loop', sans-serif;
-    display: inline-block;
-    position: relative;
-    padding: 0.78rem 2.8rem;
-    font-size: clamp(0.78rem, 1.4vw, 0.88rem);
-    letter-spacing: 0.20em;
-    text-transform: uppercase;
-    text-decoration: none;
-    color: var(--mist);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    outline: none;
-    opacity: 0;
-    animation: riseIn 700ms var(--ease-soft) forwards;
-    animation-delay: 1700ms;
-    transition:
-      color 400ms var(--ease-default),
-      transform 150ms var(--ease-default);
-  }
+    /* ============================================================
+       2. RESET + BASE
+    ============================================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  /* top hairline */
-  .btn-enter::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 8%;
-    right: 8%;
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      var(--gold-dim),
-      transparent
-    );
-    transition: opacity 400ms var(--ease-default), left 400ms var(--ease-default), right 400ms var(--ease-default);
-  }
+    html {
+      width: 100%;
+      height: 100%;
+      /* prevent iOS bounce */
+      overscroll-behavior: none;
+    }
 
-  /* bottom hairline */
-  .btn-enter::after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 8%;
-    right: 8%;
-    height: 1px;
-    background: linear-gradient(
-      to right,
-      transparent,
-      var(--gold-dim),
-      transparent
-    );
-    transition: opacity 400ms var(--ease-default), left 400ms var(--ease-default), right 400ms var(--ease-default);
-  }
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--forest-deep);
+      /* hide cursor on desktop — replaced with sparkle */
+      cursor: none;
+    }
 
-  /* inner glow swell */
-  .btn-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(
-      ellipse at center,
-      var(--gold-trace) 0%,
-      transparent 70%
-    );
-    opacity: 0;
-    transition: opacity 400ms var(--ease-default);
-    pointer-events: none;
-    border-radius: 2px;
-  }
+    /* restore cursor on mobile (no hover) */
+    @media (hover: none) {
+      body { cursor: auto; }
+    }
 
-  .btn-label {
-    position: relative;
-    z-index: 1;
-  }
 
-  /* hover */
-  .btn-enter:hover {
-    color: var(--gold);
-  }
-
-  .btn-enter:hover::before {
-    left: 0%;
-    right: 0%;
-    opacity: 1.3;
-  }
-
-  .btn-enter:hover::after {
-    left: 0%;
-    right: 0%;
-    opacity: 1.3;
-  }
-
-  .btn-enter:hover .btn-glow {
-    opacity: 1;
-  }
-
-  /* click */
-  .btn-enter:active {
-    transform: scale(0.97);
-  }
-
-  /* =====================
-     ANIMATIONS
-  ===================== */
-  @keyframes riseIn {
-    from {
+    /* ============================================================
+       3. HERO + BACKGROUND
+    ============================================================ */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 100vh;
+      /* safe area support */
+      min-height: 100dvh;
+      background:
+        url("assets/backgrounds/gate.png") center / cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* intentional: whole screen is the interaction */
+      cursor: none;
+      /* start invisible — JS controls fade-in sequence */
       opacity: 0;
-      transform: translateY(10px);
+      will-change: transform, filter, opacity;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
 
-  /* =====================
-     MOBILE
-  ===================== */
-  @media (max-width: 600px) {
+    @media (hover: none) {
+      .hero { cursor: pointer; }
+    }
+
+    /* ambient slow zoom — barely perceptible depth */
+    .hero.loaded {
+      animation:
+        heroFadeIn 1.2s var(--ease-soft) forwards,
+        ambientZoom 32s ease-in-out 1.2s infinite alternate;
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes ambientZoom {
+      from { transform: scale(1); }
+      to   { transform: scale(1.045); }
+    }
+
+    /* click/tap transition state */
+    .hero.zooming {
+      animation: none !important;
+      transform: scale(1.14) !important;
+      filter: brightness(1.26) !important;
+      transition:
+        transform 1.0s var(--ease-default),
+        filter 1.0s var(--ease-default);
+    }
+
+    /* subtle parallax container — shifts on mouse move */
+    .parallax-layer {
+      position: absolute;
+      inset: -3%;
+      width: 106%;
+      height: 106%;
+      background: inherit;
+      background-size: cover;
+      background-position: center;
+      will-change: transform;
+      transition: transform 0.12s linear;
+    }
+
+
+    /* ============================================================
+       4. OVERLAY SYSTEM
+    ============================================================ */
+
+    /* base dark vignette */
+    .overlay-vignette {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(6,6,6,0.18)  0%,
+        rgba(6,6,6,0.50)  50%,
+        rgba(6,6,6,0.82)  100%
+      );
+      pointer-events: none;
+    }
+
+    /* breathing vignette — pulses slowly like a heartbeat */
+    .overlay-breathe {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(4,8,4,0.22) 100%
+      );
+      pointer-events: none;
+      animation: breathePulse 8s ease-in-out infinite;
+    }
+
+    @keyframes breathePulse {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50%       { opacity: 1.0; transform: scale(1.02); }
+    }
+
+    /* slow color shift — like clouds passing over the moon */
+    .overlay-shift {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(
+        ellipse at 48% 45%,
+        rgba(243, 211, 122, 0.03) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+      animation: colorShift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes colorShift {
+      0%   { opacity: 0.4; }
+      50%  { opacity: 1.0; }
+      100% { opacity: 0.3; }
+    }
+
+
+    /* ============================================================
+       5. MIST LAYER
+       Slow fog drifting across the bottom of the screen
+    ============================================================ */
+    .mist-layer {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 32vh;
+      z-index: 3;
+      background:
+        radial-gradient(ellipse at 20% 100%, rgba(255,255,255,0.028), transparent 36%),
+        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.042), transparent 42%),
+        radial-gradient(ellipse at 80% 100%, rgba(255,255,255,0.032), transparent 38%);
+      filter: blur(22px);
+      opacity: 0.9;
+      pointer-events: none;
+      animation: mistDrift 22s ease-in-out infinite alternate;
+    }
+
+    @keyframes mistDrift {
+      0%   { transform: translateX(-2%) translateY(0); opacity: 0.7; }
+      100% { transform: translateX(2%) translateY(-1.5%); opacity: 1.0; }
+    }
+
+
+    /* ============================================================
+       6. FIREFLY SYSTEM
+       Generated by JS. Each has random size, position,
+       drift path, flicker timing. None synchronized.
+    ============================================================ */
+    .fireflies {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .firefly {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 243, 194, 0.98)  0%,
+        rgba(243, 211, 122, 0.55)  48%,
+        rgba(243, 211, 122, 0.12)  72%,
+        transparent                100%
+      );
+      box-shadow:
+        0 0 8px  rgba(243, 211, 122, 0.52),
+        0 0 18px rgba(243, 211, 122, 0.20);
+      opacity: 0;
+      animation-name: driftFloat, flickerGlow;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite, infinite;
+      will-change: transform, opacity;
+    }
+
+    /* fireflies near gate light drift slightly differently */
+    .firefly.center-drift {
+      animation-name: driftCenter, flickerGlow;
+    }
+
+    /* fireflies that drift upward from the bottom */
+    .firefly.rise {
+      animation-name: driftRise, flickerGlow;
+    }
+
+    @keyframes driftFloat {
+      0%   { transform: translate3d(0, 0, 0) scale(0.88); }
+      20%  { transform: translate3d(16px, -24px, 0) scale(1.06); }
+      40%  { transform: translate3d(-11px, -40px, 0) scale(0.94); }
+      60%  { transform: translate3d(14px, -28px, 0) scale(1.10); }
+      80%  { transform: translate3d(-8px, -14px, 0) scale(0.96); }
+      100% { transform: translate3d(-5px, 0, 0) scale(0.90); }
+    }
+
+    /* center-cluster drift — circles near gate glow */
+    @keyframes driftCenter {
+      0%   { transform: translate3d(0, 0, 0) scale(0.9); }
+      25%  { transform: translate3d(8px, -18px, 0) scale(1.04); }
+      50%  { transform: translate3d(-6px, -10px, 0) scale(0.96); }
+      75%  { transform: translate3d(4px, -20px, 0) scale(1.06); }
+      100% { transform: translate3d(-3px, 0, 0) scale(0.92); }
+    }
+
+    /* rising drift — floats upward from bottom edge */
+    @keyframes driftRise {
+      0%   { transform: translate3d(0, 0, 0) scale(0.7); opacity: 0; }
+      10%  { opacity: 0.6; }
+      100% { transform: translate3d(var(--rx, 20px), -120px, 0) scale(1.1); opacity: 0; }
+    }
+
+    @keyframes flickerGlow {
+      0%,  100% { opacity: 0.05; }
+      12%        { opacity: 0.65; }
+      28%        { opacity: 0.11; }
+      50%        { opacity: 0.78; }
+      68%        { opacity: 0.18; }
+      84%        { opacity: 0.52; }
+    }
+
+
+    /* ============================================================
+       7. CURSOR SPARKLE (desktop only)
+       Tiny gold sparks follow the cursor
+    ============================================================ */
+    .cursor-dot {
+      position: fixed;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 243, 194, 0.92);
+      box-shadow:
+        0 0 8px  rgba(243, 211, 122, 0.7),
+        0 0 16px rgba(243, 211, 122, 0.3);
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.2s ease;
+      will-change: transform;
+    }
+
+    .cursor-spark {
+      position: fixed;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(255, 243, 194, 0.85);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      animation: sparkFade 0.6s ease forwards;
+      will-change: transform, opacity;
+    }
+
+    @keyframes sparkFade {
+      0%   { opacity: 0.9; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(
+        calc(-50% + var(--sx, 0px)),
+        calc(-50% + var(--sy, 0px))
+      ) scale(0.2); }
+    }
+
+
+    /* ============================================================
+       8. TAP RIPPLE
+       Gold ripple expands from tap/click point
+    ============================================================ */
+    .ripple {
+      position: fixed;
+      border-radius: 50%;
+      border: 1px solid rgba(243, 211, 122, 0.55);
+      background: radial-gradient(
+        circle,
+        rgba(243, 211, 122, 0.12) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+      z-index: 9997;
+      transform: translate(-50%, -50%) scale(0);
+      animation: rippleOut 0.85s var(--ease-out) forwards;
+      will-change: transform, opacity;
+    }
+
+    @keyframes rippleOut {
+      0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+    }
+
+
+    /* ============================================================
+       9. CONTENT BLOCK
+    ============================================================ */
     .content {
-      transform: translateY(-6px);
-      padding: 1.5rem 1rem;
+      position: relative;
+      z-index: 6;
+      text-align: center;
+      max-width: 580px;
+      width: 100%;
+      padding: var(--sp-lg) var(--sp-md);
+      /* pushed down so headline clears ironwork */
+      transform: translateY(44px);
+      /* content fades in as part of load sequence */
+      opacity: 0;
+      transition: opacity 0.8s var(--ease-soft);
     }
-    h1 { font-size: clamp(2rem, 9vw, 2.6rem); }
-    p.sub { font-size: 0.88rem; }
-    .btn-enter { padding: 0.72rem 2.2rem; }
-  }
 
-  /* =====================
-     REDUCED MOTION
-  ===================== */
-  @media (prefers-reduced-motion: reduce) {
-    .hero { animation: none; }
-    .firefly { display: none; }
-    h1, p.sub, .btn-enter {
-      animation: none;
+    .content.visible {
       opacity: 1;
-      transform: none;
     }
-  }
 
-</style>
+
+    /* ============================================================
+       10. HEADLINE
+    ============================================================ */
+    h1 {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(2.4rem, 6vw, 3.6rem);
+      color: var(--mist);
+      /* strong shadow lifts text off the gate ironwork */
+      text-shadow:
+        0 2px 20px rgba(0, 0, 0, 0.92),
+        0 0  8px  rgba(0, 0, 0, 0.98),
+        0 0  36px rgba(243, 211, 122, 0.08);
+      margin-bottom: var(--sp-sm);
+      line-height: 1.1;
+      letter-spacing: 0.01em;
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 1400ms;
+    }
+
+    /* faint monogram behind headline */
+    .monogram {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -54%);
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(6rem, 18vw, 11rem);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(243, 211, 122, 0.06);
+      text-stroke: 1px rgba(243, 211, 122, 0.06);
+      letter-spacing: 0.12em;
+      pointer-events: none;
+      z-index: 5;
+      user-select: none;
+      animation: monogramPulse 12s ease-in-out infinite;
+      white-space: nowrap;
+    }
+
+    @keyframes monogramPulse {
+      0%,  100% { opacity: 0.55; }
+      50%        { opacity: 1.0; }
+    }
+
+
+    /* ============================================================
+       11. SUBTEXT
+    ============================================================ */
+    p.sub {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.88rem, 1.8vw, 1.02rem);
+      color: var(--mist-soft);
+      line-height: 1.78;
+      margin-bottom: var(--sp-lg);
+      letter-spacing: 0.038em;
+      text-shadow:
+        0 1px 10px rgba(0, 0, 0, 0.98),
+        0 2px 20px rgba(0, 0, 0, 0.85);
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 1900ms;
+    }
+
+
+    /* ============================================================
+       12. BUTTON — WISPY
+       Transparent. Two hairlines top/bottom.
+       Glow swell on hover. Text lifts to gold on hover.
+       Hairlines expand outward from center on load.
+    ============================================================ */
+    .btn-enter {
+      font-family: 'Zen Loop', sans-serif;
+      display: inline-block;
+      position: relative;
+      padding: 0.85rem 3.2rem;
+      font-size: clamp(0.78rem, 1.5vw, 0.92rem);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--mist);
+      text-shadow:
+        0 1px 12px rgba(0, 0, 0, 0.99),
+        0 0  24px rgba(0, 0, 0, 0.90);
+      background: transparent;
+      border: none;
+      cursor: none;
+      outline: none;
+      opacity: 0;
+      animation: riseIn var(--t-slow) var(--ease-soft) forwards;
+      animation-delay: 2400ms;
+      transition:
+        color      400ms var(--ease-default),
+        transform  150ms var(--ease-default);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    @media (hover: none) {
+      .btn-enter { cursor: pointer; }
+    }
+
+    /* top hairline — animates in from center */
+    .btn-enter::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      right: 50%;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--gold-dim),
+        transparent
+      );
+      transition:
+        left  600ms var(--ease-soft),
+        right 600ms var(--ease-soft);
+    }
+
+    /* bottom hairline */
+    .btn-enter::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      right: 50%;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--gold-dim),
+        transparent
+      );
+      transition:
+        left  600ms var(--ease-soft),
+        right 600ms var(--ease-soft);
+    }
+
+    /* hairlines expand out once button is visible */
+    .btn-enter.lines-open::before { left: 10%; right: 10%; }
+    .btn-enter.lines-open::after  { left: 10%; right: 10%; }
+
+    /* hover: hairlines reach full width */
+    .btn-enter:hover::before,
+    .btn-enter:hover::after {
+      left: 0%;
+      right: 0%;
+    }
+
+    /* inner glow swell */
+    .btn-glow {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(243, 211, 122, 0.09) 0%,
+        transparent 68%
+      );
+      opacity: 0;
+      border-radius: 2px;
+      transition: opacity 400ms var(--ease-default);
+      pointer-events: none;
+    }
+
+    .btn-label {
+      position: relative;
+      z-index: 1;
+    }
+
+    .btn-enter:hover {
+      color: var(--gold);
+      text-shadow:
+        0 0  16px rgba(243, 211, 122, 0.58),
+        0 1px 12px rgba(0, 0, 0, 0.98);
+    }
+
+    .btn-enter:hover .btn-glow { opacity: 1; }
+    .btn-enter:active           { transform: scale(0.97); }
+
+
+    /* ============================================================
+       13. MONOGRAM WATERMARK
+       Faint E + T behind the content
+    ============================================================ */
+    .monogram-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+
+    /* ============================================================
+       14. FOOTER WHISPER
+       Tiny date + countdown at bottom of screen
+    ============================================================ */
+    .footer-whisper {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      /* respect iPhone home bar */
+      padding-bottom: max(1.2rem, env(safe-area-inset-bottom));
+      z-index: 8;
+      text-align: center;
+      pointer-events: none;
+      opacity: 0;
+      animation: fadeInSoft 1.4s var(--ease-soft) forwards;
+      animation-delay: 3000ms;
+    }
+
+    .footer-names {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(0.72rem, 1.4vw, 0.88rem);
+      color: rgba(243, 211, 122, 0.58);
+      letter-spacing: 0.10em;
+      text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+      display: block;
+      margin-bottom: 0.18rem;
+    }
+
+    .footer-countdown {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.62rem, 1.2vw, 0.76rem);
+      color: rgba(240, 234, 214, 0.38);
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      display: block;
+      /* heartbeat pulse on the number */
+      animation: heartbeatPulse 2.4s ease-in-out infinite;
+      animation-delay: 3500ms;
+    }
+
+    @keyframes heartbeatPulse {
+      0%,  100% { opacity: 0.38; transform: scale(1); }
+      14%        { opacity: 0.70; transform: scale(1.04); }
+      28%        { opacity: 0.38; transform: scale(1); }
+      42%        { opacity: 0.62; transform: scale(1.02); }
+    }
+
+
+    /* ============================================================
+       15. IDLE MESSAGE
+       Appears after 12 seconds of no interaction
+    ============================================================ */
+    .idle-message {
+      position: fixed;
+      bottom: max(4.5rem, calc(env(safe-area-inset-bottom) + 3.5rem));
+      left: 0;
+      right: 0;
+      text-align: center;
+      z-index: 8;
+      pointer-events: none;
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.72rem, 1.3vw, 0.82rem);
+      color: rgba(240, 234, 214, 0.42);
+      letter-spacing: 0.08em;
+      font-style: italic;
+      text-shadow: 0 0 10px rgba(0,0,0,0.8);
+      opacity: 0;
+      transition: opacity 1.2s var(--ease-soft);
+    }
+
+    .idle-message.visible {
+      opacity: 1;
+    }
+
+
+    /* ============================================================
+       16. SOUND TOGGLE
+       Tiny 🔊 in corner — off by default
+    ============================================================ */
+    .sound-toggle {
+      position: fixed;
+      top: max(1.2rem, env(safe-area-inset-top, 1.2rem));
+      right: 1.2rem;
+      z-index: 10;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      color: rgba(243, 211, 122, 0.38);
+      font-size: 1rem;
+      line-height: 1;
+      opacity: 0;
+      transition:
+        color   300ms var(--ease-default),
+        opacity 300ms var(--ease-default);
+      animation: fadeInSoft 1s var(--ease-soft) forwards;
+      animation-delay: 3200ms;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .sound-toggle:hover {
+      color: rgba(243, 211, 122, 0.72);
+    }
+
+    .sound-toggle.on {
+      color: rgba(243, 211, 122, 0.70);
+    }
+
+
+    /* ============================================================
+       17. PAGE LOAD SEQUENCE
+       Handled by JS — hero starts opacity:0,
+       JS adds .loaded class after assets ready
+    ============================================================ */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--forest-deep);
+      z-index: 100;
+      pointer-events: none;
+      transition: opacity 1.0s var(--ease-soft);
+    }
+
+    .loading-screen.done {
+      opacity: 0;
+    }
+
+
+    /* ============================================================
+       18. BREATHING VIGNETTE
+       Already defined in overlay system above (overlay-breathe)
+    ============================================================ */
+
+
+    /* ============================================================
+       19. ANIMATIONS LIBRARY
+    ============================================================ */
+
+    @keyframes riseIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInSoft {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes leafDrift {
+      0% {
+        transform: translate(0, 0) rotate(0deg) scale(0.7);
+        opacity: 0;
+      }
+      10% { opacity: 0.65; }
+      100% {
+        transform: translate(var(--lx, 20px), -90px) rotate(200deg) scale(1);
+        opacity: 0;
+      }
+    }
+
+
+    /* ============================================================
+       20. MOBILE / RESPONSIVE
+    ============================================================ */
+    @media (max-width: 600px) {
+      .content {
+        transform: translateY(24px);
+        padding: var(--sp-md) var(--sp-sm);
+        max-width: 100%;
+      }
+
+      h1 {
+        font-size: clamp(2.0rem, 9vw, 2.7rem);
+      }
+
+      p.sub {
+        font-size: 0.9rem;
+        margin-bottom: var(--sp-md);
+      }
+
+      .btn-enter {
+        padding: 0.78rem 2.4rem;
+        font-size: 0.80rem;
+      }
+
+      /* more fireflies visible on mobile = better experience */
+      .firefly {
+        box-shadow:
+          0 0 10px rgba(243, 211, 122, 0.60),
+          0 0 22px rgba(243, 211, 122, 0.26);
+      }
+    }
+
+    @media (max-width: 380px) {
+      h1 { font-size: clamp(1.8rem, 10vw, 2.2rem); }
+      p.sub { font-size: 0.82rem; }
+    }
+
+
+    /* ============================================================
+       21. SAFE AREA INSETS
+       For iPhone notch, Dynamic Island, Android nav bar
+    ============================================================ */
+    .content {
+      padding-top:    max(var(--sp-lg), env(safe-area-inset-top));
+      padding-left:   max(var(--sp-md), env(safe-area-inset-left));
+      padding-right:  max(var(--sp-md), env(safe-area-inset-right));
+    }
+
+
+    /* ============================================================
+       22. REDUCED MOTION
+    ============================================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero,
+      .hero.loaded            { animation: none; opacity: 1; }
+      .overlay-breathe        { animation: none; }
+      .overlay-shift          { animation: none; }
+      .mist-layer             { animation: none; }
+      .firefly                { display: none; }
+      .monogram               { animation: none; }
+      .footer-countdown       { animation: none; }
+
+      h1, p.sub, .btn-enter,
+      .footer-whisper,
+      .sound-toggle           { animation: none; opacity: 1; transform: none; }
+
+      .content                { opacity: 1; }
+      .loading-screen         { display: none; }
+    }
+
+  </style>
 </head>
 <body>
 
-<div class="hero" id="hero">
+  <!-- ============================================================
+       LOADING SCREEN
+       Intentional black. Fades out when assets ready.
+  ============================================================ -->
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
 
-  <div class="overlay" aria-hidden="true"></div>
-  <div class="fireflies" id="fireflies" aria-hidden="true"></div>
 
-  <div class="content">
-    <h1>You've Been Summoned</h1>
-    <p class="sub">
-      Beyond the trees, a celebration is waiting.<br>
-      Step inside to begin your RSVP for Emily and Travis's wedding.
-    </p>
-    <a href="transition.html" class="btn-enter" id="enterBtn" aria-label="Step inside">
-      <div class="btn-glow" aria-hidden="true"></div>
-      <span class="btn-label">Step Inside</span>
-    </a>
+  <!-- ============================================================
+       SOUND TOGGLE
+  ============================================================ -->
+  <button
+    class="sound-toggle"
+    id="soundToggle"
+    aria-label="Toggle ambient sound"
+    title="Toggle ambient sound"
+  >🔇</button>
+
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <div class="hero" id="hero" role="main">
+
+    <!-- overlays -->
+    <div class="overlay-vignette" aria-hidden="true"></div>
+    <div class="overlay-breathe"  aria-hidden="true"></div>
+    <div class="overlay-shift"    aria-hidden="true"></div>
+
+    <!-- mist -->
+    <div class="mist-layer" aria-hidden="true"></div>
+
+    <!-- fireflies -->
+    <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
+    <!-- faint E + T monogram -->
+    <div class="monogram-wrap" aria-hidden="true">
+      <span class="monogram">E &amp; T</span>
+    </div>
+
+    <!-- main content -->
+    <div class="content" id="content">
+      <h1>You've Been Summoned</h1>
+      <p class="sub">
+        Beyond the trees, a celebration is waiting.<br>
+        Step inside to begin your RSVP for Emily and Travis's wedding.
+      </p>
+      <a
+        href="transition.html"
+        class="btn-enter"
+        id="enterBtn"
+        aria-label="Step inside the forest"
+      >
+        <div class="btn-glow" aria-hidden="true"></div>
+        <span class="btn-label">Step Inside</span>
+      </a>
+    </div>
+
+  </div><!-- /hero -->
+
+
+  <!-- ============================================================
+       FOOTER WHISPER
+  ============================================================ -->
+  <div class="footer-whisper" aria-hidden="true">
+    <span class="footer-names">Emily &amp; Travis · September 23, 2028</span>
+    <span class="footer-countdown" id="countdown">loading…</span>
   </div>
 
-</div>
 
-<script>
-(function () {
+  <!-- ============================================================
+       IDLE MESSAGE
+  ============================================================ -->
+  <div class="idle-message" id="idleMessage" aria-hidden="true">
+    the forest stirs…
+  </div>
 
-  /* =====================
-     FIREFLY GENERATOR
-  ===================== */
-  const wrap = document.getElementById("fireflies");
-  const isMobile = window.innerWidth <= 600;
-  const count = isMobile ? 10 : 20;
 
-  for (let i = 0; i < count; i++) {
-    const dot = document.createElement("span");
-    dot.className = "firefly";
+  <!-- ============================================================
+       CURSOR DOT (desktop)
+  ============================================================ -->
+  <div class="cursor-dot" id="cursorDot" aria-hidden="true"></div>
 
-    const size       = (Math.random() * 3.5 + 2).toFixed(1);
-    const left       = (Math.random() * 97).toFixed(1);
-    const top        = (Math.random() * 95).toFixed(1);
-    const driftDur   = (Math.random() * 9 + 10).toFixed(1);
-    const flickDur   = (Math.random() * 4 + 4.5).toFixed(1);
-    const driftDelay = (Math.random() * 7).toFixed(2);
-    const flickDelay = (Math.random() * 4).toFixed(2);
 
-    dot.style.cssText = `
-      width:${size}px;
-      height:${size}px;
-      left:${left}%;
-      top:${top}%;
-      animation-duration:${driftDur}s, ${flickDur}s;
-      animation-delay:${driftDelay}s, ${flickDelay}s;
-    `;
+  <!-- ============================================================
+       JAVASCRIPT
+  ============================================================ -->
+  <script>
+  (function () {
+    'use strict';
 
-    wrap.appendChild(dot);
-  }
+    /* ============================================================
+       CONSTANTS
+    ============================================================ */
+    const WEDDING_DATE   = new Date('2028-09-23T00:00:00');
+    const REDIRECT_URL   = 'transition.html';
+    const IDLE_DELAY_MS  = 12000;
+    const REDIRECT_DELAY = 780;
 
-  /* =====================
-     ENTER BUTTON
-  ===================== */
-  const btn  = document.getElementById("enterBtn");
-  const hero = document.getElementById("hero");
+    /* ============================================================
+       ELEMENTS
+    ============================================================ */
+    const hero          = document.getElementById('hero');
+    const content       = document.getElementById('content');
+    const firefliesWrap = document.getElementById('fireflies');
+    const loadingScreen = document.getElementById('loadingScreen');
+    const countdown     = document.getElementById('countdown');
+    const idleMessage   = document.getElementById('idleMessage');
+    const enterBtn      = document.getElementById('enterBtn');
+    const soundToggle   = document.getElementById('soundToggle');
+    const cursorDot     = document.getElementById('cursorDot');
 
-  btn.addEventListener("click", function (e) {
-    e.preventDefault();
-    hero.classList.add("zooming");
-    setTimeout(() => {
-      window.location.href = "transition.html";
-    }, 750);
-  });
+    /* ============================================================
+       DEVICE DETECTION
+    ============================================================ */
+    const isMobile    = window.matchMedia('(hover: none)').matches;
+    const isReduced   = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-})();
-</script>
+    /* ============================================================
+       PAGE LOAD SEQUENCE
+       0ms    → black screen visible
+       200ms  → background image starts fading in
+       800ms  → fireflies begin spawning
+       1200ms → content block fades in
+       1400ms → headline animates up
+       1900ms → subtext animates up
+       2400ms → button animates up + hairlines open
+       3000ms → footer whisper fades in
+    ============================================================ */
+    function initLoadSequence() {
+      if (isReduced) {
+        loadingScreen.classList.add('done');
+        hero.classList.add('loaded');
+        content.classList.add('visible');
+        enterBtn.classList.add('lines-open');
+        return;
+      }
+
+      // step 1: start hero fade in
+      setTimeout(() => {
+        hero.classList.add('loaded');
+        loadingScreen.classList.add('done');
+      }, 200);
+
+      // step 2: show content
+      setTimeout(() => {
+        content.classList.add('visible');
+      }, 1200);
+
+      // step 3: open button hairlines
+      setTimeout(() => {
+        enterBtn.classList.add('lines-open');
+      }, 2800);
+    }
+
+    /* ============================================================
+       FIREFLY GENERATOR
+       Desktop: 22 fireflies
+       Mobile:  14 fireflies (larger glow)
+       Types: standard drift, center-cluster, rising
+    ============================================================ */
+    function createFireflies() {
+      const count      = isMobile ? 14 : 22;
+      const centerCount = Math.floor(count * 0.25); // 25% cluster near center
+      const riseCount   = Math.floor(count * 0.15); // 15% rise from bottom
+      const fragment    = document.createDocumentFragment();
+
+      for (let i = 0; i < count; i++) {
+        const dot = document.createElement('span');
+        dot.className = 'firefly';
+
+        const isCenter = i < centerCount;
+        const isRiser  = !isCenter && i < centerCount + riseCount;
+
+        if (isCenter) {
+          dot.classList.add('center-drift');
+          // cluster near middle of screen
+          const cx = 35 + Math.random() * 30;
+          const cy = 30 + Math.random() * 35;
+          dot.style.left = cx + '%';
+          dot.style.top  = cy + '%';
+        } else if (isRiser) {
+          dot.classList.add('rise');
+          dot.style.left   = (Math.random() * 90 + 5) + '%';
+          dot.style.bottom = (-5 + Math.random() * 12) + '%';
+          dot.style.top    = 'auto';
+          dot.style.setProperty('--rx', (Math.random() * 60 - 30).toFixed(0) + 'px');
+        } else {
+          dot.style.left = (Math.random() * 97).toFixed(1) + '%';
+          dot.style.top  = (Math.random() * 88).toFixed(1) + '%';
+        }
+
+        const baseSize  = isMobile ? 3.5 : 2.5;
+        const sizeRange = isMobile ? 3.0 : 3.5;
+        const size      = (Math.random() * sizeRange + baseSize).toFixed(1);
+
+        const driftDur   = (Math.random() * 10 + 10).toFixed(1);
+        const flickDur   = (Math.random() * 5  +  4).toFixed(1);
+        const driftDelay = (Math.random() * 8).toFixed(2);
+        const flickDelay = (Math.random() * 5).toFixed(2);
+
+        dot.style.width  = size + 'px';
+        dot.style.height = size + 'px';
+        dot.style.animationDuration = driftDur + 's, ' + flickDur + 's';
+        dot.style.animationDelay    = driftDelay + 's, ' + flickDelay + 's';
+
+        fragment.appendChild(dot);
+      }
+
+      firefliesWrap.appendChild(fragment);
+    }
+
+    /* ============================================================
+       COUNTDOWN
+       Updates every minute. Pulses like a heartbeat.
+    ============================================================ */
+    function updateCountdown() {
+      const now   = new Date();
+      const diff  = WEDDING_DATE - now;
+
+      if (diff <= 0) {
+        countdown.textContent = 'today is the day ✨';
+        return;
+      }
+
+      const days  = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const text  = days === 1
+        ? '1 day away'
+        : days.toLocaleString() + ' days away';
+
+      countdown.textContent = text;
+    }
+
+    /* ============================================================
+       CURSOR SPARKLE (desktop only)
+    ============================================================ */
+    let lastSparkTime = 0;
+    let mouseX = -200;
+    let mouseY = -200;
+
+    function initCursor() {
+      if (isMobile) {
+        cursorDot.style.display = 'none';
+        return;
+      }
+
+      document.addEventListener('mousemove', function (e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        // move cursor dot
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top  = mouseY + 'px';
+
+        // spawn sparks at rate limit
+        const now = Date.now();
+        if (now - lastSparkTime < 60) return;
+        lastSparkTime = now;
+
+        spawnSpark(mouseX, mouseY);
+      });
+    }
+
+    function spawnSpark(x, y) {
+      const spark = document.createElement('div');
+      spark.className = 'cursor-spark';
+      spark.style.left = x + 'px';
+      spark.style.top  = y + 'px';
+      spark.style.setProperty('--sx', (Math.random() * 30 - 15).toFixed(0) + 'px');
+      spark.style.setProperty('--sy', (Math.random() * 30 - 15).toFixed(0) + 'px');
+      document.body.appendChild(spark);
+
+      // clean up after animation
+      setTimeout(() => {
+        if (spark.parentNode) spark.parentNode.removeChild(spark);
+      }, 650);
+    }
+
+    /* ============================================================
+       TAP / CLICK RIPPLE
+    ============================================================ */
+    function spawnRipple(x, y) {
+      const ripple = document.createElement('div');
+      ripple.className = 'ripple';
+
+      const size = Math.min(window.innerWidth, window.innerHeight) * 0.7;
+      ripple.style.width  = size + 'px';
+      ripple.style.height = size + 'px';
+      ripple.style.left   = x + 'px';
+      ripple.style.top    = y + 'px';
+
+      document.body.appendChild(ripple);
+
+      setTimeout(() => {
+        if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+      }, 900);
+    }
+
+    /* ============================================================
+       ENTER INTERACTION
+       Whole screen is clickable. One action only.
+    ============================================================ */
+    let hasEntered = false;
+
+    function handleEnter(x, y) {
+      if (hasEntered) return;
+      hasEntered = true;
+
+      // ripple at tap point
+      spawnRipple(x, y);
+
+      // zoom transition
+      setTimeout(() => {
+        hero.classList.add('zooming');
+      }, 80);
+
+      // redirect
+      setTimeout(() => {
+        window.location.href = REDIRECT_URL;
+      }, REDIRECT_DELAY);
+    }
+
+    function initEnterInteraction() {
+      // click anywhere
+      hero.addEventListener('click', function (e) {
+        handleEnter(e.clientX, e.clientY);
+      });
+
+      // touch anywhere
+      hero.addEventListener('touchend', function (e) {
+        if (e.changedTouches.length > 0) {
+          const t = e.changedTouches[0];
+          handleEnter(t.clientX, t.clientY);
+        }
+      }, { passive: true });
+
+      // keyboard: Enter or Space
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleEnter(window.innerWidth / 2, window.innerHeight / 2);
+        }
+      });
+    }
+
+    /* ============================================================
+       IDLE DETECTION
+       Shows "the forest stirs…" after 12s of no activity
+    ============================================================ */
+    let idleTimer;
+
+    function resetIdleTimer() {
+      clearTimeout(idleTimer);
+      idleMessage.classList.remove('visible');
+
+      idleTimer = setTimeout(() => {
+        if (!hasEntered) {
+          idleMessage.classList.add('visible');
+        }
+      }, IDLE_DELAY_MS);
+    }
+
+    function initIdleDetection() {
+      ['mousemove', 'touchstart', 'keydown', 'click'].forEach(evt => {
+        document.addEventListener(evt, resetIdleTimer, { passive: true });
+      });
+      resetIdleTimer();
+    }
+
+    /* ============================================================
+       SOUND TOGGLE
+       Off by default. Ambient forest sounds.
+       (Audio file: assets/audio/forest-ambient.mp3)
+    ============================================================ */
+    let soundOn  = false;
+    let audioEl  = null;
+
+    soundToggle.addEventListener('click', function (e) {
+      e.stopPropagation(); // don't trigger hero enter
+      soundOn = !soundOn;
+
+      if (soundOn) {
+        if (!audioEl) {
+          audioEl = new Audio('assets/audio/forest-ambient.mp3');
+          audioEl.loop   = true;
+          audioEl.volume = 0.28;
+        }
+        audioEl.play().catch(() => {
+          // autoplay blocked — silently fail
+          soundOn = false;
+          soundToggle.textContent = '🔇';
+          soundToggle.classList.remove('on');
+        });
+        soundToggle.textContent = '🔊';
+        soundToggle.classList.add('on');
+      } else {
+        if (audioEl) {
+          audioEl.pause();
+        }
+        soundToggle.textContent = '🔇';
+        soundToggle.classList.remove('on');
+      }
+    });
+
+    /* ============================================================
+       INIT
+    ============================================================ */
+    function init() {
+      initLoadSequence();
+      createFireflies();
+      updateCountdown();
+      setInterval(updateCountdown, 60000); // refresh every minute
+      initCursor();
+      initEnterInteraction();
+      initIdleDetection();
+    }
+
+    // wait for DOM + fonts
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+  })();
+  </script>
+
 </body>
 </html>
