@@ -103,31 +103,93 @@ body::before {
 
 <body>
 
-<div class="scene" id="scene">
-  <p class="greeting">
-    Oh hi there!<br>
-    Emily and Travis have been expecting you.
-  </p>
-
-  <p class="sub">come on in</p>
-
-  <div class="fairies">
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-    <div class="dot"></div>
-  </div>
-</div>
+<div class="scene" id="scene"></div>
 
 <script>
-setTimeout(() => {
-  document.getElementById('scene').classList.add('leaving');
-}, 4500);
+// =========================
+// STORAGE KEYS
+// =========================
+const ACCESS_KEY = "rsvpAccess";
+const NAME_KEY = "guestName";
+const ATTEMPTS_KEY = "guestAttempts";
 
-setTimeout(() => {
-  window.location.href = "rsvp.html";
-}, 5300);
+// =========================
+// DATA
+// =========================
+const access = sessionStorage.getItem(ACCESS_KEY);
+const name = sessionStorage.getItem(NAME_KEY);
+const attempts = Number(sessionStorage.getItem(ATTEMPTS_KEY)) || 0;
+
+const scene = document.getElementById("scene");
+
+// =========================
+// SCENE BUILDER
+// =========================
+function renderScene(greeting, sub) {
+  scene.innerHTML = `
+    <p class="greeting">${greeting}</p>
+    <p class="sub">${sub}</p>
+
+    <div class="fairies">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+  `;
+}
+
+// =========================
+// FLOW LOGIC
+// =========================
+
+// 🌿 CASE 1: Already approved → skip RSVP entirely
+if (access === "true") {
+
+  renderScene(
+    `Welcome back, ${name || "guest"}.`,
+    "the forest remembers you"
+  );
+
+  setTimeout(() => {
+    scene.classList.add("leaving");
+  }, 2500);
+
+  setTimeout(() => {
+    window.location.href = "landing.html";
+  }, 3200);
+
+}
+
+// 🌿 CASE 2: First time → go to RSVP
+else {
+
+  // 👇 OPTIONAL: light judgment tone if they've failed before
+  let subText = "come on in";
+
+  if (attempts >= 5 && attempts < 15) {
+    subText = "try again… carefully";
+  }
+
+  if (attempts >= 15) {
+    subText = "the forest is watching you";
+  }
+
+  renderScene(
+    `Oh hi there!<br>Emily and Travis have been expecting you.`,
+    subText
+  );
+
+  setTimeout(() => {
+    scene.classList.add("leaving");
+  }, 4500);
+
+  setTimeout(() => {
+    window.location.href = "rsvp.html";
+  }, 5300);
+}
+
 </script>
 
 </body>
