@@ -47,22 +47,15 @@ h1 {
   font-size: 3rem;
   text-align: center;
   margin-bottom: 2rem;
-  text-shadow: 0 0 18px rgba(243,211,122,0.6);
 }
 
-label { display: block; margin-top: 1.5rem; margin-bottom: 0.4rem; }
+label { display: block; margin-top: 1.5rem; }
 
 input, select {
   width: 100%;
   padding: 0.75rem;
   border-radius: 6px;
   border: none;
-  font-size: 1rem;
-}
-
-.checkbox-group label {
-  display: block;
-  margin: 0.3rem 0;
 }
 
 button {
@@ -70,35 +63,32 @@ button {
   width: 100%;
   padding: 0.9rem;
   background: #f3d37a;
-  color: #0a0a0a;
   border: none;
   border-radius: 6px;
-  font-size: 1.1rem;
   cursor: pointer;
 }
 
 .hidden { display: none; }
 
 .response {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
   padding: 2rem;
-  background: rgba(10,10,10,0.6);
+  background: rgba(0,0,0,0.6);
   border-radius: 8px;
   text-align: center;
 }
 
 .registry-btn {
   display: inline-block;
-  margin-top: 0.8rem;
+  margin-top: 1rem;
   padding: 0.7rem 1.4rem;
   background: #f3d37a;
-  color: #0a0a0a;
+  color: #000;
   text-decoration: none;
   border-radius: 6px;
-  font-weight: bold;
 }
 
-/* POPUP */
+/* popup */
 .popup-overlay {
   position: fixed;
   inset: 0;
@@ -106,15 +96,12 @@ button {
   display: none;
   align-items: center;
   justify-content: center;
-  z-index: 999;
 }
 
 .popup-box {
   background: #111;
   padding: 1.5rem;
   border-radius: 8px;
-  text-align: center;
-  max-width: 300px;
 }
 </style>
 </head>
@@ -152,53 +139,43 @@ button {
 <input type="text" id="plusOneName" name="plus_one_name">
 </div>
 
-<label>Number of children attending</label>
-<input type="number" name="children" min="0" max="6" value="0">
-
-<label>Dietary restrictions</label>
-<div class="checkbox-group">
-<label><input type="checkbox" name="dietary[]" value="vegetarian"> Vegetarian</label>
-<label><input type="checkbox" name="dietary[]" value="vegan"> Vegan</label>
-<label><input type="checkbox" name="dietary[]" value="gluten-free"> Gluten-free</label>
-<label><input type="checkbox" name="dietary[]" value="dairy-free"> Dairy-free</label>
-</div>
+<label>Children attending</label>
+<input type="number" name="children" min="0" value="0">
 
 </div>
 
 <label>Contact (email or phone)</label>
-<input id="contactField" name="contact" type="text"
-placeholder="Required if attending — optional if not">
+<input id="contactField" name="contact" type="text">
 
-<button id="submitBtn" type="submit">Send RSVP</button>
+<button type="submit">Send RSVP</button>
+
 </form>
 
 <div id="responseBox" class="response hidden">
 <p>Your RSVP has been received.</p>
 <p id="responseText"></p>
 
-<p style="margin-top:1rem;">
-The forest will reach out when your path is ready. You’ll receive your forest code soon.
-</p>
+<p>The forest will reach out when your path is ready. You’ll receive your forest code soon.</p>
 
-<div id="codeSection" style="margin-top:1.5rem;">
+<div>
 <p>Have a forest code?</p>
-<input id="forestCodeInput" type="text">
+<input id="forestCodeInput">
 <button id="forestCodeButton">Enter</button>
 <p id="codeMessage"></p>
 </div>
 
 <div id="registryWrapper" class="hidden">
-<p style="margin-top:1rem;">Still want to send a little love?</p>
+<p>Still want to send a little love?</p>
 <a href="registry.html" class="registry-btn">Visit the Registry</a>
 </div>
 
-<span id="editResponse" style="cursor:pointer;">Need to update your response?</span>
+<p id="editResponse" style="cursor:pointer;">Need to update your response?</p>
 </div>
 
 </div>
 </div>
 
-<!-- POPUP -->
+<!-- popup -->
 <div id="popup" class="popup-overlay">
 <div class="popup-box">
 <p id="popupMessage"></p>
@@ -207,6 +184,7 @@ The forest will reach out when your path is ready. You’ll receive your forest 
 </div>
 
 <script>
+// ELEMENTS
 const attendance = document.getElementById("attendance");
 const yesFields = document.getElementById("yesFields");
 const plusOne = document.getElementById("plusOne");
@@ -218,131 +196,50 @@ const responseBox = document.getElementById("responseBox");
 const responseText = document.getElementById("responseText");
 const registryWrapper = document.getElementById("registryWrapper");
 
+// POPUP
 function showPopup(msg) {
-document.getElementById("popupMessage").textContent = msg;
-document.getElementById("popup").style.display = "flex";
-}
-function closePopup() {
-document.getElementById("popup").style.display = "none";
-}
-
-attendance.addEventListener("change", () => {
-const yes = attendance.value === "yes";
-yesFields.classList.toggle("hidden", !yes);
-contactField.required = yes;
-});
-
-plusOne.addEventListener("change", () => {
-const yes = plusOne.value === "yes";
-plusOneNameWrap.classList.toggle("hidden", !yes);
-plusOneName.required = yes;
-});
-
-function isValidContact(val) {
-const phone = /^\d{10}$/;
-const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-return phone.test(val) || email.test(val);
-}
-
-form.addEventListener("submit", async (e) => {
-e.preventDefault();
-
-const contact = contactField.value.trim();
-
-if (attendance.value === "yes") {
-if (!isValidContact(contact)) {
-showPopup("Please enter a valid phone or email so we can reach you.");
-return;
-}
-if (plusOne.value === "yes" && plusOneName.value.trim() === "") {
-showPopup("Please enter your plus one’s name so we can include them.");
-return;
-}
-}
-
-const formData = new FormData(form);
-
-try {
-const res = await fetch(form.action, {
-method: "POST",
-body: formData,
-headers: { Accept: "application/json" }
-});
-
-if (res.ok) {
-form.classList.add("hidden");
-responseBox.classList.remove("hidden");
-
-if (attendance.value === "yes") {
-responseText.textContent = "We’re excited to have you there.";
-} else {
-responseText.textContent = "We’ll miss you, but we understand.";
-registryWrapper.classList.remove("hidden");
-}
-}
-} catch {
-showPopup("Network error. Please try again.");
-}
-});
-
-document.getElementById("editResponse").addEventListener("click", () => {
-responseBox.classList.add("hidden");
-form.classList.remove("hidden");
-});
-</script>
-
-</body>
-</html>  document.getElementById("popupMessage").textContent = msg;
+  document.getElementById("popupMessage").textContent = msg;
   document.getElementById("popup").style.display = "flex";
 }
 function closePopup() {
   document.getElementById("popup").style.display = "none";
 }
 
+// CONDITIONAL
 attendance.addEventListener("change", () => {
-  const yes = attendance.value === "yes";
-  yesFields.classList.toggle("hidden", !yes);
-  contactField.required = yes;
+  yesFields.classList.toggle("hidden", attendance.value !== "yes");
 });
 
 plusOne.addEventListener("change", () => {
-  const yes = plusOne.value === "yes";
-  plusOneNameWrap.classList.toggle("hidden", !yes);
-  plusOneName.required = yes;
+  plusOneNameWrap.classList.toggle("hidden", plusOne.value !== "yes");
 });
 
+// VALIDATION
 function isValidContact(val) {
   const phone = /^\d{10}$/;
   const email = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return phone.test(val) || email.test(val);
 }
 
+// SUBMIT
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  // ✅ FIX: prevent ghost triggers
-  if (!e.isTrusted) return;
-
-  if (attendance.value !== "yes" && attendance.value !== "no") {
-    showPopup("Please select whether you will be attending.");
+  if (attendance.value === "") {
+    showPopup("Please select if you're attending.");
     return;
   }
 
-  const contact = contactField.value.trim();
-
   if (attendance.value === "yes") {
-    if (!isValidContact(contact)) {
-      showPopup("Please enter a valid phone or email so we can reach you.");
+    if (!isValidContact(contactField.value.trim())) {
+      showPopup("Enter a valid phone or email.");
       return;
     }
     if (plusOne.value === "yes" && plusOneName.value.trim() === "") {
-      showPopup("Please enter your plus one’s name so we can include them.");
+      showPopup("Enter your plus one’s name.");
       return;
     }
   }
-
-  submitBtn.textContent = "Sending...";
-  submitBtn.disabled = true;
 
   const formData = new FormData(form);
 
@@ -361,13 +258,57 @@ form.addEventListener("submit", async (e) => {
         responseText.textContent = "We’re excited to have you there.";
       } else {
         responseText.textContent = "We’ll miss you, but we understand.";
+        registryWrapper.classList.remove("hidden");
       }
     } else {
-      showPopup("RSVP failed. Please try again.");
+      showPopup("Submission failed.");
     }
   } catch {
-    showPopup("Network error. Please try again.");
+    showPopup("Network error.");
   }
+});
+
+// FOREST CODE SYSTEM (WITH MEMORY)
+const VALID_CODES = {
+  "TACOSTESTCODE": "Taco Test"
+};
+
+const codeInput = document.getElementById("forestCodeInput");
+const codeButton = document.getElementById("forestCodeButton");
+const codeMessage = document.getElementById("codeMessage");
+
+let attempts = 0;
+
+const messages = [
+  "That’s not the code.",
+  "Try again.",
+  "Are you sure you were invited?",
+  "Bestie… check your texts.",
+  "Girl… be serious right now."
+];
+
+codeButton.addEventListener("click", () => {
+  const entered = codeInput.value.trim().toUpperCase();
+
+  if (VALID_CODES[entered]) {
+
+    // 🌲 SAVE SESSION MEMORY
+    sessionStorage.setItem("rsvpAccess", "true");
+    sessionStorage.setItem("guestName", VALID_CODES[entered]);
+
+    window.location.href = "landing.html";
+    return;
+  }
+
+  attempts++;
+  codeMessage.textContent =
+    messages[Math.min(attempts - 1, messages.length - 1)];
+});
+
+// EDIT
+document.getElementById("editResponse").addEventListener("click", () => {
+  responseBox.classList.add("hidden");
+  form.classList.remove("hidden");
 });
 </script>
 
