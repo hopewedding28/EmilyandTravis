@@ -27,6 +27,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
   <link rel="preload" href="assets/backgrounds/inside-gate.png" as="image" />
 
+  <!-- security gate — must be first script -->
+  <script src="security.js"></script>
+
   <style>
 
     /* ============================================================
@@ -109,6 +112,12 @@
       overflow: hidden;
       background: var(--forest-deep);
       font-family: 'Zen Loop', sans-serif;
+      opacity: 0;
+      transition: opacity 0.6s var(--ease-soft);
+    }
+
+    body.authorized {
+      opacity: 1;
     }
 
 
