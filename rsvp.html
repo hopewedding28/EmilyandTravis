@@ -816,9 +816,7 @@ document.getElementById('contact').addEventListener('input', function() {
         // success
         sessionStorage.setItem(ATTENDANCE_KEY, attendVal);
 
-        form.classList.add('hidden');
-        responseBox.classList.remove('hidden');
-        setTimeout(() => responseBox.classList.add('show'), 50);
+        window.location.href = 'confirmation.html';
 
         const first = nameVal.split(' ')[0];
         const cap   = first.charAt(0).toUpperCase() + first.slice(1).toLowerCase();
