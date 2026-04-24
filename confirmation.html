@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#060b06" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <title>Emily &amp; Travis — See You Soon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --burnt-orange:  #CC5500;
+      --plum:          #673147;
+      --plum-border:   rgba(103,49,71,0.40);
+      --gold:          #d4aa50;
+      --mist:          rgba(248,242,224,0.97);
+      --mist-soft:     rgba(242,235,212,0.88);
+      --mist-faint:    rgba(240,234,214,0.52);
+      --text-main:     rgba(232,225,199,0.92);
+      --forest-deep:   #060b06;
+      --ease-soft:     cubic-bezier(0.25,0.8,0.25,1);
+      --ease-default:  cubic-bezier(0.4,0,0.2,1);
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      font-family: 'Zen Loop', sans-serif;
+      background: var(--forest-deep);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    .forest {
+      min-height: 100vh;
+      min-height: 100dvh;
+      background: url("assets/backgrounds/landing.png") center / cover no-repeat;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: max(3rem, env(safe-area-inset-top)) 1.25rem max(3rem, env(safe-area-inset-bottom));
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .forest::before {
+      content: "";
+      position: absolute; inset: 0; z-index: 1;
+      background: radial-gradient(ellipse at center,
+        rgba(6,6,6,0.05) 0%,
+        rgba(6,6,6,0.20) 55%,
+        rgba(6,6,6,0.35) 100%
+      );
+      pointer-events: none;
+    }
+
+    .overlay-breathe {
+      position: absolute; inset: 0; z-index: 2;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(4,6,4,0.18) 100%);
+      pointer-events: none;
+      animation: breathePulse 10s ease-in-out infinite;
+    }
+    @keyframes breathePulse { 0%,100%{opacity:.5} 50%{opacity:1} }
+
+    .overlay-glow {
+      position: absolute; inset: 0; z-index: 2;
+      background: radial-gradient(ellipse at 50% 38%, rgba(204,85,0,0.05) 0%, transparent 55%);
+      pointer-events: none;
+      animation: glowShift 18s ease-in-out infinite alternate;
+    }
+    @keyframes glowShift { 0%{opacity:.4} 100%{opacity:1} }
+
+    .mist-layer {
+      position: absolute; inset: auto 0 0 0; height: 28vh; z-index: 3;
+      background:
+        radial-gradient(ellipse at 20% 100%, rgba(255,255,255,0.022), transparent 36%),
+        radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.034), transparent 42%),
+        radial-gradient(ellipse at 80% 100%, rgba(255,255,255,0.024), transparent 38%);
+      filter: blur(22px); opacity: 0.88; pointer-events: none;
+      animation: mistDrift 22s ease-in-out infinite alternate;
+    }
+    @keyframes mistDrift {
+      0%  { transform: translateX(-2%) translateY(0);   opacity: .68; }
+      100%{ transform: translateX(2%)  translateY(-1%); opacity: .95; }
+    }
+
+    .fireflies { position: absolute; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+    .firefly {
+      position: absolute; border-radius: 50%; opacity: 0;
+      animation-name: driftFloat, flickerGlow;
+      animation-timing-function: linear, ease-in-out;
+      animation-iteration-count: infinite;
+      will-change: transform, opacity;
+    }
+    .firefly.color-gold      { background: radial-gradient(circle, rgba(255,240,140,.98) 0%, rgba(243,211,122,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(243,220,120,.65), 0 0 20px rgba(230,200,100,.28); }
+    .firefly.color-amber     { background: radial-gradient(circle, rgba(255,180,60,.98) 0%, rgba(240,150,30,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(255,170,50,.65), 0 0 20px rgba(240,140,20,.28); }
+    .firefly.color-warmwhite { background: radial-gradient(circle, rgba(255,252,230,.98) 0%, rgba(255,245,200,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(255,248,220,.65), 0 0 20px rgba(255,240,190,.28); }
+    .firefly.rise { animation-name: driftRise, flickerGlow; }
+
+    @keyframes driftFloat {
+      0%  { transform: translate3d(0,0,0) scale(.88); }
+      20% { transform: translate3d(18px,-26px,0) scale(1.07); }
+      40% { transform: translate3d(-12px,-42px,0) scale(.94); }
+      60% { transform: translate3d(15px,-30px,0) scale(1.11); }
+      80% { transform: translate3d(-9px,-15px,0) scale(.97); }
+      100%{ transform: translate3d(-5px,0,0) scale(.90); }
+    }
+    @keyframes driftRise {
+      0%  { transform: translate3d(0,0,0) scale(.7); opacity: 0; }
+      8%  { opacity: .7; }
+      100%{ transform: translate3d(var(--rx,18px),-140px,0) scale(1.1); opacity: 0; }
+    }
+    @keyframes flickerGlow {
+      0%,100%{opacity:.04} 10%{opacity:.68} 26%{opacity:.10}
+      48%{opacity:.80} 66%{opacity:.16} 82%{opacity:.55}
+    }
+
+    .loading-screen {
+      position: fixed; inset: 0; background: var(--forest-deep);
+      z-index: 100; pointer-events: none;
+      transition: opacity 1s var(--ease-soft);
+    }
+    .loading-screen.done { opacity: 0; }
+
+    /* ── CONTENT ── */
+    .content-wrap {
+      position: relative; z-index: 6;
+      width: 100%; max-width: 480px;
+      text-align: center;
+      opacity: 0;
+      animation: riseIn 900ms var(--ease-soft) forwards;
+      animation-delay: 400ms;
+    }
+
+    /* ── CONFIRMATION BOX ── */
+    .confirm-box {
+      background: rgba(4,6,4,0.72);
+      border: 1px solid rgba(103,49,71,0.22);
+      border-radius: 3px;
+      padding: 2.2rem 2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .vine { display: flex; align-items: center; justify-content: center; margin: 0 0 1.4rem; opacity: 0.65; }
+    .vine svg { width: 180px; height: 14px; }
+
+    .confirm-title {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      color: var(--mist);
+      text-shadow: 0 0 12px rgba(204,85,0,0.30), 0 2px 10px rgba(0,0,0,0.85);
+      margin-bottom: 1rem;
+      line-height: 1.2;
+    }
+
+    .confirm-text {
+      font-size: 0.92rem;
+      color: var(--mist-faint);
+      font-style: italic;
+      line-height: 1.75;
+      letter-spacing: 0.02em;
+    }
+
+    .confirm-note {
+      font-size: 0.82rem;
+      color: rgba(204,85,0,0.75);
+      font-style: italic;
+      margin-top: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── SIMPLE VERSION BUTTON ── */
+    .simple-btn {
+      display: block;
+      width: 100%;
+      padding: 1rem 1.5rem;
+      background: rgba(4,6,4,0.72);
+      border: 1px solid rgba(103,49,71,0.22);
+      border-radius: 3px;
+      color: var(--mist);
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.88rem;
+      letter-spacing: 0.08em;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 250ms var(--ease-default), border-color 250ms;
+    }
+    .simple-btn:hover {
+      background: rgba(103,49,71,0.25);
+      border-color: rgba(103,49,71,0.45);
+    }
+    .simple-btn-label {
+      font-size: 0.72rem;
+      color: var(--mist-faint);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .content-wrap { animation: none; opacity: 1; }
+      .overlay-breathe,.overlay-glow,.mist-layer { animation: none; }
+      .firefly { display: none; }
+      .loading-screen { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
+
+  <div class="forest">
+    <div class="overlay-breathe" aria-hidden="true"></div>
+    <div class="overlay-glow"    aria-hidden="true"></div>
+    <div class="mist-layer"      aria-hidden="true"></div>
+    <div class="fireflies" id="fireflies" aria-hidden="true"></div>
+
+    <div class="content-wrap">
+
+      <div class="confirm-box" id="confirmBox">
+
+        <div class="vine" aria-hidden="true">
+          <svg viewBox="0 0 180 14" fill="none">
+            <line x1="0" y1="7" x2="68" y2="7" stroke="#b8922e" stroke-width="0.7" opacity="0.6"/>
+            <circle cx="76" cy="7" r="2.5" fill="#b8922e" opacity="0.65"/>
+            <circle cx="90" cy="7" r="4" fill="#d4aa50" opacity="0.85"/>
+            <circle cx="104" cy="7" r="2.5" fill="#b8922e" opacity="0.65"/>
+            <line x1="112" y1="7" x2="180" y2="7" stroke="#b8922e" stroke-width="0.7" opacity="0.6"/>
+          </svg>
+        </div>
+
+        <p class="confirm-title" id="confirmTitle"></p>
+        <p class="confirm-text"  id="confirmText"></p>
+        <p class="confirm-note"  id="confirmNote"></p>
+
+      </div>
+
+      <a href="simple.html" class="simple-btn">
+        <span class="simple-btn-label">Looking for something simpler?</span>
+        Want a simplified version of the website? Click here!
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    const ATTENDANCE_KEY = 'guestAttendance';
+
+    setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 200);
+
+    // fireflies
+    const wrap   = document.getElementById('fireflies');
+    const colors = ['color-gold','color-amber','color-warmwhite'];
+    const count  = window.matchMedia('(hover:none)').matches ? 12 : 20;
+    const frag   = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const dot = document.createElement('span');
+      const riseN = Math.floor(count * 0.18);
+      dot.className = 'firefly ' + colors[i % colors.length];
+      if (i < riseN) {
+        dot.classList.add('rise');
+        dot.style.left   = (Math.random()*90+5).toFixed(1)+'%';
+        dot.style.bottom = (-4+Math.random()*8).toFixed(1)+'%';
+        dot.style.top    = 'auto';
+        dot.style.setProperty('--rx', (Math.random()*60-30).toFixed(0)+'px');
+      } else {
+        dot.style.left = (Math.random()*97).toFixed(1)+'%';
+        dot.style.top  = (Math.random()*92).toFixed(1)+'%';
+      }
+      const size = (Math.random()*3+2.5).toFixed(1);
+      dot.style.width  = size+'px';
+      dot.style.height = size+'px';
+      dot.style.animationDuration = (Math.random()*10+10).toFixed(1)+'s,'+(Math.random()*5+4).toFixed(1)+'s';
+      dot.style.animationDelay    = (Math.random()*8).toFixed(2)+'s,'+(Math.random()*5).toFixed(2)+'s';
+      frag.appendChild(dot);
+    }
+    wrap.appendChild(frag);
+
+    // personalize based on attendance
+    const attendance = sessionStorage.getItem(ATTENDANCE_KEY) || 'yes';
+    const title  = document.getElementById('confirmTitle');
+    const text   = document.getElementById('confirmText');
+    const note   = document.getElementById('confirmNote');
+
+    if (attendance === 'no') {
+      title.textContent = 'We\'ll miss you!';
+      text.textContent  = 'Thank you for letting the couple know you won\'t be able to attend. Emily and Travis will still think of you on their special day!';
+      note.textContent  = 'You\'re still part of the story.';
+    } else {
+      title.textContent = 'Can\'t wait to celebrate with you!';
+      text.textContent  = 'Your name has been recorded! Emily is reviewing submissions and will send you a code soon. That\'s your golden ticket into the wedding website where all the good stuff lives. Keep an eye on your phone or email!';
+      note.textContent  = 'The forest will send word when the time draws near.';
+    }
+
+  })();
+  </script>
+
+</body>
+</html>
