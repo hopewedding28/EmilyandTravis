@@ -497,7 +497,15 @@
           <!-- kids -->
           <div class="field">
             <label class="field-label" for="kidsCount">Little ones attending <span style="font-size:0.72rem;opacity:0.65;">(max 6)</span></label>
-            <input type="number" id="kidsCount" name="children" min="0" max="6" value="0" />
+            <select id="kidsCount" name="children">
+  <option value="0">None</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+  <option value="5">5</option>
+  <option value="6">6</option>
+</select>
           </div>
 
           <!-- setup help -->
@@ -783,10 +791,7 @@ document.getElementById('contact').addEventListener('input', function() {
         showPopup("Please share your plus one's name so the forest can welcome them too."); return;
       }
 
-      // kids validation
-      const kidsVal = parseInt(document.getElementById('kidsCount').value) || 0;
-      if (kidsVal > 6) { showPopup("Tell them to dress up cute and have fun! We'll provide activities for them!"); return; }
-
+     
       submitBtn.disabled = true;
       btnText.classList.add('hidden');
       btnLoader.classList.add('active');
