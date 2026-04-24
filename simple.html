@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Emily &amp; Travis — The Basics</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+  width: 100%;
+  min-height: 100%;
+  background: #ffffff;
+  color: #2a2a2a;
+  font-family: 'Zen Loop', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+    .page {
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 4rem;
+    }
+
+    .page-title {
+      font-family: 'Shadows Into Light Two', cursive;
+      font-size: 2rem;
+      color: #2a2a2a;
+      text-align: center;
+      margin-bottom: 0.3rem;
+    }
+
+    .page-sub {
+      font-size: 0.78rem;
+      color: #888;
+      text-align: center;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+
+    .divider {
+      width: 100%;
+      height: 1px;
+      background: #e0e0e0;
+      margin: 1.8rem 0;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      color: #CC5500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-value {
+      font-size: 1rem;
+      color: #2a2a2a;
+      line-height: 1.6;
+    }
+
+    .section-value a {
+      color: #CC5500;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .registry-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-top: 0.5rem;
+    }
+
+    .registry-link {
+      display: block;
+      padding: 0.75rem 1rem;
+      background: #f8f8f8;
+      border: 1px solid #e0e0e0;
+      border-radius: 3px;
+      color: #2a2a2a;
+      text-decoration: none;
+      font-size: 0.9rem;
+      text-align: center;
+      transition: background 200ms;
+    }
+    .registry-link:hover { background: #f0f0f0; }
+
+    .back-btn {
+      display: block;
+      text-align: center;
+      margin-top: 2.5rem;
+      font-size: 0.78rem;
+      color: #888;
+      letter-spacing: 0.08em;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: 'Zen Loop', sans-serif;
+    }
+    .back-btn:hover { color: #2a2a2a; }
+  </style>
+</head>
+<body>
+
+  <div class="page">
+
+    <h1 class="page-title">Emily &amp; Travis</h1>
+    <p class="page-sub">September 23, 2028 &nbsp;&middot;&nbsp; Bear, Delaware</p>
+
+    <div class="section-label">Time</div>
+    <div class="section-value">Be seated by 12:55 PM</div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Location</div>
+    <div class="section-value">
+      <a href="https://maps.app.goo.gl/PDt4W6wvXagHZyhe8" target="_blank" rel="noopener">
+        Lums Pond State Park, Pavilion 1 &amp; 1B
+      </a>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Dress Code</div>
+    <div class="section-value">
+      Casual and comfortable. Think family reunion meets backyard party. No heels on grass, no suits required. Just show up cute.
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section-label">Registry</div>
+    <div class="registry-links">
+      <a href="#" class="registry-link">Amazon</a>
+      <a href="#" class="registry-link">Target</a>
+      <a href="#" class="registry-link">Honeyfund</a>
+    </div>
+
+    <button class="back-btn" onclick="history.back()">Go back</button>
+
+  </div>
+
+</body>
+</html>
