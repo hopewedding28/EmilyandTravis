@@ -749,6 +749,20 @@
       setTimeout(() => sparkBurst.innerHTML = '', 2700);
     }
 
+// auto-format phone or email
+document.getElementById('contact').addEventListener('input', function() {
+  let val = this.value.replace(/\D/g, '');
+  if (this.value.match(/^[0-9\s\-().+]+$/) && val.length > 0) {
+    if (val.length <= 3) {
+      this.value = val;
+    } else if (val.length <= 6) {
+      this.value = val.slice(0,3) + '-' + val.slice(3);
+    } else {
+      this.value = val.slice(0,3) + '-' + val.slice(3,6) + '-' + val.slice(6,10);
+    }
+  }
+});
+    
     // validation
     function validContact(v) {
       return /^\+?[\d\s\-().]{10,}$/.test(v) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
