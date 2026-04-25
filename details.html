@@ -272,6 +272,11 @@
       80% { transform: translate3d(-9px,-15px,0) scale(.97); }
       100%{ transform: translate3d(-5px,0,0) scale(.90); }
     }
+    @keyframes driftRise {
+  0%  { transform: translate3d(0,0,0) scale(.7); opacity: 0; }
+  8%  { opacity: .7; }
+  100%{ transform: translate3d(var(--rx,18px),-140px,0) scale(1.1); opacity: 0; }
+}
     @keyframes flickerGlow {
       0%,100%{opacity:.04} 10%{opacity:.68} 26%{opacity:.10}
       48%{opacity:.80} 66%{opacity:.16} 82%{opacity:.55}
@@ -789,24 +794,38 @@
   (function() {
     'use strict';
 
-    document.body.classList.add('authorized');
-    setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 300);
+if (localStorage.getItem('rsvpAccess') !== 'true') {
+  window.location.replace('index.html');
+} else {
+  document.body.classList.add('authorized');
+}
+
+setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 300);
 
     const isMobile  = window.matchMedia('(hover:none)').matches;
     const isReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-    // fireflies
+// fireflies
     const firefliesEl = document.getElementById('fireflies');
     const COLORS = ['color-gold','color-amber','color-warmwhite','color-ygreen'];
     function makeFireflies() {
       firefliesEl.innerHTML = '';
       const count = isMobile ? 10 : 18;
+      const riseN = Math.floor(count * 0.18);
       const frag  = document.createDocumentFragment();
       for (let i = 0; i < count; i++) {
         const dot = document.createElement('span');
         dot.className = 'firefly ' + COLORS[i % COLORS.length];
-        dot.style.left = (Math.random()*97).toFixed(1)+'%';
-        dot.style.top  = (Math.random()*92).toFixed(1)+'%';
+        if (i < riseN) {
+          dot.classList.add('rise');
+          dot.style.left   = (Math.random()*90+5).toFixed(1)+'%';
+          dot.style.bottom = (-4+Math.random()*8).toFixed(1)+'%';
+          dot.style.top    = 'auto';
+          dot.style.setProperty('--rx', (Math.random()*60-30).toFixed(0)+'px');
+        } else {
+          dot.style.left = (Math.random()*97).toFixed(1)+'%';
+          dot.style.top  = (Math.random()*92).toFixed(1)+'%';
+        }
         const size = (Math.random()*3+2.5).toFixed(1);
         dot.style.width  = size+'px';
         dot.style.height = size+'px';
