@@ -285,7 +285,9 @@
   const btn = document.createElement('a');
   btn.href = 'transition2.html';
   btn.textContent = 'Enter the forest';
-  btn.style.cssText = 'display:block;margin-top:1.5rem;font-family:Zen Loop,sans-serif;font-size:0.88rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(248,242,224,0.88);text-decoration:none;text-align:center;';
+  btn.style.cssText = 'display:block;margin-top:1.5rem;font-family:Zen Loop,sans-serif;font-size:0.88rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(204,85,0,0.80);text-decoration:none;text-align:center;border-top:1px solid rgba(103,49,71,0.22);padding-top:1.2rem;transition:color 200ms;';
+  btn.onmouseover = () => btn.style.color = 'rgba(248,242,224,0.95)';
+btn.onmouseout  = () => btn.style.color = 'rgba(204,85,0,0.80)';
   document.querySelector('.confirm-box').appendChild(btn);
 }
   })();
