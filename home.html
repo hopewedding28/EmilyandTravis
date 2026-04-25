@@ -1588,7 +1588,11 @@
     /* ============================================================
        AUTHORIZED — show the page
     ============================================================ */
-    document.body.classList.add('authorized');
+    if (localStorage.getItem('rsvpAccess') !== 'true') {
+  window.location.replace('index.html');
+} else {
+  document.body.classList.add('authorized');
+}
 
     /* ============================================================
        CONSTANTS
