@@ -371,32 +371,17 @@
        One input, one button, one purpose.
     ============================================================ */
     .gate-card {
-      position: relative;
-      z-index: 6;
-      width: 100%;
-      max-width: 480px;
-      background: var(--card-bg);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 3rem 2.5rem 2.8rem;
-      text-align: center;
+  position: relative;
+  z-index: 6;
+  width: 100%;
+  max-width: 480px;
+  padding: 3rem 2.5rem 2.8rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.8s var(--ease-soft), transform 0.8s var(--ease-soft);
+}
 
-      box-shadow:
-        0 0  0    1px  rgba(103, 49, 71, 0.10),
-        0 0  50px 0    rgba(204, 85, 0,  0.10),
-        0 0  90px 0    rgba(103, 49, 71, 0.08),
-        0 28px 70px    rgba(0, 0, 0, 0.60),
-        inset 0 1px 0  rgba(255, 255, 255, 0.02),
-        inset 0 0 50px rgba(204, 85, 0, 0.03);
-
-      opacity: 0;
-      transform: translateY(18px);
-      transition:
-        opacity   0.8s var(--ease-soft),
-        transform 0.8s var(--ease-soft);
-    }
 
     .gate-card.visible {
       opacity: 1;
@@ -523,10 +508,9 @@
       letter-spacing: 0.02em;
       margin-bottom: 0.5rem;
       text-shadow:
-        0 0  4px  rgba(0, 0, 0, 0.98),
-        0 2px 12px rgba(0, 0, 0, 0.92),
-        0 0  30px rgba(204, 85, 0, 0.25),
-        0 0  50px rgba(204, 85, 0, 0.10);
+  0 0 8px rgba(0,0,0,1),
+  0 2px 20px rgba(0,0,0,1),
+  0 0 40px rgba(0,0,0,0.95);
       opacity: 0;
       animation: riseIn var(--t-slow) var(--ease-soft) forwards;
       animation-delay: 800ms;
@@ -1095,69 +1079,7 @@
 
     <!-- gate card -->
     <div class="gate-card" id="gateCard">
-
-      <!-- textures + frames -->
-      <div class="card-texture"  aria-hidden="true"></div>
-      <div class="inner-frame"   aria-hidden="true"></div>
-      <div class="inner-frame-2" aria-hidden="true"></div>
-
-      <!-- botanical corners -->
-      <div class="corner-decor tl" aria-hidden="true">
-        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 57 C3 35 3 18 3 3 L57 3" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
-          <path d="M3 42 C10 36 18 32 26 30" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M3 28 C12 24 22 21 32 20" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M16 3 C19 11 20 22 18 32" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M30 3 C32 10 31 20 28 28" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <circle cx="3"  cy="3"  r="2.2" fill="#CC5500" opacity="0.75"/>
-          <circle cx="26" cy="30" r="1.6" fill="#673147" opacity="0.60"/>
-          <path d="M6 36 C8 33 11 32 14 34 C11 35 8 36 6 36Z" fill="#1a3a1a" opacity="0.55"/>
-          <path d="M12 22 C14 19 17 18 19 21 C17 22 14 22 12 22Z" fill="#1a3a1a" opacity="0.50"/>
-        </svg>
-      </div>
-
-      <div class="corner-decor tr" aria-hidden="true">
-        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 57 C3 35 3 18 3 3 L57 3" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
-          <path d="M3 42 C10 36 18 32 26 30" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M3 28 C12 24 22 21 32 20" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M16 3 C19 11 20 22 18 32" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M30 3 C32 10 31 20 28 28" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <circle cx="3"  cy="3"  r="2.2" fill="#CC5500" opacity="0.75"/>
-          <circle cx="26" cy="30" r="1.6" fill="#673147" opacity="0.60"/>
-          <path d="M6 36 C8 33 11 32 14 34 C11 35 8 36 6 36Z" fill="#1a3a1a" opacity="0.55"/>
-          <path d="M12 22 C14 19 17 18 19 21 C17 22 14 22 12 22Z" fill="#1a3a1a" opacity="0.50"/>
-        </svg>
-      </div>
-
-      <div class="corner-decor bl" aria-hidden="true">
-        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 57 C3 35 3 18 3 3 L57 3" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
-          <path d="M3 42 C10 36 18 32 26 30" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M3 28 C12 24 22 21 32 20" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M16 3 C19 11 20 22 18 32" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M30 3 C32 10 31 20 28 28" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <circle cx="3"  cy="3"  r="2.2" fill="#CC5500" opacity="0.75"/>
-          <circle cx="26" cy="30" r="1.6" fill="#673147" opacity="0.60"/>
-          <path d="M6 36 C8 33 11 32 14 34 C11 35 8 36 6 36Z" fill="#1a3a1a" opacity="0.55"/>
-          <path d="M12 22 C14 19 17 18 19 21 C17 22 14 22 12 22Z" fill="#1a3a1a" opacity="0.50"/>
-        </svg>
-      </div>
-
-      <div class="corner-decor br" aria-hidden="true">
-        <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M3 57 C3 35 3 18 3 3 L57 3" stroke="#673147" stroke-width="1" stroke-linecap="round"/>
-          <path d="M3 42 C10 36 18 32 26 30" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M3 28 C12 24 22 21 32 20" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M16 3 C19 11 20 22 18 32" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <path d="M30 3 C32 10 31 20 28 28" stroke="#673147" stroke-width="0.7" stroke-linecap="round"/>
-          <circle cx="3"  cy="3"  r="2.2" fill="#CC5500" opacity="0.75"/>
-          <circle cx="26" cy="30" r="1.6" fill="#673147" opacity="0.60"/>
-          <path d="M6 36 C8 33 11 32 14 34 C11 35 8 36 6 36Z" fill="#1a3a1a" opacity="0.55"/>
-          <path d="M12 22 C14 19 17 18 19 21 C17 22 14 22 12 22Z" fill="#1a3a1a" opacity="0.50"/>
-        </svg>
-      </div>
-
+      
       <!-- firefly converge container -->
       <div class="converge-wrap" id="convergeWrap" aria-hidden="true">
         <div class="converge-center" id="convergeCenter"></div>
