@@ -1620,7 +1620,7 @@
     /* ============================================================
        GUEST DATA
     ============================================================ */
-    const rawName = localStorage.getItem(GUEST_KEY) || '';
+    const rawName = localStorage.getItem('guestName') || '';
 
     function formatName(name) {
       return name.trim().split(' ')
