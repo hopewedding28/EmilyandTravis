@@ -815,6 +815,7 @@ document.getElementById('contact').addEventListener('input', function() {
 
         // success
         sessionStorage.setItem(ATTENDANCE_KEY, attendVal);
+        localStorage.setItem('guestName', nameVal);
 
         window.location.href = 'confirmation.html';
 
