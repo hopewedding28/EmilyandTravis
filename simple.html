@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&family=Zen+Loop&display=swap" rel="stylesheet" />
+  <script src="security.js"></script>
 
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -140,7 +141,8 @@
     </div>
 
     <div class="divider"></div>
-
+    
+    <!-- # Means Website URL Links -->
     <div class="section-label">Registry</div>
     <div class="registry-links">
       <a href="#" class="registry-link">Amazon</a>
@@ -151,6 +153,10 @@
     <button class="back-btn" onclick="history.back()">Go back</button>
 
   </div>
-
+<script>
+if (localStorage.getItem('rsvpAccess') !== 'true') {
+  window.location.replace('index.html');
+}
+</script>
 </body>
 </html>
