@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Guest Center — Emily & Travis</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
+  <script src="security.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -211,6 +212,12 @@
 <a href="faq.html" id="faqLink">{ FAQ }</a>
 
 <script>
+
+  if (localStorage.getItem('rsvpAccess') !== 'true') {
+  window.location.replace('index.html');
+}
+
+  
 // ── SOURCE IMAGE SIZE & FRAME COORDS ──
 const IMG_W = 1344, IMG_H = 896;
 const LF = { x:88,  y:173, w:548, h:557 };  // left frame in source px
@@ -309,7 +316,7 @@ function buildPanels(panelH, base) {
 
 function wireUp() {
   // name
-  const gn = sessionStorage.getItem('guestName') || 'Guest';
+  const gn = localStorage.getItem('guestName') || 'Guest';
   document.getElementById('nameTag').textContent = gn;
 
   // post btn
@@ -327,7 +334,7 @@ function wireUp() {
 }
 
 // ── COMMENTS ──
-let guestName = sessionStorage.getItem('guestName') || 'Guest';
+let guestName = localStorage.getItem('guestName') || 'Guest';
 let comments = [];
 try { comments = JSON.parse(localStorage.getItem('wc_c')||'[]'); } catch(e){}
 let daily = {};
@@ -469,6 +476,7 @@ function togglePause(){
 window.addEventListener('resize', layout);
 document.getElementById('bgImg').addEventListener('load', layout);
 layout();
+ 
 </script>
 </body>
 </html>
