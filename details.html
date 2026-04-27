@@ -2,6 +2,16 @@
 <html lang="en">
 <head>
 
+  <!-- ============================================================
+       EMILY & TRAVIS WEDDING SITE
+       FILE: details.html
+       PURPOSE: Simple info page. Time, location, dress code,
+                what to expect. No redundant card links.
+       BACKGROUND: landing.png
+       PALETTE: Burnt Orange #CC5500, Plum #673147,
+                Dark Green #1a3a1a, Black, Mist
+  ============================================================ -->
+
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#060b06" />
@@ -27,11 +37,9 @@
       --gold:          #f3d37a;
       --mist:          rgba(248,242,224,0.97);
       --mist-soft:     rgba(242,235,212,0.88);
-      --mist-faint:    rgba(240,234,214,0.52);
-      --text-main:     rgba(232,225,199,0.92);
+      --mist-faint:    rgba(240,234,214,0.65);
+      --text-main:     rgba(232,225,199,0.95);
       --forest-deep:   #060b06;
-      --card-bg:       rgba(4,6,4,0.68);
-      --card-border:   rgba(103,49,71,0.28);
       --ease-soft:     cubic-bezier(0.25,0.8,0.25,1);
       --ease-default:  cubic-bezier(0.4,0,0.2,1);
       --ease-spring:   cubic-bezier(0.34,1.56,0.64,1);
@@ -52,7 +60,6 @@
 
     body.authorized { opacity: 1; }
 
-    /* ── LOADING ── */
     .loading-screen {
       position: fixed; inset: 0;
       background: var(--forest-deep);
@@ -73,64 +80,44 @@
     }
 
     .header-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 0.6rem 1.5rem;
     }
 
     .header-name {
       font-family: 'Shadows Into Light Two', cursive;
-      font-size: 1.2rem;
-      color: var(--mist-soft);
+      font-size: 1.2rem; color: var(--mist-soft);
       text-decoration: none;
       text-shadow: 0 0 10px rgba(204,85,0,0.18);
     }
 
-    .nav-bar {
-      display: flex;
-      align-items: center;
-      gap: 0.2rem;
-    }
+    .nav-bar { display: flex; align-items: center; gap: 0.2rem; }
 
     .nav-link {
       font-family: 'Zen Loop', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--mist-faint);
-      padding: 0.4rem 0.7rem;
-      border-radius: 2px;
-      white-space: nowrap;
+      font-size: 0.78rem; letter-spacing: 0.10em;
+      text-transform: uppercase; text-decoration: none;
+      color: var(--mist-faint); padding: 0.4rem 0.7rem;
+      border-radius: 2px; white-space: nowrap;
       transition: color 0.22s var(--ease-default);
       position: relative;
     }
     .nav-link::after {
-      content: "";
-      position: absolute;
-      bottom: 0.15rem; left: 20%; right: 20%;
-      height: 1px;
+      content: ""; position: absolute;
+      bottom: 0.15rem; left: 20%; right: 20%; height: 1px;
       background: linear-gradient(to right, transparent, rgba(204,85,0,0.55), transparent);
-      opacity: 0;
-      transition: opacity 0.22s, left 0.22s, right 0.22s;
+      opacity: 0; transition: opacity 0.22s, left 0.22s, right 0.22s;
     }
     .nav-link:hover, .nav-link.active { color: var(--mist-soft); }
     .nav-link:hover::after, .nav-link.active::after { opacity: 1; left: 10%; right: 10%; }
 
-    .nav-dot {
-      width: 3px; height: 3px; border-radius: 50%;
-      background: rgba(103,49,71,0.40); flex-shrink: 0;
-    }
+    .nav-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(103,49,71,0.40); flex-shrink: 0; }
 
     /* ── HAMBURGER ── */
     .hamburger-btn {
-      display: none;
-      width: 40px; height: 40px;
-      background: rgba(4,6,4,0.85);
-      border: 1px solid var(--plum-border);
-      border-radius: 3px;
-      cursor: pointer;
+      display: none; width: 40px; height: 40px;
+      background: rgba(4,6,4,0.85); border: 1px solid var(--plum-border);
+      border-radius: 3px; cursor: pointer;
       align-items: center; justify-content: center;
       flex-direction: column; gap: 5px; padding: 10px;
       -webkit-tap-highlight-color: transparent;
@@ -151,18 +138,15 @@
     /* ── DRAWER ── */
     .drawer-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.55);
-      z-index: 130; opacity: 0; pointer-events: none;
-      transition: opacity 0.35s;
+      z-index: 130; opacity: 0; pointer-events: none; transition: opacity 0.35s;
     }
     .drawer-backdrop.show { opacity: 1; pointer-events: auto; }
 
     .nav-drawer {
       position: fixed; top: 0; left: 0;
       width: min(300px, 82vw); height: 100dvh;
-      background: rgba(4,6,4,0.97);
-      border-right: 1px solid var(--plum-border);
-      z-index: 140;
-      transform: translateX(-100%);
+      background: rgba(4,6,4,0.97); border-right: 1px solid var(--plum-border);
+      z-index: 140; transform: translateX(-100%);
       transition: transform 0.35s var(--ease-soft);
       backdrop-filter: blur(16px);
       padding: max(5rem, calc(env(safe-area-inset-top) + 4rem)) 2rem 2rem;
@@ -171,18 +155,9 @@
     .nav-drawer.open { transform: translateX(0); }
 
     .drawer-header { margin-bottom: 2rem; }
-    .drawer-names {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: 1.5rem; color: var(--mist);
-      text-shadow: 0 0 12px rgba(204,85,0,0.22);
-      display: block; margin-bottom: 0.25rem;
-    }
+    .drawer-names { font-family: 'Shadows Into Light Two', cursive; font-size: 1.5rem; color: var(--mist); text-shadow: 0 0 12px rgba(204,85,0,0.22); display: block; margin-bottom: 0.25rem; }
     .drawer-date { font-size: 0.76rem; color: var(--mist-faint); letter-spacing: 0.10em; text-transform: uppercase; }
-    .drawer-divider {
-      width: 100%; height: 1px;
-      background: linear-gradient(to right, rgba(204,85,0,0.55), transparent);
-      margin-bottom: 1.5rem; opacity: 0.55;
-    }
+    .drawer-divider { width: 100%; height: 1px; background: linear-gradient(to right, rgba(204,85,0,0.55), transparent); margin-bottom: 1.5rem; opacity: 0.55; }
     .drawer-nav { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
     .drawer-link {
       display: flex; align-items: center; gap: 1rem;
@@ -201,22 +176,19 @@
 
     /* ── HERO ── */
     .hero {
-      position: relative;
-      width: 100%;
-      height: 60vh;
-      min-height: 360px;
+      position: relative; width: 100%;
+      height: 60vh; min-height: 360px;
       background: url("assets/backgrounds/landing.png") center / cover no-repeat;
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
 
     .hero::before {
-      content: "";
-      position: absolute; inset: 0; z-index: 1;
+      content: ""; position: absolute; inset: 0; z-index: 1;
       background: radial-gradient(ellipse at center,
-        rgba(6,6,6,0.12) 0%,
-        rgba(6,6,6,0.42) 55%,
-        rgba(6,6,6,0.72) 100%
+        rgba(6,6,6,0.05) 0%,
+        rgba(6,6,6,0.28) 55%,
+        rgba(6,6,6,0.52) 100%
       );
       pointer-events: none;
     }
@@ -224,16 +196,14 @@
     .hero-breathe {
       position: absolute; inset: 0; z-index: 2;
       background: radial-gradient(ellipse at center, transparent 32%, rgba(4,8,4,0.18) 100%);
-      pointer-events: none;
-      animation: breathePulse 10s ease-in-out infinite;
+      pointer-events: none; animation: breathePulse 10s ease-in-out infinite;
     }
     @keyframes breathePulse { 0%,100%{opacity:.5} 50%{opacity:1} }
 
     .hero-glow {
       position: absolute; inset: 0; z-index: 2;
       background: radial-gradient(ellipse at 50% 40%, rgba(204,85,0,0.05) 0%, transparent 55%);
-      pointer-events: none;
-      animation: glowShift 16s ease-in-out infinite alternate;
+      pointer-events: none; animation: glowShift 16s ease-in-out infinite alternate;
     }
     @keyframes glowShift { 0%{opacity:.4} 100%{opacity:1} }
 
@@ -256,8 +226,7 @@
       position: absolute; border-radius: 50%; opacity: 0;
       animation-name: driftFloat, flickerGlow;
       animation-timing-function: linear, ease-in-out;
-      animation-iteration-count: infinite;
-      will-change: transform, opacity;
+      animation-iteration-count: infinite; will-change: transform, opacity;
     }
     .firefly.color-gold      { background: radial-gradient(circle, rgba(255,240,140,.98) 0%, rgba(243,211,122,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(243,220,120,.65), 0 0 20px rgba(230,200,100,.28); }
     .firefly.color-amber     { background: radial-gradient(circle, rgba(255,180,60,.98) 0%, rgba(240,150,30,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(255,170,50,.65), 0 0 20px rgba(240,140,20,.28); }
@@ -272,274 +241,111 @@
       80% { transform: translate3d(-9px,-15px,0) scale(.97); }
       100%{ transform: translate3d(-5px,0,0) scale(.90); }
     }
-    @keyframes driftRise {
-  0%  { transform: translate3d(0,0,0) scale(.7); opacity: 0; }
-  8%  { opacity: .7; }
-  100%{ transform: translate3d(var(--rx,18px),-140px,0) scale(1.1); opacity: 0; }
-}
     @keyframes flickerGlow {
       0%,100%{opacity:.04} 10%{opacity:.68} 26%{opacity:.10}
       48%{opacity:.80} 66%{opacity:.16} 82%{opacity:.55}
     }
 
     .hero-content {
-      position: relative; z-index: 5;
-      text-align: center;
-      padding: 2rem;
-      opacity: 0;
-      animation: riseIn 900ms var(--ease-soft) forwards;
-      animation-delay: 500ms;
+      position: relative; z-index: 5; text-align: center; padding: 2rem;
+      opacity: 0; animation: riseIn 900ms var(--ease-soft) forwards; animation-delay: 500ms;
     }
 
     .hero-title {
       font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(3rem, 8vw, 5.5rem);
-      color: var(--mist);
+      font-size: clamp(3rem, 8vw, 5.5rem); color: var(--mist);
       line-height: 1.05;
-      text-shadow:
-        0 0 6px rgba(0,0,0,0.98),
-        0 3px 18px rgba(0,0,0,0.92),
-        0 0 40px rgba(204,85,0,0.14);
+      text-shadow: 0 0 6px rgba(0,0,0,0.98), 0 3px 18px rgba(0,0,0,0.92), 0 0 40px rgba(204,85,0,0.14);
       margin-bottom: 0.6rem;
     }
 
     .hero-sub {
       font-family: 'Zen Loop', sans-serif;
       font-size: clamp(0.82rem, 1.6vw, 1rem);
-      color: var(--mist-faint);
-      letter-spacing: 0.08em;
-      font-style: italic;
+      color: var(--mist-faint); letter-spacing: 0.08em; font-style: italic;
       text-shadow: 0 1px 8px rgba(0,0,0,0.98);
     }
 
     /* ── WEATHER WIDGET ── */
     .weather-widget {
-      position: absolute;
-      bottom: 1.2rem; right: 1.5rem;
-      z-index: 6;
-      width: 200px;
-      background: rgba(4,6,4,0.78);
-      border: 1px solid rgba(103,49,71,0.30);
-      border-radius: 3px;
-      padding: 0.85rem 1rem;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      opacity: 0;
-      animation: riseIn 700ms var(--ease-soft) forwards;
-      animation-delay: 1000ms;
+      position: absolute; bottom: 1.2rem; right: 1.5rem; z-index: 6;
+      width: 210px;
+      background: rgba(6,8,6,0.88);
+      border: 1px solid rgba(204,85,0,0.28);
+      border-radius: 3px; padding: 0.85rem 1rem;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      opacity: 0; animation: riseIn 700ms var(--ease-soft) forwards; animation-delay: 1000ms;
     }
 
-    .weather-location {
-      font-size: 0.65rem;
-      color: rgba(204,85,0,0.75);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 0.35rem;
-    }
-
-    .weather-main {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      margin-bottom: 0.3rem;
-    }
-
-    .weather-icon svg {
-      width: 28px; height: 28px;
-      filter: drop-shadow(0 0 4px rgba(204,85,0,0.30));
-    }
-
-    .weather-temp {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: 1.6rem;
-      color: var(--mist);
-      line-height: 1;
-      text-shadow: 0 0 8px rgba(204,85,0,0.20);
-    }
-
-    .weather-desc {
-      font-size: 0.72rem;
-      color: var(--mist-faint);
-      font-style: italic;
-      letter-spacing: 0.03em;
-      margin-bottom: 0.5rem;
-    }
-
-    .weather-details {
-      display: flex;
-      gap: 0.75rem;
-      font-size: 0.65rem;
-      color: rgba(240,234,214,0.45);
-      letter-spacing: 0.04em;
-    }
-
-    .weather-note {
-      font-size: 0.60rem;
-      color: rgba(204,85,0,0.50);
-      font-style: italic;
-      margin-top: 0.4rem;
-      letter-spacing: 0.02em;
-      line-height: 1.4;
-    }
-
-    .weather-loading {
-      font-size: 0.72rem;
-      color: var(--mist-faint);
-      font-style: italic;
-    }
+    .weather-location { font-size: 0.68rem; color: rgba(204,85,0,0.90); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.35rem; }
+    .weather-main { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.3rem; }
+    .weather-icon svg { width: 28px; height: 28px; filter: drop-shadow(0 0 4px rgba(204,85,0,0.30)); }
+    .weather-temp { font-family: 'Shadows Into Light Two', cursive; font-size: 1.8rem; color: var(--mist); line-height: 1; text-shadow: 0 0 8px rgba(204,85,0,0.20); }
+    .weather-desc { font-size: 0.76rem; color: var(--mist-soft); font-style: italic; letter-spacing: 0.03em; margin-bottom: 0.5rem; }
+    .weather-details { display: flex; gap: 0.75rem; font-size: 0.68rem; color: rgba(240,234,214,0.70); letter-spacing: 0.04em; }
+    .weather-note { font-size: 0.62rem; color: rgba(204,85,0,0.65); font-style: italic; margin-top: 0.4rem; letter-spacing: 0.02em; line-height: 1.4; }
+    .weather-loading { font-size: 0.76rem; color: var(--mist-soft); font-style: italic; }
 
     /* ── FADE TRANSITION ── */
-    .fade-transition {
-      height: 80px;
-      background: linear-gradient(to bottom, transparent, rgba(6,8,6,0.98));
-    }
+    .fade-transition { height: 80px; background: linear-gradient(to bottom, transparent, rgba(6,8,6,0.98)); }
 
-    /* ── CARDS SECTION ── */
-    .cards-section {
-      background: linear-gradient(to bottom, rgba(6,8,6,0.98), rgba(4,6,4,0.99));
-      padding: 3rem 2rem 4rem;
-    }
-
-    .cards-intro {
-      text-align: center;
-      margin-bottom: 3rem;
-    }
-
-    .cards-intro-text {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-      color: var(--mist-faint);
-      letter-spacing: 0.04em;
-      text-shadow: 0 0 12px rgba(204,85,0,0.12);
-    }
-
-    .vine { display: flex; align-items: center; justify-content: center; margin: 1rem 0; opacity: 0.6; }
-    .vine svg { width: 160px; height: 12px; }
-
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.2rem;
-      max-width: 1100px;
+    /* ── INFO SECTION ── */
+    .info-section {
+      background: rgba(6,8,6,0.98);
+      padding: 3rem 2rem 2rem;
+      max-width: 680px;
       margin: 0 auto;
     }
 
-    /* ── CARD ── */
-    .detail-card {
-      position: relative;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: 1.8rem 1.5rem 1.5rem;
-      text-decoration: none;
-      color: var(--text-main);
-      display: flex; flex-direction: column; gap: 0.6rem;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow:
-        0 0 0 1px rgba(103,49,71,0.08),
-        0 8px 32px rgba(0,0,0,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.02);
-      opacity: 0;
-      transform: translateY(16px);
-      transition:
-        border-color 0.28s var(--ease-default),
-        box-shadow   0.28s var(--ease-default),
-        transform    0.22s var(--ease-default),
-        background   0.28s var(--ease-default);
+    /* ── ROTATING PHRASE ── */
+    .rotating-wrap {
+      text-align: center; margin-bottom: 3rem;
+      min-height: 2.4rem; display: flex;
+      align-items: center; justify-content: center;
     }
 
-    .detail-card.visible {
-      opacity: 1; transform: translateY(0);
-      transition:
-        opacity      0.6s var(--ease-soft),
-        transform    0.6s var(--ease-soft),
-        border-color 0.28s var(--ease-default),
-        box-shadow   0.28s var(--ease-default),
-        background   0.28s var(--ease-default);
-    }
-
-    .detail-card:hover {
-      border-color: rgba(204,85,0,0.38);
-      background: rgba(10,14,10,0.82);
-      box-shadow:
-        0 0 0 1px rgba(204,85,0,0.15),
-        0 0 24px rgba(204,85,0,0.10),
-        0 12px 40px rgba(0,0,0,0.55),
-        inset 0 1px 0 rgba(255,255,255,0.02);
-      transform: translateY(-3px);
-    }
-
-    .card-icon-wrap {
-      width: 36px; height: 36px;
-      margin-bottom: 0.3rem;
-      opacity: 0.70;
-      filter: drop-shadow(0 0 4px rgba(204,85,0,0.28));
-      transition: opacity 0.25s, filter 0.25s;
-    }
-    .detail-card:hover .card-icon-wrap { opacity: 1; filter: drop-shadow(0 0 8px rgba(204,85,0,0.55)); }
-
-    .card-title {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(1.1rem, 2vw, 1.35rem);
-      color: var(--mist);
-      letter-spacing: 0.02em;
-      text-shadow: 0 0 10px rgba(204,85,0,0.12);
-      line-height: 1.2;
-    }
-
-    .card-desc {
-      font-size: clamp(0.80rem, 1.3vw, 0.88rem);
-      color: var(--mist-faint);
-      line-height: 1.65;
-      font-style: italic;
-      letter-spacing: 0.02em;
-      flex: 1;
-    }
-
-    .card-cta {
-      margin-top: 0.5rem;
-      font-size: 0.75rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(204,85,0,0.55);
-      transition: color 0.25s, letter-spacing 0.25s;
-    }
-    .detail-card:hover .card-cta { color: rgba(204,85,0,0.88); letter-spacing: 0.16em; }
-
-    /* corner accent */
-    .card-corner {
-      position: absolute; top: 0; right: 0;
-      width: 36px; height: 36px;
-      opacity: 0.28; pointer-events: none;
-    }
-
-    /* ── BOTTOM MOMENT ── */
-    .bottom-moment {
-      text-align: center;
-      padding: 2rem 1.5rem 4rem;
-      background: rgba(4,6,4,0.99);
-    }
-
-    .bottom-text {
+    .rotating-phrase {
       font-family: 'Shadows Into Light Two', cursive;
       font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      color: rgba(204,85,0,0.55);
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 12px rgba(204,85,0,0.15);
+      color: rgba(204,85,0,0.70);
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 12px rgba(204,85,0,0.12);
+      transition: opacity 0.8s var(--ease-soft);
     }
+    .rotating-phrase.fade-out { opacity: 0; }
+    .rotating-phrase.fade-in  { opacity: 1; }
 
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* ── VINE ── */
+    .vine { display: flex; align-items: center; justify-content: center; margin: 0 0 2.5rem; opacity: 0.6; }
+    .vine svg { width: 160px; height: 12px; }
+
+    /* ── INFO BLOCKS ── */
+    .info-block { margin-bottom: 2.5rem; opacity: 0; transform: translateY(12px); }
+    .info-block.visible { opacity: 1; transform: translateY(0); transition: opacity 0.6s var(--ease-soft), transform 0.6s var(--ease-soft); }
+
+    .info-label { font-size: 0.68rem; color: rgba(204,85,0,0.85); letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.5rem; }
+
+    .info-value {
+      font-family: 'Zen Loop', sans-serif;
+      font-size: clamp(0.92rem, 1.8vw, 1.05rem);
+      color: var(--mist-soft); line-height: 1.7; letter-spacing: 0.02em;
     }
+    .info-value a { color: rgba(204,85,0,0.85); text-decoration: underline; text-underline-offset: 3px; transition: color 0.22s; }
+    .info-value a:hover { color: var(--mist); }
+
+    .info-divider { width: 100%; height: 1px; background: linear-gradient(to right, transparent, rgba(103,49,71,0.30), transparent); margin-bottom: 2.5rem; opacity: 0.6; }
+
+    /* ── BOTTOM MOMENT ── */
+    .bottom-moment { text-align: center; padding: 2rem 1.5rem 5rem; background: rgba(4,6,4,0.99); }
+    .bottom-text { font-family: 'Shadows Into Light Two', cursive; font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: rgba(204,85,0,0.65); letter-spacing: 0.06em; text-shadow: 0 0 12px rgba(204,85,0,0.15); }
+
+    @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (max-width: 720px) {
       .nav-bar { display: none; }
       .hamburger-btn { display: flex; }
-      .weather-widget { width: 160px; bottom: 0.8rem; right: 0.8rem; }
-      .cards-section { padding: 2rem 1rem 3rem; }
-      .cards-grid { grid-template-columns: 1fr; }
+      .weather-widget { width: 170px; bottom: 0.8rem; right: 0.8rem; }
+      .info-section { padding: 2rem 1.25rem 1.5rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -553,17 +359,14 @@
 <body>
 
   <div class="loading-screen" id="loadingScreen" aria-hidden="true"></div>
-
   <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true"></div>
 
-  <!-- hamburger -->
   <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open navigation" aria-expanded="false" style="position:fixed;top:max(1rem,env(safe-area-inset-top,1rem));left:1rem;z-index:150;">
     <span class="ham-line"></span>
     <span class="ham-line"></span>
     <span class="ham-line"></span>
   </button>
 
-  <!-- drawer -->
   <nav class="nav-drawer" id="navDrawer" aria-label="Site navigation">
     <div class="drawer-header">
       <span class="drawer-names">Emily &amp; Travis</span>
@@ -609,7 +412,6 @@
     </div>
   </nav>
 
-  <!-- header -->
   <header class="site-header">
     <div class="header-inner">
       <a href="home.html" class="header-name">Emily &amp; Travis</a>
@@ -633,7 +435,6 @@
     </div>
   </header>
 
-  <!-- hero -->
   <div style="padding-top: 56px;">
     <section class="hero" id="hero">
       <div class="hero-breathe" aria-hidden="true"></div>
@@ -646,7 +447,6 @@
         <p class="hero-sub">everything you need for our day</p>
       </div>
 
-      <!-- weather widget -->
       <div class="weather-widget" id="weatherWidget" aria-label="Weather at Lums Pond">
         <div class="weather-location">Lums Pond, DE</div>
         <div id="weatherContent" class="weather-loading">loading weather...</div>
@@ -654,129 +454,56 @@
     </section>
   </div>
 
-  <!-- fade -->
   <div class="fade-transition" aria-hidden="true"></div>
 
-  <!-- cards -->
-  <section class="cards-section">
+  <section class="info-section">
 
-    <div class="cards-intro">
-      <div class="vine" aria-hidden="true">
-        <svg viewBox="0 0 160 12" fill="none">
-          <line x1="0" y1="6" x2="58" y2="6" stroke="#b8922e" stroke-width="0.7" opacity="0.6"/>
-          <circle cx="66" cy="6" r="2.2" fill="#b8922e" opacity="0.65"/>
-          <circle cx="80" cy="6" r="3.5" fill="#d4aa50" opacity="0.85"/>
-          <circle cx="94" cy="6" r="2.2" fill="#b8922e" opacity="0.65"/>
-          <line x1="102" y1="6" x2="160" y2="6" stroke="#b8922e" stroke-width="0.7" opacity="0.6"/>
-        </svg>
-      </div>
-      <p class="cards-intro-text">wander where you need to go</p>
+    <div class="rotating-wrap">
+      <p class="rotating-phrase fade-in" id="rotatingPhrase"></p>
     </div>
 
-    <div class="cards-grid" id="cardsGrid">
-
-      <!-- Location -->
-      <a href="location.html" class="detail-card" data-reveal>
-        <div class="card-corner" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none"><path d="M2 34 C2 20 2 8 2 2 L34 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/><circle cx="2" cy="2" r="1.8" fill="#CC5500" opacity="0.6"/></svg>
-        </div>
-        <div class="card-icon-wrap">
-          <svg viewBox="0 0 36 36" fill="none">
-            <path d="M18 4C12.5 4 8 8.5 8 14C8 22 18 32 18 32C18 32 28 22 28 14C28 8.5 23.5 4 18 4Z" stroke="#CC5500" stroke-width="1.2" fill="rgba(204,85,0,0.10)"/>
-            <circle cx="18" cy="14" r="4" stroke="#CC5500" stroke-width="1" fill="none"/>
-            <circle cx="18" cy="14" r="1.5" fill="#CC5500" opacity="0.7"/>
-          </svg>
-        </div>
-        <h3 class="card-title">Location</h3>
-        <p class="card-desc">Where to find us, how to get there, and what to know about parking.</p>
-        <span class="card-cta">get directions</span>
-      </a>
-
-      <!-- Schedule -->
-      <a href="schedule.html" class="detail-card" data-reveal>
-        <div class="card-corner" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none"><path d="M2 34 C2 20 2 8 2 2 L34 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/><circle cx="2" cy="2" r="1.8" fill="#CC5500" opacity="0.6"/></svg>
-        </div>
-        <div class="card-icon-wrap">
-          <svg viewBox="0 0 36 36" fill="none">
-            <circle cx="18" cy="18" r="13" stroke="#CC5500" stroke-width="1.2" fill="rgba(204,85,0,0.10)"/>
-            <path d="M18 9V18L24 22" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="18" y1="5" x2="18" y2="8" stroke="#673147" stroke-width="0.8" opacity="0.6"/>
-            <line x1="31" y1="18" x2="28" y2="18" stroke="#673147" stroke-width="0.8" opacity="0.6"/>
-          </svg>
-        </div>
-        <h3 class="card-title">Timeline</h3>
-        <p class="card-desc">How the day flows from arrival to the last moment of celebration.</p>
-        <span class="card-cta">see the schedule</span>
-      </a>
-
-      <!-- Food -->
-      <a href="menu.html" class="detail-card" data-reveal>
-        <div class="card-corner" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none"><path d="M2 34 C2 20 2 8 2 2 L34 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/><circle cx="2" cy="2" r="1.8" fill="#CC5500" opacity="0.6"/></svg>
-        </div>
-        <div class="card-icon-wrap">
-          <svg viewBox="0 0 36 36" fill="none">
-            <path d="M10 6V30M10 18H22M22 6V30" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round"/>
-            <path d="M28 6C28 6 32 11 28 17C24 23 28 30 28 30" stroke="#673147" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <h3 class="card-title">Food &amp; Drinks</h3>
-        <p class="card-desc">Mission BBQ, cake, and all the good stuff. Casual, grab-what-you-want vibes.</p>
-        <span class="card-cta">see the menu</span>
-      </a>
-
-      <!-- Activities -->
-      <a href="activities.html" class="detail-card" data-reveal>
-        <div class="card-corner" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none"><path d="M2 34 C2 20 2 8 2 2 L34 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/><circle cx="2" cy="2" r="1.8" fill="#CC5500" opacity="0.6"/></svg>
-        </div>
-        <div class="card-icon-wrap">
-          <svg viewBox="0 0 36 36" fill="none">
-            <path d="M18 4L21 13H31L23 19L26 28L18 22L10 28L13 19L5 13H15L18 4Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.10)"/>
-          </svg>
-        </div>
-        <h3 class="card-title">Activities</h3>
-        <p class="card-desc">We don't dance — we do things. Pavilion 1B is packed. Come see what we planned.</p>
-        <span class="card-cta">see what's planned</span>
-      </a>
-
-      <!-- What to Expect -->
-      <a href="faq.html" class="detail-card" data-reveal>
-        <div class="card-corner" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none"><path d="M2 34 C2 20 2 8 2 2 L34 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/><circle cx="2" cy="2" r="1.8" fill="#CC5500" opacity="0.6"/></svg>
-        </div>
-        <div class="card-icon-wrap">
-          <svg viewBox="0 0 36 36" fill="none">
-            <path d="M8 6C5 8 4 12 5 15C6 20 10 22 10 26H26C26 22 30 20 31 15C32 12 31 8 28 6C25 4 11 4 8 6Z" stroke="#CC5500" stroke-width="1.2" fill="rgba(204,85,0,0.10)"/>
-            <line x1="10" y1="30" x2="26" y2="30" stroke="#CC5500" stroke-width="1" stroke-linecap="round"/>
-            <line x1="12" y1="33" x2="24" y2="33" stroke="#673147" stroke-width="0.8" stroke-linecap="round" opacity="0.6"/>
-          </svg>
-        </div>
-        <h3 class="card-title">What to Expect</h3>
-        <p class="card-desc">Outdoor park wedding. Grass, weather, bugs, picnic tables. Plan accordingly.</p>
-        <span class="card-cta">read the FAQ</span>
-      </a>
-
-      <!-- Registry -->
-      <a href="registry.html" class="detail-card" data-reveal>
-        <div class="card-corner" aria-hidden="true">
-          <svg viewBox="0 0 36 36" fill="none"><path d="M2 34 C2 20 2 8 2 2 L34 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/><circle cx="2" cy="2" r="1.8" fill="#CC5500" opacity="0.6"/></svg>
-        </div>
-        <div class="card-icon-wrap">
-          <svg viewBox="0 0 36 36" fill="none">
-            <path d="M18 30L9 21C6.8 18.8 6.8 15.2 9 13C11.2 10.8 14.8 10.8 17 13L18 14L19 13C21.2 10.8 24.8 10.8 27 13C29.2 15.2 29.2 18.8 27 21L18 30Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.10)"/>
-          </svg>
-        </div>
-        <h3 class="card-title">Registry</h3>
-        <p class="card-desc">Your presence is the gift. But if you'd like to send something extra, we're grateful.</p>
-        <span class="card-cta">view registry</span>
-      </a>
-
+    <div class="vine" aria-hidden="true">
+      <svg viewBox="0 0 160 12" fill="none">
+        <line x1="0" y1="6" x2="58" y2="6" stroke="#b8922e" stroke-width="0.7" opacity="0.6"/>
+        <circle cx="66" cy="6" r="2.2" fill="#b8922e" opacity="0.65"/>
+        <circle cx="80" cy="6" r="3.5" fill="#d4aa50" opacity="0.85"/>
+        <circle cx="94" cy="6" r="2.2" fill="#b8922e" opacity="0.65"/>
+        <line x1="102" y1="6" x2="160" y2="6" stroke="#b8922e" stroke-width="0.7" opacity="0.6"/>
+      </svg>
     </div>
+
+    <div class="info-block" data-reveal>
+      <p class="info-label">Time</p>
+      <p class="info-value">Be seated by 12:55 PM</p>
+    </div>
+
+    <div class="info-divider"></div>
+
+    <div class="info-block" data-reveal>
+      <p class="info-label">Location</p>
+      <p class="info-value">
+        <a href="https://maps.app.goo.gl/PDt4W6wvXagHZyhe8" target="_blank" rel="noopener">
+          Lums Pond State Park, Pavilion 1 &amp; 1B, Bear, Delaware
+        </a>
+      </p>
+    </div>
+
+    <div class="info-divider"></div>
+
+    <div class="info-block" data-reveal>
+      <p class="info-label">Dress Code</p>
+      <p class="info-value">Comfortable and cute. Think outdoor park wedding vibes. Sundresses, linen, nice sneakers, that kind of thing.</p>
+    </div>
+
+    <div class="info-divider"></div>
+
+    <div class="info-block" data-reveal>
+      <p class="info-label">What to Expect</p>
+      <p class="info-value">A park wedding by two people who don't dance, so make sure you're wearing something comfy! We got tons of activities planned!</p>
+    </div>
+
   </section>
 
-  <!-- bottom moment -->
   <div class="bottom-moment">
     <div class="vine" aria-hidden="true">
       <svg viewBox="0 0 160 12" fill="none">
@@ -794,20 +521,48 @@
   (function() {
     'use strict';
 
-if (localStorage.getItem('rsvpAccess') !== 'true') {
-  window.location.replace('index.html');
-} else {
-  document.body.classList.add('authorized');
-}
+    if (localStorage.getItem('rsvpAccess') !== 'true') {
+      window.location.replace('index.html');
+    } else {
+      document.body.classList.add('authorized');
+    }
 
-setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 300);
+    setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 300);
 
     const isMobile  = window.matchMedia('(hover:none)').matches;
     const isReduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-// fireflies
+    /* ============================================================
+       ROTATING PHRASES
+       Add your phrases to this array — they rotate every 4s
+    ============================================================ */
+    const PHRASES = [
+      'wander where you need to go',
+      /* add more phrases here */
+    ];
+
+    let phraseIndex = 0;
+    const phraseEl  = document.getElementById('rotatingPhrase');
+
+    phraseEl.textContent = PHRASES[phraseIndex];
+
+    if (PHRASES.length > 1) {
+      setInterval(() => {
+        phraseEl.classList.add('fade-out');
+        setTimeout(() => {
+          phraseIndex = (phraseIndex + 1) % PHRASES.length;
+          phraseEl.textContent = PHRASES[phraseIndex];
+          phraseEl.classList.remove('fade-out');
+        }, 800);
+      }, 4000);
+    }
+
+    /* ============================================================
+       FIREFLIES
+    ============================================================ */
     const firefliesEl = document.getElementById('fireflies');
     const COLORS = ['color-gold','color-amber','color-warmwhite','color-ygreen'];
+
     function makeFireflies() {
       firefliesEl.innerHTML = '';
       const count = isMobile ? 10 : 18;
@@ -837,7 +592,9 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
     }
     if (!isReduced) makeFireflies();
 
-    // hamburger
+    /* ============================================================
+       HAMBURGER
+    ============================================================ */
     const hamburgerBtn   = document.getElementById('hamburgerBtn');
     const navDrawer      = document.getElementById('navDrawer');
     const drawerBackdrop = document.getElementById('drawerBackdrop');
@@ -850,7 +607,9 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
     navDrawer.querySelectorAll('.drawer-link').forEach(l => l.addEventListener('click', closeDrawer));
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
-    // scroll reveal
+    /* ============================================================
+       SCROLL REVEAL
+    ============================================================ */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
@@ -861,7 +620,9 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
     }, { threshold: 0.10 });
     document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 
-    // weather
+    /* ============================================================
+       WEATHER
+    ============================================================ */
     const WEDDING_DATE = new Date('2028-09-23');
     const LAT = 39.5765;
     const LON = -75.7210;
@@ -875,8 +636,7 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
 
         let url;
         if (isForecast) {
-          const dateStr = '2028-09-23';
-          url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York&start_date=${dateStr}&end_date=${dateStr}`;
+          url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max,weathercode&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York&start_date=2028-09-23&end_date=2028-09-23`;
         } else {
           url = `https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current_weather=true&temperature_unit=fahrenheit&wind_speed_unit=mph&timezone=America%2FNew_York`;
         }
@@ -888,11 +648,7 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
           if (code === 0) return 'clear skies';
           if (code <= 3)  return 'partly cloudy';
           if (code <= 9)  return 'overcast';
-          if (code <= 19) return 'foggy';
-          if (code <= 29) return 'light drizzle';
-          if (code <= 39) return 'drizzle';
           if (code <= 49) return 'foggy';
-          if (code <= 59) return 'drizzle';
           if (code <= 69) return 'rain';
           if (code <= 79) return 'snow';
           if (code <= 84) return 'rain showers';
@@ -902,9 +658,9 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
 
         function wmoIcon(code) {
           if (code === 0) return `<svg viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="7" stroke="#f3d37a" stroke-width="1.2" fill="rgba(243,211,122,0.15)"/><line x1="14" y1="3" x2="14" y2="6" stroke="#f3d37a" stroke-width="1.2" stroke-linecap="round"/><line x1="14" y1="22" x2="14" y2="25" stroke="#f3d37a" stroke-width="1.2" stroke-linecap="round"/><line x1="3" y1="14" x2="6" y2="14" stroke="#f3d37a" stroke-width="1.2" stroke-linecap="round"/><line x1="22" y1="14" x2="25" y2="14" stroke="#f3d37a" stroke-width="1.2" stroke-linecap="round"/></svg>`;
-          if (code <= 3)  return `<svg viewBox="0 0 28 28" fill="none"><circle cx="11" cy="14" r="5" stroke="#f3d37a" stroke-width="1" fill="rgba(243,211,122,0.12)"/><path d="M16 10C17.5 10 19 11.2 19 13C19 14.8 17.5 16 16 16H8C6.3 16 5 14.7 5 13C5 11.3 6.3 10 8 10C8.2 8.3 9.7 7 11.5 7C13.5 7 15.2 8.3 16 10Z" stroke="rgba(242,235,212,0.55)" stroke-width="1" fill="rgba(242,235,212,0.08)"/></svg>`;
-          if (code <= 69) return `<svg viewBox="0 0 28 28" fill="none"><path d="M20 11C20 8.8 18.2 7 16 7C14.4 7 13 7.9 12.3 9.2C11.9 9.1 11.5 9 11 9C8.8 9 7 10.8 7 13C7 15.2 8.8 17 11 17H20C22.2 17 24 15.2 24 13C24 11.2 22.2 9.8 20 11Z" stroke="rgba(242,235,212,0.55)" stroke-width="1" fill="rgba(242,235,212,0.08)"/><line x1="12" y1="20" x2="11" y2="23" stroke="#6ab0ff" stroke-width="1.2" stroke-linecap="round"/><line x1="16" y1="20" x2="15" y2="23" stroke="#6ab0ff" stroke-width="1.2" stroke-linecap="round"/><line x1="20" y1="20" x2="19" y2="23" stroke="#6ab0ff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
-          return `<svg viewBox="0 0 28 28" fill="none"><path d="M20 10C20 7.8 18.2 6 16 6C14.4 6 13 6.9 12.3 8.2C11.9 8.1 11.5 8 11 8C8.8 8 7 9.8 7 12C7 14.2 8.8 16 11 16H20C22.2 16 24 14.2 24 12C24 10.2 22.2 8.8 20 10Z" stroke="rgba(242,235,212,0.55)" stroke-width="1" fill="rgba(242,235,212,0.08)"/><path d="M15 17L12 22H16L13 27" stroke="#f3d37a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+          if (code <= 3)  return `<svg viewBox="0 0 28 28" fill="none"><circle cx="11" cy="14" r="5" stroke="#f3d37a" stroke-width="1" fill="rgba(243,211,122,0.12)"/><path d="M16 10C17.5 10 19 11.2 19 13C19 14.8 17.5 16 16 16H8C6.3 16 5 14.7 5 13C5 11.3 6.3 10 8 10C8.2 8.3 9.7 7 11.5 7C13.5 7 15.2 8.3 16 10Z" stroke="rgba(242,235,212,0.75)" stroke-width="1" fill="rgba(242,235,212,0.10)"/></svg>`;
+          if (code <= 69) return `<svg viewBox="0 0 28 28" fill="none"><path d="M20 11C20 8.8 18.2 7 16 7C14.4 7 13 7.9 12.3 9.2C11.9 9.1 11.5 9 11 9C8.8 9 7 10.8 7 13C7 15.2 8.8 17 11 17H20C22.2 17 24 15.2 24 13C24 11.2 22.2 9.8 20 11Z" stroke="rgba(242,235,212,0.75)" stroke-width="1" fill="rgba(242,235,212,0.10)"/><line x1="12" y1="20" x2="11" y2="23" stroke="#6ab0ff" stroke-width="1.2" stroke-linecap="round"/><line x1="16" y1="20" x2="15" y2="23" stroke="#6ab0ff" stroke-width="1.2" stroke-linecap="round"/><line x1="20" y1="20" x2="19" y2="23" stroke="#6ab0ff" stroke-width="1.2" stroke-linecap="round"/></svg>`;
+          return `<svg viewBox="0 0 28 28" fill="none"><path d="M20 10C20 7.8 18.2 6 16 6C14.4 6 13 6.9 12.3 8.2C11.9 8.1 11.5 8 11 8C8.8 8 7 9.8 7 12C7 14.2 8.8 16 11 16H20C22.2 16 24 14.2 24 12C24 10.2 22.2 8.8 20 10Z" stroke="rgba(242,235,212,0.75)" stroke-width="1" fill="rgba(242,235,212,0.10)"/><path d="M15 17L12 22H16L13 27" stroke="#f3d37a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
         }
 
         if (isForecast) {
@@ -939,7 +695,7 @@ setTimeout(() => document.getElementById('loadingScreen').classList.add('done'),
             <div class="weather-details">
               <span>Wind ${wind} mph</span>
             </div>
-            <div class="weather-note">current · forecast available 16 days out</div>
+            <div class="weather-note">current &middot; forecast available 16 days out</div>
           `;
         }
       } catch(e) {
