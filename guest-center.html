@@ -3,21 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guest Center — Emily & Travis</title>
+  <title>Guest Center — Emily &amp; Travis</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=IM+Fell+English:ital@0;1&family=Lato:wght@300;400&display=swap" rel="stylesheet" />
   <script src="security.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --gold: #b8922e;
-      --gold-light: #d4aa50;
+      --gold:        #b8922e;
+      --gold-light:  #d4aa50;
       --gold-border: rgba(180,140,40,0.3);
-      --cream: #f5efd8;
-      --panel-bg: rgba(248, 243, 230, 0.94);
-      --text-dark: #2c1f0e;
-      --text-mid: #6b5030;
-      --text-muted: rgba(100,72,40,0.5);
+      --cream:       #f5efd8;
+      --panel-bg:    rgba(248,243,230,0.94);
+      --text-dark:   #2c1f0e;
+      --text-mid:    #6b5030;
+      --text-muted:  rgba(100,72,40,0.5);
     }
 
     html, body {
@@ -30,94 +30,62 @@
     #bgImg {
       position: fixed; inset: 0;
       width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center;
+      object-fit: cover; object-position: center;
       z-index: 0;
     }
 
     #pageTitle {
-      position: fixed;
-      z-index: 10;
-      left: 50%;
-      transform: translateX(-50%);
+      position: fixed; z-index: 10;
+      left: 50%; transform: translateX(-50%);
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 300;
-      letter-spacing: 0.25em;
+      font-weight: 300; letter-spacing: 0.25em;
       color: #2c1f0e;
       text-shadow: 0 1px 12px rgba(255,235,150,0.7), 0 0 30px rgba(255,220,80,0.3);
-      white-space: nowrap;
-      text-align: center;
+      white-space: nowrap; text-align: center;
     }
 
     #faqLink {
-      position: fixed;
-      z-index: 10;
-      left: 50%;
-      transform: translateX(-50%);
+      position: fixed; z-index: 10;
+      left: 50%; transform: translateX(-50%);
       font-family: 'IM Fell English', serif;
-      color: var(--text-mid);
-      text-decoration: none;
-      letter-spacing: 0.18em;
-      white-space: nowrap;
+      color: var(--text-mid); text-decoration: none;
+      letter-spacing: 0.18em; white-space: nowrap;
     }
 
-    /* ── PANELS positioned by JS ── */
     .frame-panel {
-      position: fixed;
-      z-index: 5;
+      position: fixed; z-index: 5;
       background: var(--panel-bg);
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       overflow: hidden;
     }
 
     .panel-label {
       font-family: 'Cormorant Garamond', serif;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      color: var(--gold);
-      text-align: center;
+      font-weight: 400; letter-spacing: 0.2em;
+      color: var(--gold); text-align: center;
       border-bottom: 1px solid var(--gold-border);
-      flex-shrink: 0;
-      text-transform: uppercase;
+      flex-shrink: 0; text-transform: uppercase;
     }
 
-    .panel-body {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+    .panel-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-    /* ─── LEFT: COMMENTS ─── */
-    .byline {
-      color: var(--text-muted);
-      letter-spacing: 0.07em;
-    }
+    .byline { color: var(--text-muted); letter-spacing: 0.07em; }
     .byline em { color: var(--gold-light); font-style: italic; }
 
     .comment-textarea {
       width: 100%;
       background: rgba(255,252,242,0.95);
       border: 1px solid var(--gold-border);
-      border-radius: 1px;
-      color: var(--text-dark);
+      border-radius: 1px; color: var(--text-dark);
       font-family: 'Lato', sans-serif;
-      line-height: 1.55;
-      padding: 6px 8px;
-      resize: none;
-      outline: none;
+      line-height: 1.55; padding: 6px 8px;
+      resize: none; outline: none;
       transition: border-color 200ms;
     }
     .comment-textarea::placeholder { color: var(--text-muted); font-style: italic; }
     .comment-textarea:focus { border-color: var(--gold-light); }
 
-    .row-between {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
+    .row-between { display: flex; justify-content: space-between; align-items: center; }
     .hint { color: var(--text-muted); letter-spacing: 0.04em; }
 
     .btn {
@@ -125,12 +93,11 @@
       border: 1px solid var(--gold-border);
       color: var(--gold-light);
       font-family: 'Cormorant Garamond', serif;
-      letter-spacing: 0.12em;
-      cursor: pointer;
-      transition: background 180ms;
-      border-radius: 1px;
+      letter-spacing: 0.12em; cursor: pointer;
+      transition: background 180ms; border-radius: 1px;
     }
     .btn:hover { background: rgba(180,140,40,0.1); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
     .comment-feed { flex: 1; overflow-y: auto; }
     .comment-feed::-webkit-scrollbar { width: 2px; }
@@ -138,20 +105,12 @@
 
     .empty-note {
       font-family: 'Cormorant Garamond', serif;
-      font-style: italic;
-      color: var(--text-muted);
-      text-align: center;
-      letter-spacing: 0.06em;
+      font-style: italic; color: var(--text-muted);
+      text-align: center; letter-spacing: 0.06em;
     }
 
-    .c-item {
-      border-bottom: 1px solid rgba(180,140,40,0.1);
-      animation: rise 280ms ease forwards;
-    }
-    @keyframes rise {
-      from { opacity:0; transform: translateY(4px); }
-      to   { opacity:1; transform: translateY(0); }
-    }
+    .c-item { border-bottom: 1px solid rgba(180,140,40,0.1); animation: rise 280ms ease forwards; }
+    @keyframes rise { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
     .c-meta { display:flex; gap:6px; align-items:baseline; }
     .c-name { font-family:'Cormorant Garamond',serif; color:var(--gold); letter-spacing:0.05em; }
     .c-time { color:var(--text-muted); }
@@ -161,40 +120,31 @@
       display:flex; align-items:center; gap:3px;
       color:var(--text-muted); transition:color 150ms; padding:0;
     }
-    .heart-btn:hover, .heart-btn.on { color:var(--gold-light); }
+    .heart-btn:hover,.heart-btn.on { color:var(--gold-light); }
     .hi { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.8; }
     .heart-btn.on .hi { fill:var(--gold-light); }
 
-    /* ─── RIGHT: PHOTOS ─── */
-    .upload-row {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .upload-row { flex-shrink:0; display:flex; align-items:center; gap:8px; }
     .photo-ct { color:var(--text-muted); letter-spacing:0.06em; }
 
     .sw {
-      flex: 1;
-      position: relative;
-      background: rgba(240,232,208,0.5);
-      overflow: hidden;
-      border: 1px solid var(--gold-border);
+      flex:1; position:relative;
+      background:rgba(240,232,208,0.5);
+      overflow:hidden; border:1px solid var(--gold-border);
     }
     .slide { position:absolute; inset:0; opacity:0; transition:opacity 700ms ease; display:flex; align-items:center; justify-content:center; }
     .slide.on { opacity:1; }
     .slide img { max-width:100%; max-height:100%; object-fit:contain; }
     .no-ph { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
-    .no-ph-txt {
-      font-family:'Cormorant Garamond',serif; font-style:italic;
-      color:var(--text-muted); text-align:center; padding:0 16px; letter-spacing:0.05em;
-    }
-    .ss-ctrl {
-      position:absolute; bottom:7px; left:50%; transform:translateX(-50%);
-      display:flex; align-items:center; gap:6px; z-index:3;
-    }
+    .no-ph-txt { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--text-muted); text-align:center; padding:0 16px; letter-spacing:0.05em; }
+    .ss-ctrl { position:absolute; bottom:7px; left:50%; transform:translateX(-50%); display:flex; align-items:center; gap:6px; z-index:3; }
     .dot { width:5px; height:5px; border-radius:50%; background:rgba(180,140,40,0.25); cursor:pointer; transition:background 220ms; }
     .dot.on { background:var(--gold-light); }
+
+    .status-msg {
+      font-family:'Cormorant Garamond',serif; font-style:italic;
+      color:var(--gold); text-align:center; letter-spacing:0.04em;
+    }
   </style>
 </head>
 <body>
@@ -212,271 +162,315 @@
 <a href="faq.html" id="faqLink">{ FAQ }</a>
 
 <script>
-
   if (localStorage.getItem('rsvpAccess') !== 'true') {
-  window.location.replace('index.html');
-}
-
-  
-// ── SOURCE IMAGE SIZE & FRAME COORDS ──
-const IMG_W = 1536, IMG_H = 1024;
-const LF = { x:180, y:281, w:543, h:474 };  // left frame in source px
-const RF = { x:812, y:281, w:543, h:474 };  // right frame in source px
-
-function layout() {
-  const vw = innerWidth, vh = innerHeight;
-  const vr = vw/vh, ir = IMG_W/IMG_H;
-  let rw, rh, ox, oy;
-  if (vr > ir) { rw=vw; rh=vw/ir; ox=0; oy=(vh-rh)/2; }
-  else          { rh=vh; rw=vh*ir; ox=(vw-rw)/2; oy=0; }
-  const sx=rw/IMG_W, sy=rh/IMG_H;
-
-  function place(el, f) {
-    el.style.left   = Math.round(ox + f.x*sx) + 'px';
-    el.style.top    = Math.round(oy + f.y*sy) + 'px';
-    el.style.width  = Math.round(f.w*sx) + 'px';
-    el.style.height = Math.round(f.h*sy) + 'px';
+    window.location.replace('index.html');
   }
-  place(document.getElementById('leftPanel'),  LF);
-  place(document.getElementById('rightPanel'), RF);
 
-  const frameTop = oy + LF.y*sy;
-  const frameBot = oy + (LF.y+LF.h)*sy;
-  const fs = Math.max(10, Math.min(26, frameTop*0.52));
+  /* ============================================================
+     SUPABASE
+  ============================================================ */
+  const SUPA_URL = 'https://krxxuxfwfsltdgosornz.supabase.co';
+  const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyeHh1eGZ3ZnNsdGRnb3Nvcm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNTM1MTYsImV4cCI6MjA5MjgyOTUxNn0.vkI4-BVQVe2mqXP0jiedbDh_rkllcP8HkiWMUzs3pnA';
 
-  const t = document.getElementById('pageTitle');
-  t.style.top = Math.max(2, frameTop-fs*1.5) + 'px';
-  t.style.fontSize = fs + 'px';
+  const H = {
+    'apikey': SUPA_KEY,
+    'Authorization': 'Bearer ' + SUPA_KEY,
+    'Content-Type': 'application/json',
+    'Prefer': 'return=representation'
+  };
 
-  const fq = document.getElementById('faqLink');
-  fq.style.top = (frameBot + 8) + 'px';
-  fq.style.fontSize = Math.max(10, Math.min(16, (vh-frameBot)*0.35)) + 'px';
+  const dbGet   = (t,q='')  => fetch(`${SUPA_URL}/rest/v1/${t}${q}`,{headers:H}).then(r=>r.json());
+  const dbPost  = (t,b)     => fetch(`${SUPA_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
+  const dbPatch = (t,id,b)  => fetch(`${SUPA_URL}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
 
-  // font sizes inside panels scale with frame size
-  const panelH = LF.h * sy;
-  const base = Math.max(9, Math.min(14, panelH * 0.022));
-  document.querySelectorAll('.frame-panel').forEach(p => p.style.fontSize = base + 'px');
-  document.querySelectorAll('.panel-label').forEach(l => {
-    l.style.fontSize = Math.max(8, base*0.82) + 'px';
-    l.style.padding  = Math.round(panelH*0.018) + 'px 0';
-  });
-  buildPanels(panelH, base);
-}
+  async function uploadPhoto(file, guestName) {
+    const ext  = file.name.split('.').pop();
+    const path = `${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+    const uh   = { 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY, 'Content-Type':file.type, 'x-upsert':'true' };
+    const r    = await fetch(`${SUPA_URL}/storage/v1/object/photos/${path}`,{method:'POST',headers:uh,body:file});
+    if (!r.ok) throw new Error('upload failed');
+    const url  = `${SUPA_URL}/storage/v1/object/public/photos/${path}`;
+    await dbPost('photos', { guest_name: guestName, url });
+    return url;
+  }
 
-let built = false;
-function buildPanels(panelH, base) {
-  if (built) return;
-  built = true;
-  const pad = Math.round(panelH * 0.03);
-  const taH  = Math.round(panelH * 0.13);
-  const gapS = Math.round(panelH * 0.018);
+  /* ============================================================
+     LAYOUT
+  ============================================================ */
+  const IMG_W = 1536, IMG_H = 1024;
+  const LF    = { x:180, y:281, w:543, h:474 };
+  const RF    = { x:812, y:281, w:543, h:474 };
 
-  // ── LEFT PANEL HTML ──
-  document.getElementById('bodyL').innerHTML = `
-    <div style="flex-shrink:0;padding:${gapS}px ${pad}px ${gapS}px;">
-      <div class="byline" style="font-size:${base*0.78}px;margin-bottom:${gapS*0.6}px;">
-        Posting as: <em id="nameTag">Guest</em>
-      </div>
-      <textarea id="cBox" class="comment-textarea"
-        style="font-size:${base*0.9}px;min-height:${taH}px;max-height:${taH*1.4}px;"
-        placeholder="Leave a comment for the bride and groom!"></textarea>
-      <div class="row-between" style="margin-top:${gapS*0.6}px;">
-        <span class="hint" style="font-size:${base*0.72}px;">Enter to post · Shift+Enter new line</span>
-        <button class="btn" id="postBtn" style="font-size:${base*0.85}px;padding:${gapS*0.4}px ${gapS*1.4}px;">Post</button>
-      </div>
-    </div>
-    <div class="comment-feed" id="feed" style="padding:0 ${pad}px ${pad}px;">
-      <div class="empty-note" id="emptyNote" style="margin-top:${gapS*2}px;font-size:${base}px;">
-        Be the first to leave a message for the bride and groom!
-      </div>
-    </div>`;
+  function layout() {
+    const vw=innerWidth, vh=innerHeight, vr=vw/vh, ir=IMG_W/IMG_H;
+    let rw,rh,ox,oy;
+    if(vr>ir){rw=vw;rh=vw/ir;ox=0;oy=(vh-rh)/2;}
+    else{rh=vh;rw=vh*ir;ox=(vw-rw)/2;oy=0;}
+    const sx=rw/IMG_W, sy=rh/IMG_H;
 
-  // ── RIGHT PANEL HTML ──
-  document.getElementById('bodyR').innerHTML = `
-    <div class="upload-row" style="flex-shrink:0;padding:${gapS}px ${pad}px;">
-      <button class="btn" id="upBtn" style="font-size:${base*0.85}px;padding:${gapS*0.4}px ${gapS*1.4}px;">Upload Pic</button>
-      <span class="photo-ct" id="phCt" style="font-size:${base*0.78}px;">0 photos shared</span>
-      <input type="file" id="fi" accept="image/*" multiple style="display:none">
-    </div>
-    <div class="sw" id="sw" style="margin:0 ${pad}px ${pad}px;flex:1;">
-      <div class="no-ph" id="noPh">
-        <span class="no-ph-txt" style="font-size:${base}px;">
-          Photos guests upload will appear here as a slideshow
-        </span>
-      </div>
-      <div id="si"></div>
-      <div class="ss-ctrl" id="ssCtrl" style="display:none;">
-        <button class="btn" id="pauseBtn" style="font-size:${base*0.72}px;padding:2px 8px;">Pause</button>
-        <div id="dots" style="display:flex;gap:4px;"></div>
-      </div>
-    </div>`;
-
-  wireUp();
-}
-
-function wireUp() {
-  // name
-  const gn = localStorage.getItem('guestName') || 'Guest';
-  document.getElementById('nameTag').textContent = gn;
-
-  // post btn
-  document.getElementById('postBtn').onclick = postComment;
-  document.getElementById('cBox').addEventListener('keydown', e => {
-    if (e.key==='Enter' && !e.shiftKey) { e.preventDefault(); postComment(); }
-  });
-
-  // upload
-  document.getElementById('upBtn').onclick = () => document.getElementById('fi').click();
-  document.getElementById('fi').onchange = handleUpload;
-
-  renderComments();
-  renderSlides();
-}
-
-// ── COMMENTS ──
-let guestName = localStorage.getItem('guestName') || 'Guest';
-let comments = [];
-try { comments = JSON.parse(localStorage.getItem('wc_c')||'[]'); } catch(e){}
-let daily = {};
-try { daily = JSON.parse(localStorage.getItem('wc_d')||'{}'); } catch(e){}
-
-function todayK() { return new Date().toISOString().slice(0,10); }
-function canPost() { return (daily[guestName+'_'+todayK()]||0) < 10; }
-function bumpD() {
-  const k=guestName+'_'+todayK();
-  daily[k]=(daily[k]||0)+1;
-  localStorage.setItem('wc_d',JSON.stringify(daily));
-}
-function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function fmtD(ts){ return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
-
-function postComment() {
-  const box = document.getElementById('cBox');
-  const txt = box.value.trim();
-  if (!txt) return;
-  if (!canPost()) { alert("Daily limit reached — come back tomorrow!"); return; }
-  comments.unshift({ name:guestName, text:txt, ts:Date.now(), hearts:0, hb:[] });
-  bumpD();
-  try { localStorage.setItem('wc_c',JSON.stringify(comments)); } catch(e){}
-  box.value='';
-  renderComments();
-}
-
-function toggleHeart(ts) {
-  const c=comments.find(x=>x.ts===ts);
-  if(!c||c.name===guestName) return;
-  if(!c.hb) c.hb=[];
-  const i=c.hb.indexOf(guestName);
-  if(i===-1){c.hb.push(guestName);c.hearts=(c.hearts||0)+1;}
-  else{c.hb.splice(i,1);c.hearts=Math.max(0,(c.hearts||0)-1);}
-  try { localStorage.setItem('wc_c',JSON.stringify(comments)); } catch(e){}
-  renderComments();
-}
-
-function renderComments() {
-  const feed=document.getElementById('feed');
-  const empty=document.getElementById('emptyNote');
-  if(!feed) return;
-  if(!comments.length){empty.style.display='block';return;}
-  empty.style.display='none';
-  const base=parseFloat(document.querySelector('.frame-panel').style.fontSize)||12;
-  // clear old items
-  [...feed.querySelectorAll('.c-item')].forEach(el=>el.remove());
-  comments.forEach(c=>{
-    const on=(c.hb||[]).includes(guestName);
-    const d=document.createElement('div');
-    d.className='c-item';
-    d.style.cssText=`padding:${base*0.5}px 0;`;
-    d.innerHTML=`
-      <div class="c-meta" style="margin-bottom:${base*0.25}px;">
-        <span class="c-name" style="font-size:${base*0.85}px;">${esc(c.name)}</span>
-        <span class="c-time" style="font-size:${base*0.68}px;">${fmtD(c.ts)}</span>
-      </div>
-      <div class="c-text" style="font-size:${base*0.82}px;">${esc(c.text).replace(/\n/g,'<br>')}</div>
-      <div style="margin-top:${base*0.35}px;">
-        <button class="heart-btn ${on?'on':''}" onclick="toggleHeart(${c.ts})" style="font-size:${base*0.72}px;">
-          <svg class="hi" viewBox="0 0 24 24">
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-          </svg>
-          ${c.hearts||0}
-        </button>
-      </div>`;
-    feed.appendChild(d);
-  });
-}
-
-// ── SLIDESHOW ──
-let photos=[];
-try{photos=JSON.parse(localStorage.getItem('wc_p')||'[]');}catch(e){}
-let cur=0, paused=false, timer=null;
-
-function handleUpload(e){
-  const files=Array.from(e.target.files);
-  let done=0;
-  files.forEach(f=>{
-    const r=new FileReader();
-    r.onload=ev=>{
-      photos.push(ev.target.result);
-      done++;
-      if(done===files.length){
-        try{localStorage.setItem('wc_p',JSON.stringify(photos));}catch(e){}
-        renderSlides();
-      }
+    const place=(el,f)=>{
+      el.style.left  =Math.round(ox+f.x*sx)+'px';
+      el.style.top   =Math.round(oy+f.y*sy)+'px';
+      el.style.width =Math.round(f.w*sx)+'px';
+      el.style.height=Math.round(f.h*sy)+'px';
     };
-    r.readAsDataURL(f);
-  });
-  e.target.value='';
-}
+    place(document.getElementById('leftPanel'),  LF);
+    place(document.getElementById('rightPanel'), RF);
 
-function renderSlides(){
-  const si=document.getElementById('si');
-  const noPh=document.getElementById('noPh');
-  const ctrl=document.getElementById('ssCtrl');
-  const ct=document.getElementById('phCt');
-  if(!si) return;
-  ct.textContent=photos.length+' photo'+(photos.length!==1?'s':'')+' shared';
-  if(!photos.length){noPh.style.display='flex';ctrl.style.display='none';si.innerHTML='';return;}
-  noPh.style.display='none'; ctrl.style.display='flex';
-  si.innerHTML='';
-  photos.forEach((src,i)=>{
-    const s=document.createElement('div');
-    s.className='slide'+(i===cur?' on':'');
-    s.innerHTML=`<img src="${src}" alt="photo">`;
-    si.appendChild(s);
-  });
-  const dots=document.getElementById('dots');
-  dots.innerHTML='';
-  const maxD=Math.min(photos.length,8);
-  for(let i=0;i<maxD;i++){
-    const d=document.createElement('div');
-    d.className='dot'+(i===cur?' on':'');
-    d.onclick=()=>goTo(i);
-    dots.appendChild(d);
+    const frameTop=oy+LF.y*sy, frameBot=oy+(LF.y+LF.h)*sy;
+    const fs=Math.max(10,Math.min(26,frameTop*0.52));
+
+    const t=document.getElementById('pageTitle');
+    t.style.top=Math.max(2,frameTop-fs*1.5)+'px';
+    t.style.fontSize=fs+'px';
+
+    const fq=document.getElementById('faqLink');
+    fq.style.top=(frameBot+8)+'px';
+    fq.style.fontSize=Math.max(10,Math.min(16,(vh-frameBot)*0.35))+'px';
+
+    const panelH=LF.h*sy;
+    const base=Math.max(9,Math.min(14,panelH*0.022));
+    document.querySelectorAll('.frame-panel').forEach(p=>p.style.fontSize=base+'px');
+    document.querySelectorAll('.panel-label').forEach(l=>{
+      l.style.fontSize=Math.max(8,base*0.82)+'px';
+      l.style.padding=Math.round(panelH*0.018)+'px 0';
+    });
+    buildPanels(panelH, base);
   }
-  startShow();
-  document.getElementById('pauseBtn').onclick=togglePause;
-}
 
-function goTo(n){
-  document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('on',i===n));
-  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===n));
-  cur=n;
-}
-function startShow(){
-  if(timer) clearInterval(timer);
-  if(paused||photos.length<=1) return;
-  timer=setInterval(()=>goTo((cur+1)%photos.length),4000);
-}
-function togglePause(){
-  paused=!paused;
-  document.getElementById('pauseBtn').textContent=paused?'Play':'Pause';
-  paused?clearInterval(timer):startShow();
-}
+  let built=false;
+  function buildPanels(panelH, base) {
+    if(built) return;
+    built=true;
+    const pad=Math.round(panelH*0.03);
+    const taH=Math.round(panelH*0.13);
+    const g=Math.round(panelH*0.018);
 
-window.addEventListener('resize', layout);
-document.getElementById('bgImg').addEventListener('load', layout);
-layout();
- 
+    document.getElementById('bodyL').innerHTML=`
+      <div style="flex-shrink:0;padding:${g}px ${pad}px ${g}px;">
+        <div class="byline" style="font-size:${base*.78}px;margin-bottom:${g*.6}px;">
+          Posting as: <em id="nameTag">Guest</em>
+        </div>
+        <textarea id="cBox" class="comment-textarea"
+          style="font-size:${base*.9}px;min-height:${taH}px;max-height:${taH*1.4}px;"
+          placeholder="Leave a message for Emily and Travis!"></textarea>
+        <div class="row-between" style="margin-top:${g*.6}px;">
+          <span class="hint" style="font-size:${base*.72}px;">Enter to post · Shift+Enter new line</span>
+          <button class="btn" id="postBtn" style="font-size:${base*.85}px;padding:${g*.4}px ${g*1.4}px;">Post</button>
+        </div>
+        <div id="postStatus" class="status-msg" style="font-size:${base*.72}px;min-height:1.4em;margin-top:${g*.4}px;"></div>
+      </div>
+      <div class="comment-feed" id="feed" style="padding:0 ${pad}px ${pad}px;">
+        <div class="empty-note" id="emptyNote" style="margin-top:${g*2}px;font-size:${base}px;">loading...</div>
+      </div>`;
+
+    document.getElementById('bodyR').innerHTML=`
+      <div class="upload-row" style="flex-shrink:0;padding:${g}px ${pad}px;">
+        <button class="btn" id="upBtn" style="font-size:${base*.85}px;padding:${g*.4}px ${g*1.4}px;">Upload Pic</button>
+        <span class="photo-ct" id="phCt" style="font-size:${base*.78}px;">loading...</span>
+        <input type="file" id="fi" accept="image/*" multiple style="display:none">
+      </div>
+      <div id="upStatus" class="status-msg" style="font-size:${base*.72}px;padding:0 ${pad}px;min-height:1.4em;"></div>
+      <div class="sw" id="sw" style="margin:0 ${pad}px ${pad}px;flex:1;">
+        <div class="no-ph" id="noPh">
+          <span class="no-ph-txt" style="font-size:${base}px;">Photos guests upload will appear here as a slideshow</span>
+        </div>
+        <div id="si"></div>
+        <div class="ss-ctrl" id="ssCtrl" style="display:none;">
+          <button class="btn" id="pauseBtn" style="font-size:${base*.72}px;padding:2px 8px;">Pause</button>
+          <div id="dots" style="display:flex;gap:4px;"></div>
+        </div>
+      </div>`;
+
+    wireUp(base, g);
+  }
+
+  /* ============================================================
+     WIRE UP
+  ============================================================ */
+  function wireUp(base, g) {
+    const guestName = localStorage.getItem('guestName') || 'Guest';
+    document.getElementById('nameTag').textContent = guestName;
+    document.getElementById('postBtn').onclick = () => postComment(guestName, base, g);
+    document.getElementById('cBox').addEventListener('keydown', e => {
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();postComment(guestName,base,g);}
+    });
+    document.getElementById('upBtn').onclick  = () => document.getElementById('fi').click();
+    document.getElementById('fi').onchange    = e  => handleUpload(e, guestName);
+
+    loadComments(base, g);
+    loadPhotos();
+    setInterval(() => loadComments(base, g), 30000);
+    setInterval(loadPhotos, 60000);
+  }
+
+  /* ============================================================
+     COMMENTS
+  ============================================================ */
+  let allComments = [];
+
+  async function loadComments(base, g) {
+    try {
+      allComments = await dbGet('comments','?order=created_at.desc&limit=50');
+      renderComments(base, g);
+    } catch(e) {
+      const el = document.getElementById('emptyNote');
+      if(el) el.textContent = 'Could not load messages.';
+    }
+  }
+
+  async function postComment(guestName, base, g) {
+    const box    = document.getElementById('cBox');
+    const btn    = document.getElementById('postBtn');
+    const status = document.getElementById('postStatus');
+    const txt    = box.value.trim();
+    if(!txt) return;
+    btn.disabled = true;
+    status.textContent = 'posting...';
+    try {
+      await dbPost('comments',{guest_name:guestName,message:txt,hearts:0,hearted_by:[]});
+      box.value = '';
+      status.textContent = 'posted!';
+      setTimeout(()=>status.textContent='',2000);
+      await loadComments(base, g);
+    } catch(e) {
+      status.textContent = 'something went wrong, try again';
+    }
+    btn.disabled = false;
+  }
+
+  function renderComments(base, g) {
+    const feed  = document.getElementById('feed');
+    const empty = document.getElementById('emptyNote');
+    if(!feed) return;
+    if(!allComments.length){
+      empty.style.display='block';
+      empty.textContent='Be the first to leave a message for Emily and Travis!';
+      return;
+    }
+    empty.style.display='none';
+    [...feed.querySelectorAll('.c-item')].forEach(el=>el.remove());
+    const guestName = localStorage.getItem('guestName')||'Guest';
+    allComments.forEach(c=>{
+      const on=(c.hearted_by||[]).includes(guestName);
+      const d=document.createElement('div');
+      d.className='c-item';
+      d.style.cssText=`padding:${base*.5}px 0;`;
+      d.innerHTML=`
+        <div class="c-meta" style="margin-bottom:${base*.25}px;">
+          <span class="c-name" style="font-size:${base*.85}px;">${esc(c.guest_name)}</span>
+          <span class="c-time" style="font-size:${base*.68}px;">${fmtD(c.created_at)}</span>
+        </div>
+        <div class="c-text" style="font-size:${base*.82}px;">${esc(c.message).replace(/\n/g,'<br>')}</div>
+        <div style="margin-top:${base*.35}px;">
+          <button class="heart-btn ${on?'on':''}" data-id="${c.id}" style="font-size:${base*.72}px;">
+            <svg class="hi" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            ${c.hearts||0}
+          </button>
+        </div>`;
+      feed.appendChild(d);
+    });
+    feed.querySelectorAll('.heart-btn').forEach(btn=>{
+      btn.onclick=()=>toggleHeart(parseInt(btn.dataset.id),base,g);
+    });
+  }
+
+  async function toggleHeart(id, base, g) {
+    const guestName=localStorage.getItem('guestName')||'Guest';
+    const c=allComments.find(x=>x.id===id);
+    if(!c||c.guest_name===guestName) return;
+    const hb=c.hearted_by||[];
+    const i=hb.indexOf(guestName);
+    if(i===-1){hb.push(guestName);c.hearts=(c.hearts||0)+1;}
+    else{hb.splice(i,1);c.hearts=Math.max(0,(c.hearts||0)-1);}
+    c.hearted_by=hb;
+    renderComments(base,g);
+    await dbPatch('comments',id,{hearts:c.hearts,hearted_by:hb});
+  }
+
+  /* ============================================================
+     PHOTOS
+  ============================================================ */
+  let photos=[], cur=0, paused=false, timer=null;
+
+  async function loadPhotos() {
+    try {
+      const rows=await dbGet('photos','?order=created_at.asc');
+      photos=rows.map(r=>r.url);
+      renderSlides();
+    } catch(e){}
+  }
+
+  async function handleUpload(e, guestName) {
+    const files=Array.from(e.target.files);
+    const status=document.getElementById('upStatus');
+    const btn=document.getElementById('upBtn');
+    if(!files.length) return;
+    btn.disabled=true;
+    status.textContent=`uploading ${files.length} photo${files.length>1?'s':''}...`;
+    try {
+      for(const file of files) await uploadPhoto(file,guestName);
+      status.textContent='uploaded!';
+      setTimeout(()=>status.textContent='',3000);
+      await loadPhotos();
+    } catch(err){
+      status.textContent='upload failed, try again';
+    }
+    btn.disabled=false;
+    e.target.value='';
+  }
+
+  function renderSlides() {
+    const si=document.getElementById('si');
+    const noPh=document.getElementById('noPh');
+    const ctrl=document.getElementById('ssCtrl');
+    const ct=document.getElementById('phCt');
+    if(!si) return;
+    ct.textContent=photos.length+' photo'+(photos.length!==1?'s':'')+' shared';
+    if(!photos.length){noPh.style.display='flex';ctrl.style.display='none';si.innerHTML='';return;}
+    noPh.style.display='none';ctrl.style.display='flex';
+    si.innerHTML='';
+    photos.forEach((src,i)=>{
+      const s=document.createElement('div');
+      s.className='slide'+(i===cur?' on':'');
+      s.innerHTML=`<img src="${src}" alt="guest photo">`;
+      si.appendChild(s);
+    });
+    const dots=document.getElementById('dots');
+    dots.innerHTML='';
+    const maxD=Math.min(photos.length,8);
+    for(let i=0;i<maxD;i++){
+      const d=document.createElement('div');
+      d.className='dot'+(i===cur?' on':'');
+      d.onclick=()=>goTo(i);
+      dots.appendChild(d);
+    }
+    startShow();
+    document.getElementById('pauseBtn').onclick=togglePause;
+  }
+
+  function goTo(n){
+    document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('on',i===n));
+    document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===n));
+    cur=n;
+  }
+  function startShow(){
+    if(timer) clearInterval(timer);
+    if(paused||photos.length<=1) return;
+    timer=setInterval(()=>goTo((cur+1)%photos.length),4000);
+  }
+  function togglePause(){
+    paused=!paused;
+    document.getElementById('pauseBtn').textContent=paused?'Play':'Pause';
+    paused?clearInterval(timer):startShow();
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+  function fmtD(ts){return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+
+  window.addEventListener('resize', layout);
+  document.getElementById('bgImg').addEventListener('load', layout);
+  layout();
 </script>
 </body>
 </html>
