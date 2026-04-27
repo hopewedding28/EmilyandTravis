@@ -224,7 +224,7 @@
         0 0  4px  rgba(0, 0, 0, 0.95),
         0 2px 14px rgba(0, 0, 0, 0.90),
         0 0  30px rgba(204, 85, 0, 0.18);
-      padding: 0.8rem var(--sp-md) 0.3rem;
+      padding: 0.6rem var(--sp-md) 0.2rem;
       opacity: 0;
       animation: riseIn var(--t-slow) var(--ease-soft) forwards;
       animation-delay: 500ms;
@@ -583,11 +583,11 @@
       inset: 0;
       z-index: 1;
       background: radial-gradient(
-        ellipse at center,
-        rgba(6, 6, 6, 0.12) 0%,
-        rgba(6, 6, 6, 0.42) 55%,
-        rgba(6, 6, 6, 0.78) 100%
-      );
+  ellipse at center,
+  rgba(6, 6, 6, 0.05) 0%,
+  rgba(6, 6, 6, 0.25) 55%,
+  rgba(6, 6, 6, 0.50) 100%
+);
       pointer-events: none;
     }
 
@@ -804,192 +804,6 @@
 
 
     /* ============================================================
-       16. INFO CARDS SECTION
-       Scrollable section below the hero.
-       Quick info bites — not panels, more like floating cards
-       that tease what's on each inner page.
-    ============================================================ */
-    .info-section {
-      position: relative;
-      z-index: 10;
-      background: linear-gradient(
-        to bottom,
-        rgba(4, 6, 4, 0.95) 0%,
-        rgba(6, 8, 6, 0.98) 100%
-      );
-      padding: var(--sp-xxl) var(--sp-lg);
-      border-top: 1px solid rgba(103, 49, 71, 0.20);
-    }
-
-    /* section title */
-    .section-title {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(1.3rem, 3vw, 1.8rem);
-      color: var(--mist-faint);
-      text-align: center;
-      letter-spacing: 0.06em;
-      margin-bottom: var(--sp-xl);
-      text-shadow: 0 0 12px rgba(204, 85, 0, 0.15);
-    }
-
-    /* cards grid */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: var(--sp-md);
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-
-    /* ============================================================
-       17. INFO CARD STYLES
-    ============================================================ */
-    .info-card {
-      position: relative;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 4px;
-      padding: var(--sp-lg) var(--sp-md) var(--sp-md);
-      text-decoration: none;
-      color: var(--text-main);
-      display: flex;
-      flex-direction: column;
-      gap: var(--sp-xs);
-      overflow: hidden;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-
-      box-shadow:
-        0 0 0   1px rgba(103, 49, 71, 0.08),
-        0 8px 24px  rgba(0, 0, 0, 0.40),
-        inset 0 1px 0 rgba(255, 255, 255, 0.02);
-
-      transition:
-        border-color 0.28s var(--ease-default),
-        box-shadow   0.28s var(--ease-default),
-        transform    0.22s var(--ease-default),
-        background   0.28s var(--ease-default);
-
-      opacity: 0;
-      transform: translateY(16px);
-    }
-
-    .info-card.visible {
-      opacity: 1;
-      transform: translateY(0);
-      transition:
-        opacity      0.6s var(--ease-soft),
-        transform    0.6s var(--ease-soft),
-        border-color 0.28s var(--ease-default),
-        box-shadow   0.28s var(--ease-default),
-        background   0.28s var(--ease-default);
-    }
-
-    .info-card:hover {
-      border-color: rgba(204, 85, 0, 0.38);
-      background: rgba(10, 14, 10, 0.82);
-      box-shadow:
-        0 0 0   1px rgba(204, 85, 0, 0.15),
-        0 0 24px    rgba(204, 85, 0, 0.10),
-        0 12px 32px rgba(0, 0, 0, 0.50),
-        inset 0 1px 0 rgba(255, 255, 255, 0.02);
-      transform: translateY(-3px);
-    }
-
-    /* card icon SVG */
-    .card-icon {
-      width: 32px;
-      height: 32px;
-      margin-bottom: var(--sp-xs);
-      opacity: 0.70;
-      transition: opacity 0.25s var(--ease-default);
-      filter: drop-shadow(0 0 4px rgba(204, 85, 0, 0.30));
-    }
-
-    .info-card:hover .card-icon {
-      opacity: 1;
-      filter: drop-shadow(0 0 8px rgba(204, 85, 0, 0.55));
-    }
-
-    /* card title */
-    .card-title {
-      font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(1.1rem, 2.2vw, 1.4rem);
-      color: var(--mist);
-      letter-spacing: 0.02em;
-      text-shadow: 0 0 10px rgba(204, 85, 0, 0.15);
-      line-height: 1.2;
-    }
-
-    /* card description */
-    .card-desc {
-      font-family: 'Zen Loop', sans-serif;
-      font-size: clamp(0.80rem, 1.4vw, 0.90rem);
-      color: var(--mist-faint);
-      line-height: 1.6;
-      font-style: italic;
-      letter-spacing: 0.02em;
-    }
-
-    /* card arrow */
-    .card-arrow {
-      margin-top: auto;
-      padding-top: var(--sp-sm);
-      font-family: 'Zen Loop', sans-serif;
-      font-size: 0.78rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(204, 85, 0, 0.55);
-      transition: color 0.25s var(--ease-default), letter-spacing 0.25s var(--ease-default);
-    }
-
-    .info-card:hover .card-arrow {
-      color: rgba(204, 85, 0, 0.88);
-      letter-spacing: 0.16em;
-    }
-
-    /* card corner accent */
-    .card-corner {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 40px;
-      height: 40px;
-      opacity: 0.30;
-      pointer-events: none;
-    }
-
-
-    /* ============================================================
-       18. SECTION DIVIDER
-    ============================================================ */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: var(--sp-md);
-      padding: var(--sp-xl) var(--sp-lg);
-      opacity: 0.55;
-    }
-
-    .divider-line {
-      flex: 1;
-      max-width: 200px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(103, 49, 71, 0.40), transparent);
-    }
-
-    .divider-orb {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(204,85,0,0.80) 0%, rgba(103,49,71,0.40) 60%, transparent 100%);
-      box-shadow: 0 0 8px rgba(204,85,0,0.35);
-    }
-
-
-    /* ============================================================
        19. FOOTER
     ============================================================ */
     .site-footer {
@@ -1148,15 +962,6 @@
       .countdown-number {
         font-size: clamp(1.6rem, 8vw, 2.4rem);
       }
-
-      .info-section {
-        padding: var(--sp-xl) var(--sp-md);
-      }
-
-      .cards-grid {
-        grid-template-columns: 1fr;
-        gap: var(--sp-sm);
-      }
     }
 
     @media (max-width: 420px) {
@@ -1169,11 +974,6 @@
        24. SAFE AREA INSETS
     ============================================================ */
     .hero-content {
-      padding-left:  max(var(--sp-lg), env(safe-area-inset-left));
-      padding-right: max(var(--sp-lg), env(safe-area-inset-right));
-    }
-
-    .info-section {
       padding-left:  max(var(--sp-lg), env(safe-area-inset-left));
       padding-right: max(var(--sp-lg), env(safe-area-inset-right));
     }
@@ -1457,116 +1257,6 @@
       </div>
 
     </section>
-
-
-    <!-- ============================================================
-         INFO CARDS SECTION
-    ============================================================ -->
-    <section class="info-section" aria-label="Wedding information">
-
-      <h2 class="section-title">Wander where you'd like</h2>
-
-      <div class="cards-grid" id="cardsGrid">
-
-        <!-- Details card -->
-        <a href="details.html" class="info-card" data-reveal>
-          <div class="card-corner" aria-hidden="true">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
-              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
-            </svg>
-          </div>
-          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M6 4H20L26 10V28H6V4Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.08)"/>
-            <path d="M20 4V10H26" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-            <line x1="10" y1="15" x2="22" y2="15" stroke="#673147" stroke-width="0.8" opacity="0.7"/>
-            <line x1="10" y1="19" x2="22" y2="19" stroke="#673147" stroke-width="0.8" opacity="0.7"/>
-            <line x1="10" y1="23" x2="18" y2="23" stroke="#673147" stroke-width="0.8" opacity="0.7"/>
-          </svg>
-          <h3 class="card-title">The Details</h3>
-          <p class="card-desc">Everything you need to know — where to go, what to expect, and the little things worth knowing.</p>
-          <span class="card-arrow">explore →</span>
-        </a>
-
-        <!-- Schedule card -->
-        <a href="schedule.html" class="info-card" data-reveal>
-          <div class="card-corner" aria-hidden="true">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
-              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
-            </svg>
-          </div>
-          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="16" cy="16" r="12" stroke="#CC5500" stroke-width="1.2" fill="rgba(204,85,0,0.08)"/>
-            <path d="M16 8V16L21 20" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round"/>
-            <line x1="16" y1="4" x2="16" y2="7" stroke="#673147" stroke-width="0.8" opacity="0.6"/>
-            <line x1="28" y1="16" x2="25" y2="16" stroke="#673147" stroke-width="0.8" opacity="0.6"/>
-          </svg>
-          <h3 class="card-title">The Schedule</h3>
-          <p class="card-desc">Follow the rhythm of the day. From arrival to the last slice of cake — here's how it unfolds.</p>
-          <span class="card-arrow">explore →</span>
-        </a>
-
-        <!-- Menu card -->
-        <a href="menu.html" class="info-card" data-reveal>
-          <div class="card-corner" aria-hidden="true">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
-              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
-            </svg>
-          </div>
-          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 6V26M8 16H18M18 6V26" stroke="#CC5500" stroke-width="1.2" stroke-linecap="round"/>
-            <path d="M24 6C24 6 27 10 24 15C21 20 24 26 24 26" stroke="#673147" stroke-width="1.2" stroke-linecap="round"/>
-          </svg>
-          <h3 class="card-title">The Menu</h3>
-          <p class="card-desc">Mission BBQ, cake, and all the good stuff. Yes, really. No fancy plated dinner here — just food we actually love.</p>
-          <span class="card-arrow">explore →</span>
-        </a>
-
-        <!-- Registry card -->
-        <a href="registry.html" class="info-card" data-reveal>
-          <div class="card-corner" aria-hidden="true">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
-              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
-            </svg>
-          </div>
-          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 27L8 19C5.8 16.8 5.8 13.2 8 11C10.2 8.8 13.8 8.8 16 11L16 11L16 11C18.2 8.8 21.8 8.8 24 11C26.2 13.2 26.2 16.8 24 19L16 27Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.08)"/>
-          </svg>
-          <h3 class="card-title">The Registry</h3>
-          <p class="card-desc">With love, if you wish. No pressure — your presence is the gift. But if you'd like to send a little something extra.</p>
-          <span class="card-arrow">explore →</span>
-        </a>
-
-        <!-- Activities card -->
-        <a href="activities.html" class="info-card" data-reveal>
-          <div class="card-corner" aria-hidden="true">
-            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 38 C2 22 2 10 2 2 L38 2" stroke="#673147" stroke-width="0.8" opacity="0.6" stroke-linecap="round"/>
-              <circle cx="2" cy="2" r="2" fill="#CC5500" opacity="0.6"/>
-            </svg>
-          </div>
-          <svg class="card-icon" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16 4L18.5 12H27L20.5 17L23 25L16 20L9 25L11.5 17L5 12H13.5L16 4Z" stroke="#CC5500" stroke-width="1.2" stroke-linejoin="round" fill="rgba(204,85,0,0.08)"/>
-          </svg>
-          <h3 class="card-title">The Activities</h3>
-          <p class="card-desc">We don't dance — we DO things. Pavilion 1B is packed with fun for everyone. Come see what we've got planned.</p>
-          <span class="card-arrow">explore →</span>
-        </a>
-
-      </div>
-
-    </section>
-
-
-    <!-- section divider -->
-    <div class="section-divider" aria-hidden="true">
-      <span class="divider-line"></span>
-      <span class="divider-orb"></span>
-      <span class="divider-line"></span>
-    </div>
 
 
     <!-- ============================================================
