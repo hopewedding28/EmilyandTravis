@@ -287,7 +287,7 @@ function buildPanels(panelH, base) {
     </div>
     <div class="comment-feed" id="feed" style="padding:0 ${pad}px ${pad}px;">
       <div class="empty-note" id="emptyNote" style="margin-top:${gapS*2}px;font-size:${base}px;">
-        Be the first to leave a message ✨
+        Be the first to leave a message for the bride and groom!
       </div>
     </div>`;
 
@@ -354,7 +354,7 @@ function postComment() {
   const box = document.getElementById('cBox');
   const txt = box.value.trim();
   if (!txt) return;
-  if (!canPost()) { alert("Daily limit reached — come back tomorrow 💛"); return; }
+  if (!canPost()) { alert("Daily limit reached — come back tomorrow!"); return; }
   comments.unshift({ name:guestName, text:txt, ts:Date.now(), hearts:0, hb:[] });
   bumpD();
   try { localStorage.setItem('wc_c',JSON.stringify(comments)); } catch(e){}
