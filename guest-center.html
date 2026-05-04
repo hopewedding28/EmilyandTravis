@@ -115,6 +115,9 @@
     .c-name { font-family:'Cormorant Garamond',serif; color:var(--gold); letter-spacing:0.05em; }
     .c-time { color:var(--text-muted); }
     .c-text { color:var(--text-dark); line-height:1.5; }
+
+    .c-actions { display:flex; align-items:center; gap:8px; }
+
     .heart-btn {
       background:none; border:none; cursor:pointer;
       display:flex; align-items:center; gap:3px;
@@ -123,6 +126,14 @@
     .heart-btn:hover,.heart-btn.on { color:var(--gold-light); }
     .hi { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.8; }
     .heart-btn.on .hi { fill:var(--gold-light); }
+
+    .delete-btn {
+      background:none; border:none; cursor:pointer;
+      display:flex; align-items:center;
+      color:var(--text-muted); transition:color 150ms; padding:0;
+    }
+    .delete-btn:hover { color:rgba(180,60,60,0.75); }
+    .delete-btn svg { width:11px; height:11px; stroke:currentColor; stroke-width:1.8; fill:none; }
 
     .upload-row { flex-shrink:0; display:flex; align-items:center; gap:8px; }
     .photo-ct { color:var(--text-muted); letter-spacing:0.06em; }
@@ -179,9 +190,10 @@
     'Prefer': 'return=representation'
   };
 
-  const dbGet   = (t,q='')  => fetch(`${SUPA_URL}/rest/v1/${t}${q}`,{headers:H}).then(r=>r.json());
-  const dbPost  = (t,b)     => fetch(`${SUPA_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
-  const dbPatch = (t,id,b)  => fetch(`${SUPA_URL}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
+  const dbGet    = (t,q='') => fetch(`${SUPA_URL}/rest/v1/${t}${q}`,{headers:H}).then(r=>r.json());
+  const dbPost   = (t,b)    => fetch(`${SUPA_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
+  const dbPatch  = (t,id,b) => fetch(`${SUPA_URL}/rest/v1/${t}?id=eq.${id}`,{method:'PATCH',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
+  const dbDelete = (t,id)   => fetch(`${SUPA_URL}/rest/v1/${t}?id=eq.${id}`,{method:'DELETE',headers:H});
 
   async function uploadPhoto(file, guestName) {
     const ext  = file.name.split('.').pop();
@@ -339,6 +351,14 @@
     btn.disabled = false;
   }
 
+  async function deleteComment(id, base, g) {
+    try {
+      await dbDelete('comments', id);
+      allComments = allComments.filter(c => c.id !== id);
+      renderComments(base, g);
+    } catch(e) {}
+  }
+
   function renderComments(base, g) {
     const feed  = document.getElementById('feed');
     const empty = document.getElementById('emptyNote');
@@ -353,6 +373,7 @@
     const guestName = localStorage.getItem('guestName')||'Guest';
     allComments.forEach(c=>{
       const on=(c.hearted_by||[]).includes(guestName);
+      const isOwn = c.guest_name === guestName;
       const d=document.createElement('div');
       d.className='c-item';
       d.style.cssText=`padding:${base*.5}px 0;`;
@@ -362,16 +383,23 @@
           <span class="c-time" style="font-size:${base*.68}px;">${fmtD(c.created_at)}</span>
         </div>
         <div class="c-text" style="font-size:${base*.82}px;">${esc(c.message).replace(/\n/g,'<br>')}</div>
-        <div style="margin-top:${base*.35}px;">
+        <div class="c-actions" style="margin-top:${base*.35}px;">
           <button class="heart-btn ${on?'on':''}" data-id="${c.id}" style="font-size:${base*.72}px;">
             <svg class="hi" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             ${c.hearts||0}
           </button>
+          ${isOwn ? `<button class="delete-btn" data-id="${c.id}" title="Delete comment">
+            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          </button>` : ''}
         </div>`;
       feed.appendChild(d);
     });
+
     feed.querySelectorAll('.heart-btn').forEach(btn=>{
       btn.onclick=()=>toggleHeart(parseInt(btn.dataset.id),base,g);
+    });
+    feed.querySelectorAll('.delete-btn').forEach(btn=>{
+      btn.onclick=()=>deleteComment(parseInt(btn.dataset.id),base,g);
     });
   }
 
