@@ -5,7 +5,7 @@
   <!-- ============================================================
        EMILY & TRAVIS WEDDING SITE
        FILE: faq.html
-       PURPOSE: FAQ page. All the questions guests actually have.
+       PURPOSE: FAQ page. Burrito-approved edition.
        BACKGROUND: landing.png
        PALETTE: Burnt Orange #CC5500, Plum #673147,
                 Dark Green #1a3a1a, Black, Mist
@@ -35,8 +35,8 @@
       --plum-border:   rgba(103,49,71,0.38);
       --gold:          #f3d37a;
       --mist:          rgba(248,242,224,0.97);
-      --mist-soft:     rgba(242,235,212,0.88);
-      --mist-faint:    rgba(240,234,214,0.65);
+      --mist-soft:     rgba(242,235,212,0.92);
+      --mist-faint:    rgba(240,234,214,0.78);
       --text-main:     rgba(232,225,199,0.95);
       --forest-deep:   #060b06;
       --ease-soft:     cubic-bezier(0.25,0.8,0.25,1);
@@ -170,11 +170,11 @@
     }
 
     /* ── FADE ── */
-    .fade-transition { height: 80px; background: linear-gradient(to bottom, transparent, rgba(6,8,6,0.98)); }
+    .fade-transition { height: 80px; background: linear-gradient(to bottom, transparent, rgba(18,24,18,0.98)); }
 
-    /* ── FAQ BODY ── */
+    /* ── FAQ BODY — lighter background ── */
     .faq-body {
-      background: rgba(6,8,6,0.98);
+      background: rgba(18,24,18,0.97);
       padding: 3rem 2rem 5rem;
       max-width: 760px;
       margin: 0 auto;
@@ -191,68 +191,56 @@
     }
 
     .category-label {
-      font-size: 0.65rem;
-      color: rgba(204,85,0,0.75);
+      font-size: 0.68rem;
+      color: rgba(204,85,0,0.90);
       letter-spacing: 0.20em;
       text-transform: uppercase;
       margin-bottom: 1rem;
       padding-bottom: 0.5rem;
-      border-bottom: 1px solid rgba(103,49,71,0.22);
+      border-bottom: 1px solid rgba(103,49,71,0.35);
     }
 
-    /* ── ACCORDION ITEM ── */
-    .faq-item {
-      border-bottom: 1px solid rgba(103,49,71,0.15);
-    }
+    /* ── ACCORDION ── */
+    .faq-item { border-bottom: 1px solid rgba(103,49,71,0.22); }
 
     .faq-question {
       width: 100%; background: none; border: none; cursor: pointer;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 0.9rem 0;
-      text-align: left; gap: 1rem;
+      padding: 0.9rem 0; text-align: left; gap: 1rem;
       -webkit-tap-highlight-color: transparent;
     }
 
     .faq-q-text {
       font-family: 'Zen Loop', sans-serif;
-      font-size: clamp(0.85rem, 1.6vw, 0.96rem);
+      font-size: clamp(0.88rem, 1.6vw, 0.98rem);
       color: var(--mist-soft);
-      letter-spacing: 0.02em;
-      line-height: 1.5;
-      flex: 1;
+      letter-spacing: 0.02em; line-height: 1.5; flex: 1;
     }
 
     .faq-chevron {
       width: 14px; height: 14px; flex-shrink: 0;
-      stroke: rgba(204,85,0,0.55); fill: none; stroke-width: 1.5;
+      stroke: rgba(204,85,0,0.65); fill: none; stroke-width: 1.5;
       stroke-linecap: round; stroke-linejoin: round;
       transition: transform 0.3s var(--ease-soft), stroke 0.22s;
     }
     .faq-question:hover .faq-q-text { color: var(--mist); }
-    .faq-question:hover .faq-chevron { stroke: rgba(204,85,0,0.88); }
-    .faq-item.open .faq-chevron { transform: rotate(180deg); stroke: rgba(204,85,0,0.88); }
+    .faq-question:hover .faq-chevron { stroke: rgba(204,85,0,0.90); }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); stroke: rgba(204,85,0,0.90); }
 
-    .faq-answer {
-      overflow: hidden;
-      max-height: 0;
-      transition: max-height 0.4s var(--ease-soft);
-    }
-    .faq-item.open .faq-answer { max-height: 400px; }
+    .faq-answer { overflow: hidden; max-height: 0; transition: max-height 0.4s var(--ease-soft); }
+    .faq-item.open .faq-answer { max-height: 500px; }
 
     .faq-a-text {
       font-family: 'Zen Loop', sans-serif;
-      font-size: clamp(0.82rem, 1.5vw, 0.92rem);
+      font-size: clamp(0.84rem, 1.5vw, 0.94rem);
       color: var(--mist-faint);
-      line-height: 1.75;
-      letter-spacing: 0.02em;
-      padding: 0 0 1rem 0;
+      line-height: 1.78; letter-spacing: 0.02em;
+      padding: 0.2rem 0 1rem 0;
     }
 
     .faq-a-text a {
-      color: rgba(204,85,0,0.85);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-      transition: color 0.22s;
+      color: rgba(204,85,0,0.90);
+      text-decoration: underline; text-underline-offset: 3px; transition: color 0.22s;
     }
     .faq-a-text a:hover { color: var(--mist); }
 
@@ -261,8 +249,8 @@
     .vine svg { width: 160px; height: 12px; }
 
     /* ── BOTTOM ── */
-    .bottom-moment { text-align: center; padding: 2rem 1.5rem 5rem; background: rgba(4,6,4,0.99); }
-    .bottom-text { font-family: 'Shadows Into Light Two', cursive; font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: rgba(204,85,0,0.65); letter-spacing: 0.06em; text-shadow: 0 0 12px rgba(204,85,0,0.15); }
+    .bottom-moment { text-align: center; padding: 2rem 1.5rem 5rem; background: rgba(14,18,14,0.99); }
+    .bottom-text { font-family: 'Shadows Into Light Two', cursive; font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: rgba(204,85,0,0.75); letter-spacing: 0.06em; text-shadow: 0 0 12px rgba(204,85,0,0.15); }
 
     @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -346,48 +334,48 @@
       </svg>
     </div>
 
-    <!-- ── THE BASICS ── -->
+    <!-- THE BASICS -->
     <div class="faq-category" data-reveal>
       <p class="category-label">The Basics</p>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">When is the wedding?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">September 23rd, 2028. Mark your calendar, set ten alarms, do what you need to do.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">September 23rd, 2028. Put it in your calendar now.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">What time does it start?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Emily walks down at 1:00 PM. Please be seated by 12:50 at the latest. The ceremony will not wait.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Ceremony starts at 1:00 PM. Emily walks at 1. Be seated by 12:50 at the latest. The ceremony will not wait.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">What time does it end?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">We wrap up around 5:00 to 5:30 PM. The park needs us out by 6:00, so we'll be cleaning up. Please help if you can!</p></div>
+        <button class="faq-question"><span class="faq-q-text">What time does everything end?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">Around 5:00 to 5:30 PM. We have to clean up and be out by 6. Help if you can.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Is this a weekday thing?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">It's a Saturday. You have no excuses.</p></div>
+        <button class="faq-question"><span class="faq-q-text">Is it a weekday?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">No. It's a Saturday. You're good.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">How do I RSVP?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Through this website! Head to the RSVP page and fill it out. Yes you can change it after. No we are not doing mail-in cards.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Through this website. Head to the RSVP page and fill it out. Yes you can change it after. No we are not doing mail-in cards.</p></div>
       </div>
     </div>
 
-    <!-- ── LOCATION & GETTING THERE ── -->
+    <!-- LOCATION & PARKING -->
     <div class="faq-category" data-reveal>
-      <p class="category-label">Location &amp; Getting There</p>
+      <p class="category-label">Location &amp; Parking</p>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Where is the wedding?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Lums Pond State Park, Pavilions 1 and 1B, Bear, Delaware. The ceremony and reception are at the same location. You do not have to drive anywhere between them. They are literally steps apart.</p></div>
+        <button class="faq-question"><span class="faq-q-text">Where is it?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">Lums Pond State Park, Pavilions 1 and 1B, Bear, Delaware. The ceremony and reception are in the same place. You are walking like 5 feet, not traveling across the country.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Is there parking?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Yes. Parking is free once you're in. Entry into the park costs $4 per vehicle for Delaware residents and $8 per vehicle for out-of-state visitors. Bring cash or a card just in case. You cannot leave your car overnight.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Yes. Parking is free once you are in. Entry into the park costs $4 per vehicle for Delaware residents and $8 for out-of-state visitors. You cannot leave your car overnight.</p></div>
       </div>
 
       <div class="faq-item">
@@ -396,69 +384,64 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Is the venue accessible?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">It is a state park, so paths may include grass and dirt. Restrooms are nearby and the area is relatively flat. If you have specific accessibility needs, reach out to us directly and we will do our best.</p></div>
-      </div>
-
-      <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">What is the closest airport?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Philadelphia International Airport (PHL) is your best bet. From there, figure out your own ride. We believe in you.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Philadelphia International Airport (PHL). From there, figure out your own ride. We believe in you.</p></div>
       </div>
     </div>
 
-    <!-- ── FOOD & DRINKS ── -->
-    <div class="faq-category" data-reveal>
-      <p class="category-label">Food &amp; Drinks</p>
-
-      <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">What's the food situation?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">We're doing Mission BBQ or grill-out style depending on how things come together. Buffet style, grab what you want. Food will be served around 2:30 to 3:00 PM. When it runs out, it runs out.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Is there an open bar?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Emily and Travis do not drink, so there is no hosted bar. If you want alcohol, bring your own in cans only. No glass at the pavilion. We will have Coke products, juice, lemonade, and bottled water for everyone.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">I have dietary restrictions. Are you accommodating that?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">It is an outdoor BBQ wedding. The menu is what the menu is. If you have a severe allergy, please plan accordingly and bring something safe for yourself. We love you and do not want you to go into anaphylaxis at our wedding.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">What about the cake?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Yes there will be cake. Cutting will happen after everyone has had a chance to eat. Details to come!</p></div>
-      </div>
-    </div>
-
-    <!-- ── DRESS CODE ── -->
+    <!-- DRESS CODE & WEATHER -->
     <div class="faq-category" data-reveal>
       <p class="category-label">Dress Code &amp; Weather</p>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">What should I wear?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Comfortable and cute. Think outdoor park wedding vibes. Sundresses, linen, nice sneakers. You will be on grass. Plan your shoes accordingly. No colors are off limits except white, obviously.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Casual, cute, and comfortable. Think park wedding, not ballroom. Grass-approved shoes are strongly encouraged. If you sink, that's on you.</p></div>
       </div>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">What is the weather going to be like?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Late September in Delaware can be warm during the day and cooler in the evening. A light jacket is not a bad idea. Check the weather widget on the Details page closer to the date for a real forecast.</p></div>
+        <button class="faq-question"><span class="faq-q-text">Should I bring a jacket?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">Maybe. Late September in Delaware can get a little chilly toward the evening. A light jacket is not a bad idea.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">What if it rains?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">The reception pavilions are covered so we have shelter. The ceremony is outdoors. If it rains during the ceremony, we get a little wet and keep it moving. Emily and Travis are still getting married rain or shine.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">We keep going. The reception pavilions are covered. The ceremony is outdoors and if it rains we get a little wet and keep it moving. Emily and Travis are still getting married rain or shine.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Should I bring bug spray?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">We will have bug spray in the bathroom area. You are welcome to bring your own as well. It is a park near water so yes, bugs are a thing.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">We will have some available near the bathrooms. It is a park near water so yes, bugs are a thing. Bring your own too if you want to be safe.</p></div>
       </div>
     </div>
 
-    <!-- ── KIDS & PLUS ONES ── -->
+    <!-- FOOD & DRINKS -->
     <div class="faq-category" data-reveal>
-      <p class="category-label">Kids &amp; Plus Ones</p>
+      <p class="category-label">Food &amp; Drinks</p>
+
+      <div class="faq-item">
+        <button class="faq-question"><span class="faq-q-text">What is the food situation?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">BBQ buffet style. Grab what you want. Food will be served around 2:30 to 3:00 PM. When it runs out, it runs out.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span class="faq-q-text">Is there an open bar?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">Emily and Travis do not drink so there is no hosted bar. BYOB, canned only. No glass at the pavilion. We will have Coke products, juice, lemonade, and bottled water for everyone.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question"><span class="faq-q-text">I have dietary restrictions. Now what?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">It is an outdoor BBQ wedding. The menu is what the menu is. If you have a severe allergy, please plan accordingly and bring something safe for yourself. We love you and do not want you to go into anaphylaxis at our wedding.</p></div>
+      </div>
+    </div>
+
+    <!-- GUESTS, KIDS & PLUS ONES -->
+    <div class="faq-category" data-reveal>
+      <p class="category-label">Guests, Kids &amp; Plus Ones</p>
+
+      <div class="faq-item">
+        <button class="faq-question"><span class="faq-q-text">Can I bring a plus one?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <div class="faq-answer"><p class="faq-a-text">Yes, there is a section for it on the RSVP. If your partner did not get a separate invitation, that is because you are a couple and one invitation covers both of you.</p></div>
+      </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Are kids invited?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
@@ -466,53 +449,48 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Can I bring a plus one?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Yes. There is a plus one section on the RSVP for a reason. If your partner did not get a separate invitation, that is because you are a couple and one invitation covers both of you.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Is there childcare or a nursing room?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <button class="faq-question"><span class="faq-q-text">Is there childcare or a private nursing space?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
         <div class="faq-answer"><p class="faq-a-text">There is no on-site childcare. The bathrooms are available if you need a private space. Your car also works in a pinch.</p></div>
       </div>
     </div>
 
-    <!-- ── THE DAY ITSELF ── -->
+    <!-- THE DAY ITSELF -->
     <div class="faq-category" data-reveal>
       <p class="category-label">The Day Itself</p>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">How long is the ceremony?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Probably around 15 minutes. We are not doing a full theatrical production. Emily and Travis will say their vows and get married.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">About 15 minutes. We are not doing a full theatrical production. Emily and Travis will say their vows and get married.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Is there assigned seating?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">No. Sit wherever you want. The pavilions have picnic tables and we will have additional chairs from the ceremony. Make yourself comfortable.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">No. Sit wherever you want. The pavilions have picnic tables and we will have chairs from the ceremony. Make yourself comfortable.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">What is there to do?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">A lot actually. Pavilion 1B is our activity pavilion and it is packed. Lawn games, activities, and we are planning a family vs family event. Check the Activities page for details as we get closer. We don't dance, so we planned things we actually enjoy instead.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">A lot actually. Pavilion 1B is our activity pavilion and it is packed. Lawn games, activities, and we are planning a family vs family event. We do not dance so we planned things we actually enjoy instead.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Can I request a song?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Yes! Head to the music suggestions page on this site and submit your request. The event is about 6 hours so we cannot play everything, but we will do our best.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Yes, on the website. The event is about 6 hours so we cannot play everything, but we will do our best.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Where is the bathroom?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">In between the two pavilions. You will not miss it. There will also be a first aid kit and a bin with supplies including bug spray and sunscreen nearby.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Between the two pavilions. You will not miss it. There will also be a first aid kit and supplies including bug spray and sunscreen nearby.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Is there a phone charging station?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Yes! We are putting together a charging box with a power strip and different cable types. The pavilions have outlets. Come find it.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Yes. We are putting together a charging box with a power strip and different cable types. The pavilions have outlets. Come find it.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Can I post photos on social media?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Please wait until after the ceremony to post anything. During the ceremony, phones away. You are watching two people get married. After that, go wild. Upload your photos to the Guest Center on this site too!</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Please wait until after the ceremony. During the ceremony, phones away. You are watching two people get married. After that, go wild. Upload your photos to the Guest Center on this site too.</p></div>
       </div>
 
       <div class="faq-item">
@@ -526,23 +504,23 @@
       </div>
 
       <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Who do I contact on the day if I get lost?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
+        <button class="faq-question"><span class="faq-q-text">Who do I contact if I get lost?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
         <div class="faq-answer"><p class="faq-a-text">Not the bride. Find an uncle who is already there. They will point you in the right direction.</p></div>
       </div>
     </div>
 
-    <!-- ── GIFTS & REGISTRY ── -->
+    <!-- GIFTS & REGISTRY -->
     <div class="faq-category" data-reveal>
       <p class="category-label">Gifts &amp; Registry</p>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Where are you registered?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Check the Registry page on this site for all the links. It is kept up to date.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Check the Registry page on this site for all the links.</p></div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">Can I bring a physical gift?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">Yes! We will have a card box at the entrance for cards and cash. Physical gifts can be brought as well. If you cannot attend, you are welcome to ship something to us directly.</p></div>
+        <div class="faq-answer"><p class="faq-a-text">Yes. We will have a card box at the entrance for cards and cash. If you cannot attend, you are welcome to ship something to us directly.</p></div>
       </div>
 
       <div class="faq-item">
@@ -551,7 +529,7 @@
       </div>
     </div>
 
-    <!-- ── ABOUT THE COUPLE ── -->
+    <!-- ABOUT THE COUPLE -->
     <div class="faq-category" data-reveal>
       <p class="category-label">About the Couple</p>
 
@@ -568,11 +546,6 @@
       <div class="faq-item">
         <button class="faq-question"><span class="faq-q-text">What will their last name be?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
         <div class="faq-answer"><p class="faq-a-text">Hope. Emily and Travis Hope.</p></div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question"><span class="faq-q-text">Where are they going for their honeymoon?</span><svg class="faq-chevron" viewBox="0 0 14 14"><polyline points="2,4 7,10 12,4"/></svg></button>
-        <div class="faq-answer"><p class="faq-a-text">TBD. We will let you know when we figure it out.</p></div>
       </div>
 
       <div class="faq-item">
@@ -608,7 +581,6 @@
 
     setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 300);
 
-    /* ── ACCORDION ── */
     document.querySelectorAll('.faq-question').forEach(btn => {
       btn.addEventListener('click', () => {
         const item = btn.closest('.faq-item');
@@ -618,7 +590,6 @@
       });
     });
 
-    /* ── SCROLL REVEAL ── */
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry, i) => {
         if (entry.isIntersecting) {
@@ -629,7 +600,6 @@
     }, { threshold: 0.08 });
     document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
 
-    /* ── HAMBURGER ── */
     const hamburgerBtn   = document.getElementById('hamburgerBtn');
     const navDrawer      = document.getElementById('navDrawer');
     const drawerBackdrop = document.getElementById('drawerBackdrop');
