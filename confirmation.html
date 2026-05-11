@@ -32,8 +32,7 @@
     }
 
     html, body {
-      width: 100%;
-      min-height: 100%;
+      width: 100%; min-height: 100%;
       font-family: 'Zen Loop', sans-serif;
       background: var(--forest-deep);
       color: var(--text-main);
@@ -41,42 +40,31 @@
     }
 
     .forest {
-      min-height: 100vh;
-      min-height: 100dvh;
+      min-height: 100vh; min-height: 100dvh;
       background: url("assets/backgrounds/landing.png") center / cover no-repeat;
       position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       padding: max(3rem, env(safe-area-inset-top)) 1.25rem max(3rem, env(safe-area-inset-bottom));
-      overflow: hidden;
-      isolation: isolate;
+      overflow: hidden; isolation: isolate;
     }
 
     .forest::before {
-      content: "";
-      position: absolute; inset: 0; z-index: 1;
-      background: radial-gradient(ellipse at center,
-        rgba(6,6,6,0.05) 0%,
-        rgba(6,6,6,0.20) 55%,
-        rgba(6,6,6,0.35) 100%
-      );
+      content: ""; position: absolute; inset: 0; z-index: 1;
+      background: radial-gradient(ellipse at center, rgba(6,6,6,0.05) 0%, rgba(6,6,6,0.20) 55%, rgba(6,6,6,0.35) 100%);
       pointer-events: none;
     }
 
     .overlay-breathe {
       position: absolute; inset: 0; z-index: 2;
       background: radial-gradient(ellipse at center, transparent 30%, rgba(4,6,4,0.18) 100%);
-      pointer-events: none;
-      animation: breathePulse 10s ease-in-out infinite;
+      pointer-events: none; animation: breathePulse 10s ease-in-out infinite;
     }
     @keyframes breathePulse { 0%,100%{opacity:.5} 50%{opacity:1} }
 
     .overlay-glow {
       position: absolute; inset: 0; z-index: 2;
       background: radial-gradient(ellipse at 50% 38%, rgba(204,85,0,0.05) 0%, transparent 55%);
-      pointer-events: none;
-      animation: glowShift 18s ease-in-out infinite alternate;
+      pointer-events: none; animation: glowShift 18s ease-in-out infinite alternate;
     }
     @keyframes glowShift { 0%{opacity:.4} 100%{opacity:1} }
 
@@ -99,8 +87,7 @@
       position: absolute; border-radius: 50%; opacity: 0;
       animation-name: driftFloat, flickerGlow;
       animation-timing-function: linear, ease-in-out;
-      animation-iteration-count: infinite;
-      will-change: transform, opacity;
+      animation-iteration-count: infinite; will-change: transform, opacity;
     }
     .firefly.color-gold      { background: radial-gradient(circle, rgba(255,240,140,.98) 0%, rgba(243,211,122,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(243,220,120,.65), 0 0 20px rgba(230,200,100,.28); }
     .firefly.color-amber     { background: radial-gradient(circle, rgba(255,180,60,.98) 0%, rgba(240,150,30,.55) 48%, transparent 100%); box-shadow: 0 0 8px rgba(255,170,50,.65), 0 0 20px rgba(240,140,20,.28); }
@@ -127,28 +114,20 @@
 
     .loading-screen {
       position: fixed; inset: 0; background: var(--forest-deep);
-      z-index: 100; pointer-events: none;
-      transition: opacity 1s var(--ease-soft);
+      z-index: 100; pointer-events: none; transition: opacity 1s var(--ease-soft);
     }
     .loading-screen.done { opacity: 0; }
 
-    /* ── CONTENT ── */
     .content-wrap {
       position: relative; z-index: 6;
-      width: 100%; max-width: 480px;
-      text-align: center;
-      opacity: 0;
-      animation: riseIn 900ms var(--ease-soft) forwards;
-      animation-delay: 400ms;
+      width: 100%; max-width: 480px; text-align: center;
+      opacity: 0; animation: riseIn 900ms var(--ease-soft) forwards; animation-delay: 400ms;
     }
 
-    /* ── CONFIRMATION BOX ── */
     .confirm-box {
       background: rgba(4,6,4,0.72);
       border: 1px solid rgba(103,49,71,0.22);
-      border-radius: 3px;
-      padding: 2.2rem 2rem;
-      margin-bottom: 1.2rem;
+      border-radius: 3px; padding: 2.2rem 2rem; margin-bottom: 1.2rem;
     }
 
     .vine { display: flex; align-items: center; justify-content: center; margin: 0 0 1.4rem; opacity: 0.65; }
@@ -156,35 +135,49 @@
 
     .confirm-title {
       font-family: 'Shadows Into Light Two', cursive;
-      font-size: clamp(1.6rem, 5vw, 2.2rem);
-      color: var(--mist);
+      font-size: clamp(1.6rem, 5vw, 2.2rem); color: var(--mist);
       text-shadow: 0 0 12px rgba(204,85,0,0.30), 0 2px 10px rgba(0,0,0,0.85);
-      margin-bottom: 1rem;
-      line-height: 1.2;
+      margin-bottom: 1rem; line-height: 1.2;
     }
 
     .confirm-text {
-      font-size: 0.92rem;
-      color: var(--mist-faint);
-      font-style: italic;
-      line-height: 1.75;
-      letter-spacing: 0.02em;
+      font-size: 0.92rem; color: var(--mist-faint);
+      font-style: italic; line-height: 1.75; letter-spacing: 0.02em;
     }
 
     .confirm-note {
-      font-size: 0.82rem;
-      color: rgba(204,85,0,0.75);
-      font-style: italic;
-      margin-top: 1rem;
-      letter-spacing: 0.03em;
+      font-size: 0.82rem; color: rgba(204,85,0,0.75);
+      font-style: italic; margin-top: 1rem; letter-spacing: 0.03em;
     }
 
-   
-
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .confirm-divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(103,49,71,0.30), transparent);
+      margin: 1.4rem 0 1rem;
     }
+
+    .confirm-link {
+      display: block;
+      font-family: 'Zen Loop', sans-serif;
+      font-size: 0.82rem; letter-spacing: 0.10em;
+      text-transform: uppercase; text-decoration: none;
+      text-align: center; margin-top: 0.7rem;
+      transition: color 200ms;
+    }
+
+    .confirm-link.primary {
+      color: rgba(204,85,0,0.80);
+      font-size: 0.88rem;
+    }
+    .confirm-link.primary:hover { color: rgba(248,242,224,0.95); }
+
+    .confirm-link.secondary {
+      color: rgba(240,234,214,0.35);
+      font-size: 0.75rem;
+    }
+    .confirm-link.secondary:hover { color: rgba(240,234,214,0.75); }
+
+    @keyframes riseIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
     @media (prefers-reduced-motion: reduce) {
       .content-wrap { animation: none; opacity: 1; }
@@ -205,7 +198,6 @@
     <div class="fireflies" id="fireflies" aria-hidden="true"></div>
 
     <div class="content-wrap">
-
       <div class="confirm-box" id="confirmBox">
 
         <div class="vine" aria-hidden="true">
@@ -222,9 +214,11 @@
         <p class="confirm-text"  id="confirmText"></p>
         <p class="confirm-note"  id="confirmNote"></p>
 
+        <div class="confirm-divider"></div>
+
+        <div id="confirmLinks"></div>
+
       </div>
-
-
     </div>
   </div>
 
@@ -236,13 +230,13 @@
 
     setTimeout(() => document.getElementById('loadingScreen').classList.add('done'), 200);
 
-    // fireflies
+    /* fireflies */
     const wrap   = document.getElementById('fireflies');
     const colors = ['color-gold','color-amber','color-warmwhite'];
     const count  = window.matchMedia('(hover:none)').matches ? 12 : 20;
     const frag   = document.createDocumentFragment();
     for (let i = 0; i < count; i++) {
-      const dot = document.createElement('span');
+      const dot   = document.createElement('span');
       const riseN = Math.floor(count * 0.18);
       dot.className = 'firefly ' + colors[i % colors.length];
       if (i < riseN) {
@@ -264,40 +258,61 @@
     }
     wrap.appendChild(frag);
 
-    // personalize based on attendance
+    /* personalize */
     const attendance = sessionStorage.getItem(ATTENDANCE_KEY) || 'yes';
-    const title  = document.getElementById('confirmTitle');
-    const text   = document.getElementById('confirmText');
-    const note   = document.getElementById('confirmNote');
+    const title      = document.getElementById('confirmTitle');
+    const text       = document.getElementById('confirmText');
+    const note       = document.getElementById('confirmNote');
+    const links      = document.getElementById('confirmLinks');
 
     if (attendance === 'no') {
-      title.textContent = 'We\'ll miss you!';
-      text.textContent  = 'Thank you for letting the couple know you won\'t be able to attend. Emily and Travis will still think of you on their special day!';
-      note.textContent  = 'You\'re still part of the story.';
+      title.textContent = "We'll miss you!";
+      text.textContent  = "Thank you for letting the couple know you won't be able to attend. Emily and Travis will still think of you on their special day!";
+      note.textContent  = "You're still part of the story.";
+
+      /* registry link for no RSVPs */
+      const registry = document.createElement('a');
+      registry.href      = 'registry.html';
+      registry.className = 'confirm-link primary';
+      registry.textContent = 'Want to still give the bride and groom something special?';
+      links.appendChild(registry);
+
+      /* change answer */
+      const change = document.createElement('a');
+      change.href      = 'rsvp.html';
+      change.className = 'confirm-link secondary';
+      change.textContent = 'Change your answer';
+      links.appendChild(change);
+
     } else {
-      title.textContent = 'Can\'t wait to celebrate with you!';
-      text.textContent  = 'Your name has been recorded! Emily is reviewing submissions and will send you a code soon. That\'s your golden ticket into the wedding website where all the good stuff lives. Keep an eye on your phone or email!';
-      note.textContent  = 'The forest will send word when the time draws near.';
+      title.textContent = "Can't wait to celebrate with you!";
+      text.textContent  = "Your name has been recorded! Emily is reviewing submissions and will send you a code soon. That's your golden ticket into the wedding website where all the good stuff lives. Keep an eye on your phone or email!";
+      note.textContent  = "The forest will send word when the time draws near.";
+
+      /* enter the forest if already has access */
+      if (localStorage.getItem('rsvpAccess') === 'true') {
+        const enter = document.createElement('a');
+        enter.href      = 'transition2.html';
+        enter.className = 'confirm-link primary';
+        enter.textContent = 'Enter the forest';
+        links.appendChild(enter);
+      }
+
+      /* code link */
+      const code = document.createElement('a');
+      code.href      = 'codepage.html';
+      code.className = 'confirm-link secondary';
+      code.textContent = 'Already have your code?';
+      links.appendChild(code);
+
+      /* change answer */
+      const change = document.createElement('a');
+      change.href      = 'rsvp.html';
+      change.className = 'confirm-link secondary';
+      change.textContent = 'Change your answer';
+      links.appendChild(change);
     }
 
-
-    if (localStorage.getItem('rsvpAccess') === 'true') {
-  const btn = document.createElement('a');
-  btn.href = 'transition2.html';
-  btn.textContent = 'Enter the forest';
-  btn.style.cssText = 'display:block;margin-top:1.5rem;font-family:Zen Loop,sans-serif;font-size:0.88rem;letter-spacing:0.12em;text-transform:uppercase;color:rgba(204,85,0,0.80);text-decoration:none;text-align:center;border-top:1px solid rgba(103,49,71,0.22);padding-top:1.2rem;transition:color 200ms;';
-  btn.onmouseover = () => btn.style.color = 'rgba(248,242,224,0.95)';
-btn.onmouseout  = () => btn.style.color = 'rgba(204,85,0,0.80)';
-  document.querySelector('.confirm-box').appendChild(btn);
-}
-const codeLink = document.createElement('a');
-codeLink.href = 'codepage.html';
-codeLink.textContent = 'already have your code?';
-codeLink.style.cssText = 'display:block;margin-top:0.8rem;font-family:Zen Loop,sans-serif;font-size:0.78rem;letter-spacing:0.10em;text-transform:uppercase;color:rgba(240,234,214,0.35);text-decoration:none;text-align:center;transition:color 200ms;';
-codeLink.onmouseover = () => codeLink.style.color = 'rgba(240,234,214,0.75)';
-codeLink.onmouseout  = () => codeLink.style.color = 'rgba(240,234,214,0.35)';
-document.querySelector('.confirm-box').appendChild(codeLink);
-    
   })();
   </script>
 
