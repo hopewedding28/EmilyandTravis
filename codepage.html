@@ -1601,7 +1601,9 @@
         /* valid — claim it on this device */
         localStorage.setItem(claimKey, DEVICE_ID);
         localStorage.setItem(ACCESS_KEY, 'true');
-        localStorage.setItem(GUEST_KEY,  guestName);
+       if (!localStorage.getItem(GUEST_KEY)) {
+      localStorage.setItem(GUEST_KEY, guestName);
+      }
         sessionStorage.setItem(GUEST_ATT_KEY, String(attempts));
 
         /* success UI */
