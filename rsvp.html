@@ -786,7 +786,7 @@ document.getElementById('contact').addEventListener('input', function() {
 
       if (!nameVal) { showPopup('The forest needs your name.'); return; }
       if (!attendVal) { showPopup('The forest awaits your answer. Will you be joining us?'); return; }
-      if (!validContact(contactVal)) { showPopup('Please leave an email or phone number so Emily can reach you.'); return; }
+      if (attendVal === 'yes' && !validContact(contactVal)) { showPopup('Please leave an email or phone number so Emily can reach you.'); return; }
       if (attendVal === 'yes' && plusOne.value === 'yes' && !plusOneName.value.trim()) {
         showPopup("Please share your plus one's name so the forest can welcome them too."); return;
       }
