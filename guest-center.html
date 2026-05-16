@@ -39,32 +39,24 @@
       -webkit-backdrop-filter: blur(10px);
       padding-top: max(0px, env(safe-area-inset-top));
     }
-
     .gc-header-inner {
       display: flex; align-items: center; justify-content: space-between;
       padding: 0.55rem 1.5rem;
     }
-
     .gc-header-name {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 300; font-size: 1.2rem;
       color: var(--text-dark); text-decoration: none;
       letter-spacing: 0.12em;
-      text-shadow: 0 0 8px rgba(180,140,40,0.12);
     }
-
-    .gc-nav-bar {
-      display: flex; align-items: center; gap: 0.15rem;
-    }
-
+    .gc-nav-bar { display: flex; align-items: center; gap: 0.15rem; }
     .gc-nav-link {
       font-family: 'Lato', sans-serif;
       font-size: 0.72rem; letter-spacing: 0.10em;
       text-transform: uppercase; text-decoration: none;
       color: var(--text-mid); padding: 0.35rem 0.6rem;
       border-radius: 2px; white-space: nowrap;
-      transition: color 0.22s, background 0.22s;
-      position: relative;
+      transition: color 0.22s, background 0.22s; position: relative;
     }
     .gc-nav-link::after {
       content: ""; position: absolute;
@@ -73,33 +65,24 @@
       opacity: 0; transition: opacity 0.22s, left 0.22s, right 0.22s;
     }
     .gc-nav-link:hover { color: var(--text-dark); }
-    .gc-nav-link:hover::after { opacity: 1; left: 10%; right: 10%; }
+    .gc-nav-link:hover::after, .gc-nav-link.active::after { opacity: 1; left: 10%; right: 10%; }
     .gc-nav-link.active { color: var(--text-dark); font-weight: 400; }
-    .gc-nav-link.active::after { opacity: 1; left: 10%; right: 10%; }
-
-    .gc-nav-dot {
-      width: 2px; height: 2px; border-radius: 50%;
-      background: var(--gold-border-strong); flex-shrink: 0;
-    }
+    .gc-nav-dot { width: 2px; height: 2px; border-radius: 50%; background: var(--gold-border-strong); flex-shrink: 0; }
 
     /* ── HAMBURGER ── */
     .gc-hamburger {
-      display: none;
-      width: 38px; height: 38px;
-      background: rgba(245,239,216,0.95);
-      border: 1px solid var(--gold-border-strong);
+      display: none; width: 38px; height: 38px;
+      background: rgba(245,239,216,0.95); border: 1px solid var(--gold-border-strong);
       border-radius: 2px; cursor: pointer;
       align-items: center; justify-content: center;
       flex-direction: column; gap: 5px; padding: 10px;
-      -webkit-tap-highlight-color: transparent;
-      transition: background 0.22s;
+      -webkit-tap-highlight-color: transparent; transition: background 0.22s;
     }
     .gc-hamburger:hover { background: rgba(235,225,195,0.98); }
     .gc-ham-line {
       display: block; width: 100%; height: 1px;
       background: var(--text-mid); border-radius: 1px;
-      transition: transform 0.3s, opacity 0.2s;
-      transform-origin: center;
+      transition: transform 0.3s, opacity 0.2s; transform-origin: center;
     }
     .gc-hamburger.open .gc-ham-line:nth-child(1) { transform: translateY(6px) rotate(45deg); }
     .gc-hamburger.open .gc-ham-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
@@ -107,17 +90,11 @@
     .gc-hamburger.open .gc-ham-line { background: var(--gold); }
 
     /* ── DRAWER ── */
-    .gc-drawer-backdrop {
-      position: fixed; inset: 0; background: rgba(28,24,10,0.55);
-      z-index: 130; opacity: 0; pointer-events: none; transition: opacity 0.35s;
-    }
+    .gc-drawer-backdrop { position: fixed; inset: 0; background: rgba(28,24,10,0.55); z-index: 130; opacity: 0; pointer-events: none; transition: opacity 0.35s; }
     .gc-drawer-backdrop.show { opacity: 1; pointer-events: auto; }
-
     .gc-drawer {
-      position: fixed; top: 0; left: 0;
-      width: min(280px, 82vw); height: 100dvh;
-      background: rgba(248,243,228,0.98);
-      border-right: 1px solid var(--gold-border-strong);
+      position: fixed; top: 0; left: 0; width: min(280px, 82vw); height: 100dvh;
+      background: rgba(248,243,228,0.98); border-right: 1px solid var(--gold-border-strong);
       z-index: 140; transform: translateX(-100%);
       transition: transform 0.35s cubic-bezier(0.25,0.8,0.25,1);
       backdrop-filter: blur(16px);
@@ -125,25 +102,14 @@
       display: flex; flex-direction: column; overflow-y: auto;
     }
     .gc-drawer.open { transform: translateX(0); }
-
     .gc-drawer-header { margin-bottom: 1.5rem; }
-    .gc-drawer-names {
-      font-family: 'Cormorant Garamond', serif; font-weight: 300;
-      font-size: 1.4rem; color: var(--text-dark);
-      letter-spacing: 0.12em; display: block; margin-bottom: 0.2rem;
-    }
+    .gc-drawer-names { font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 1.4rem; color: var(--text-dark); letter-spacing: 0.12em; display: block; margin-bottom: 0.2rem; }
     .gc-drawer-date { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.10em; text-transform: uppercase; }
-    .gc-drawer-divider {
-      width: 100%; height: 1px;
-      background: linear-gradient(to right, var(--gold), transparent);
-      margin-bottom: 1.2rem; opacity: 0.65;
-    }
+    .gc-drawer-divider { width: 100%; height: 1px; background: linear-gradient(to right, var(--gold), transparent); margin-bottom: 1.2rem; opacity: 0.65; }
     .gc-drawer-nav { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; }
     .gc-drawer-link {
-      display: flex; align-items: center; gap: 0.9rem;
-      text-decoration: none; padding: 0.7rem 0.6rem;
-      border-radius: 2px; color: var(--text-mid);
-      font-family: 'Lato', sans-serif; font-size: 0.88rem;
+      display: flex; align-items: center; gap: 0.9rem; text-decoration: none; padding: 0.7rem 0.6rem;
+      border-radius: 2px; color: var(--text-mid); font-family: 'Lato', sans-serif; font-size: 0.88rem;
       letter-spacing: 0.05em; border: 1px solid transparent;
       transition: color 0.22s, background 0.22s, border-color 0.22s, padding-left 0.22s;
       -webkit-tap-highlight-color: transparent;
@@ -180,7 +146,6 @@
       display: flex; flex-direction: column;
       overflow: hidden;
     }
-
     .panel-label {
       font-family: 'Cormorant Garamond', serif;
       font-weight: 400; letter-spacing: 0.2em;
@@ -188,21 +153,16 @@
       border-bottom: 1px solid var(--gold-border);
       flex-shrink: 0; text-transform: uppercase;
     }
-
     .panel-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
     .byline { color: var(--text-muted); letter-spacing: 0.07em; }
     .byline em { color: var(--gold-light); font-style: italic; }
 
     .comment-textarea {
-      width: 100%;
-      background: rgba(255,252,242,0.95);
-      border: 1px solid var(--gold-border);
-      border-radius: 1px; color: var(--text-dark);
-      font-family: 'Lato', sans-serif;
-      line-height: 1.55; padding: 6px 8px;
-      resize: none; outline: none;
-      transition: border-color 200ms;
+      width: 100%; background: rgba(255,252,242,0.95);
+      border: 1px solid var(--gold-border); border-radius: 1px; color: var(--text-dark);
+      font-family: 'Lato', sans-serif; line-height: 1.55; padding: 6px 8px;
+      resize: none; outline: none; transition: border-color 200ms;
     }
     .comment-textarea::placeholder { color: var(--text-muted); font-style: italic; }
     .comment-textarea:focus { border-color: var(--gold-light); }
@@ -211,12 +171,9 @@
     .hint { color: var(--text-muted); letter-spacing: 0.04em; }
 
     .btn {
-      background: transparent;
-      border: 1px solid var(--gold-border);
-      color: var(--gold-light);
-      font-family: 'Cormorant Garamond', serif;
-      letter-spacing: 0.12em; cursor: pointer;
-      transition: background 180ms; border-radius: 1px;
+      background: transparent; border: 1px solid var(--gold-border);
+      color: var(--gold-light); font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.12em; cursor: pointer; transition: background 180ms; border-radius: 1px;
     }
     .btn:hover { background: rgba(180,140,40,0.1); }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -225,11 +182,7 @@
     .comment-feed::-webkit-scrollbar { width: 2px; }
     .comment-feed::-webkit-scrollbar-thumb { background: var(--gold-border); }
 
-    .empty-note {
-      font-family: 'Cormorant Garamond', serif;
-      font-style: italic; color: var(--text-muted);
-      text-align: center; letter-spacing: 0.06em;
-    }
+    .empty-note { font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--text-muted); text-align: center; letter-spacing: 0.06em; }
 
     .c-item { border-bottom: 1px solid rgba(180,140,40,0.1); animation: rise 280ms ease forwards; }
     @keyframes rise { from{opacity:0;transform:translateY(4px)} to{opacity:1;transform:translateY(0)} }
@@ -239,31 +192,19 @@
     .c-text { color:var(--text-dark); line-height:1.5; }
     .c-actions { display:flex; align-items:center; gap:8px; }
 
-    .heart-btn {
-      background:none; border:none; cursor:pointer;
-      display:flex; align-items:center; gap:3px;
-      color:var(--text-muted); transition:color 150ms; padding:0;
-    }
+    .heart-btn { background:none; border:none; cursor:pointer; display:flex; align-items:center; gap:3px; color:var(--text-muted); transition:color 150ms; padding:0; }
     .heart-btn:hover,.heart-btn.on { color:var(--gold-light); }
     .hi { width:11px; height:11px; fill:none; stroke:currentColor; stroke-width:1.8; }
     .heart-btn.on .hi { fill:var(--gold-light); }
 
-    .delete-btn {
-      background:none; border:none; cursor:pointer;
-      display:flex; align-items:center;
-      color:var(--text-muted); transition:color 150ms; padding:0;
-    }
+    .delete-btn { background:none; border:none; cursor:pointer; display:flex; align-items:center; color:var(--text-muted); transition:color 150ms; padding:0; }
     .delete-btn:hover { color:rgba(180,60,60,0.75); }
     .delete-btn svg { width:11px; height:11px; stroke:currentColor; stroke-width:1.8; fill:none; }
 
     .upload-row { flex-shrink:0; display:flex; align-items:center; gap:8px; }
     .photo-ct { color:var(--text-muted); letter-spacing:0.06em; }
 
-    .sw {
-      flex:1; position:relative;
-      background:rgba(240,232,208,0.5);
-      overflow:hidden; border:1px solid var(--gold-border);
-    }
+    .sw { flex:1; position:relative; background:rgba(240,232,208,0.5); overflow:hidden; border:1px solid var(--gold-border); }
     .slide { position:absolute; inset:0; opacity:0; transition:opacity 700ms ease; display:flex; align-items:center; justify-content:center; }
     .slide.on { opacity:1; }
     .slide img { max-width:100%; max-height:100%; object-fit:contain; }
@@ -284,10 +225,7 @@
     .dot { width:5px; height:5px; border-radius:50%; background:rgba(180,140,40,0.25); cursor:pointer; transition:background 220ms; }
     .dot.on { background:var(--gold-light); }
 
-    .status-msg {
-      font-family:'Cormorant Garamond',serif; font-style:italic;
-      color:var(--gold); text-align:center; letter-spacing:0.04em;
-    }
+    .status-msg { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gold); text-align:center; letter-spacing:0.04em; }
 
     @media (max-width: 720px) {
       .gc-nav-bar { display: none; }
@@ -297,7 +235,6 @@
 </head>
 <body>
 
-  <!-- header -->
   <header class="gc-header">
     <div class="gc-header-inner">
       <a href="home.html" class="gc-header-name">Emily &amp; Travis</a>
@@ -314,17 +251,12 @@
     </div>
   </header>
 
-  <!-- hamburger -->
   <button class="gc-hamburger" id="gcHamburger" aria-label="Open navigation" aria-expanded="false">
-    <span class="gc-ham-line"></span>
-    <span class="gc-ham-line"></span>
-    <span class="gc-ham-line"></span>
+    <span class="gc-ham-line"></span><span class="gc-ham-line"></span><span class="gc-ham-line"></span>
   </button>
 
-  <!-- drawer backdrop -->
   <div class="gc-drawer-backdrop" id="gcBackdrop" aria-hidden="true"></div>
 
-  <!-- drawer -->
   <nav class="gc-drawer" id="gcDrawer" aria-label="Site navigation">
     <div class="gc-drawer-header">
       <span class="gc-drawer-names">Emily &amp; Travis</span>
@@ -332,64 +264,37 @@
     </div>
     <div class="gc-drawer-divider"></div>
     <div class="gc-drawer-nav">
-      <a href="home.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M2 8L9 2L16 8V16H12V11H6V16H2V8Z" stroke="#b8922e" stroke-width="1" stroke-linejoin="round" fill="rgba(184,146,46,0.10)"/></svg>Home
-      </a>
-      <a href="details.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M4 2H13L16 5V16H4V2Z" stroke="#b8922e" stroke-width="1" stroke-linejoin="round" fill="rgba(184,146,46,0.10)"/><line x1="7" y1="8" x2="13" y2="8" stroke="#b8922e" stroke-width="0.8"/><line x1="7" y1="11" x2="13" y2="11" stroke="#b8922e" stroke-width="0.8"/></svg>Details
-      </a>
-      <a href="schedule.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><path d="M9 5V9L12 11" stroke="#b8922e" stroke-width="1" stroke-linecap="round"/></svg>Schedule
-      </a>
-      <a href="location.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M9 2C6.2 2 4 4.2 4 7C4 11 9 16 9 16C9 16 14 11 14 7C14 4.2 11.8 2 9 2Z" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><circle cx="9" cy="7" r="2" stroke="#b8922e" stroke-width="0.8" fill="none"/></svg>Location
-      </a>
-      <a href="registry.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><path d="M9 15L3.5 9.5C2.5 8.5 2.5 6.9 3.5 5.9C4.5 4.9 6.1 4.9 7.1 5.9L9 7.8L10.9 5.9C11.9 4.9 13.5 4.9 14.5 5.9C15.5 6.9 15.5 8.5 14.5 9.5L9 15Z" stroke="#b8922e" stroke-width="1" stroke-linejoin="round" fill="rgba(184,146,46,0.10)"/></svg>Registry
-      </a>
-      <a href="faq.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><path d="M7 7C7 5.9 7.9 5 9 5C10.1 5 11 5.9 11 7C11 8 10 8.5 9 9.5" stroke="#b8922e" stroke-width="1" stroke-linecap="round"/><circle cx="9" cy="12" r="0.8" fill="#b8922e"/></svg>FAQ
-      </a>
-      <a href="guest-center.html" class="gc-drawer-link active">
-        <svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><path d="M3 16C3 13 5.7 11 9 11C12.3 11 15 13 15 16" stroke="#b8922e" stroke-width="1" stroke-linecap="round"/></svg>Guest Center
-      </a>
-      <a href="simple.html" class="gc-drawer-link">
-        <svg viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="1" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><line x1="6" y1="7" x2="12" y2="7" stroke="#b8922e" stroke-width="0.8"/><line x1="6" y1="10" x2="12" y2="10" stroke="#b8922e" stroke-width="0.8"/></svg>Simple View
-      </a>
+      <a href="home.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><path d="M2 8L9 2L16 8V16H12V11H6V16H2V8Z" stroke="#b8922e" stroke-width="1" stroke-linejoin="round" fill="rgba(184,146,46,0.10)"/></svg>Home</a>
+      <a href="details.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><path d="M4 2H13L16 5V16H4V2Z" stroke="#b8922e" stroke-width="1" stroke-linejoin="round" fill="rgba(184,146,46,0.10)"/><line x1="7" y1="8" x2="13" y2="8" stroke="#b8922e" stroke-width="0.8"/><line x1="7" y1="11" x2="13" y2="11" stroke="#b8922e" stroke-width="0.8"/></svg>Details</a>
+      <a href="schedule.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><path d="M9 5V9L12 11" stroke="#b8922e" stroke-width="1" stroke-linecap="round"/></svg>Schedule</a>
+      <a href="location.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><path d="M9 2C6.2 2 4 4.2 4 7C4 11 9 16 9 16C9 16 14 11 14 7C14 4.2 11.8 2 9 2Z" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><circle cx="9" cy="7" r="2" stroke="#b8922e" stroke-width="0.8" fill="none"/></svg>Location</a>
+      <a href="registry.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><path d="M9 15L3.5 9.5C2.5 8.5 2.5 6.9 3.5 5.9C4.5 4.9 6.1 4.9 7.1 5.9L9 7.8L10.9 5.9C11.9 4.9 13.5 4.9 14.5 5.9C15.5 6.9 15.5 8.5 14.5 9.5L9 15Z" stroke="#b8922e" stroke-width="1" stroke-linejoin="round" fill="rgba(184,146,46,0.10)"/></svg>Registry</a>
+      <a href="faq.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="7" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><path d="M7 7C7 5.9 7.9 5 9 5C10.1 5 11 5.9 11 7C11 8 10 8.5 9 9.5" stroke="#b8922e" stroke-width="1" stroke-linecap="round"/><circle cx="9" cy="12" r="0.8" fill="#b8922e"/></svg>FAQ</a>
+      <a href="guest-center.html" class="gc-drawer-link active"><svg viewBox="0 0 18 18" fill="none"><circle cx="9" cy="6" r="3" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><path d="M3 16C3 13 5.7 11 9 11C12.3 11 15 13 15 16" stroke="#b8922e" stroke-width="1" stroke-linecap="round"/></svg>Guest Center</a>
+      <a href="simple.html" class="gc-drawer-link"><svg viewBox="0 0 18 18" fill="none"><rect x="3" y="3" width="12" height="12" rx="1" stroke="#b8922e" stroke-width="1" fill="rgba(184,146,46,0.10)"/><line x1="6" y1="7" x2="12" y2="7" stroke="#b8922e" stroke-width="0.8"/><line x1="6" y1="10" x2="12" y2="10" stroke="#b8922e" stroke-width="0.8"/></svg>Simple View</a>
     </div>
-    <div class="gc-drawer-footer">
-      <span class="gc-drawer-footer-text">Emily &amp; Travis · 09.23.28</span>
-    </div>
+    <div class="gc-drawer-footer"><span class="gc-drawer-footer-text">Emily &amp; Travis · 09.23.28</span></div>
   </nav>
 
-<img id="bgImg" src="assets/backgrounds/FINAL_guest-center-bg.png" alt="" />
-<div id="pageTitle">Guest Center</div>
-<div class="frame-panel" id="leftPanel">
-  <div class="panel-label" id="labelL">Messages for the Couple</div>
-  <div class="panel-body" id="bodyL"></div>
-</div>
-<div class="frame-panel" id="rightPanel">
-  <div class="panel-label" id="labelR">Photo Gallery</div>
-  <div class="panel-body" id="bodyR"></div>
-</div>
+  <img id="bgImg" src="assets/backgrounds/FINAL_guest-center-bg.png" alt="" />
+  <div id="pageTitle">Guest Center</div>
+  <div class="frame-panel" id="leftPanel">
+    <div class="panel-label" id="labelL">Messages for the Couple</div>
+    <div class="panel-body" id="bodyL"></div>
+  </div>
+  <div class="frame-panel" id="rightPanel">
+    <div class="panel-label" id="labelR">Photo Gallery</div>
+    <div class="panel-body" id="bodyR"></div>
+  </div>
 
 <script>
   if (localStorage.getItem('rsvpAccess') !== 'true') {
     window.location.replace('index.html');
   }
 
-  /* ============================================================
-     SUPABASE
-  ============================================================ */
   const SUPA_URL = 'https://krxxuxfwfsltdgosornz.supabase.co';
   const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtyeHh1eGZ3ZnNsdGRnb3Nvcm56Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNTM1MTYsImV4cCI6MjA5MjgyOTUxNn0.vkI4-BVQVe2mqXP0jiedbDh_rkllcP8HkiWMUzs3pnA';
-
-  const H = {
-    'apikey': SUPA_KEY,
-    'Authorization': 'Bearer ' + SUPA_KEY,
-    'Content-Type': 'application/json',
-    'Prefer': 'return=representation'
-  };
+  const H = { 'apikey':SUPA_KEY, 'Authorization':'Bearer '+SUPA_KEY, 'Content-Type':'application/json', 'Prefer':'return=representation' };
 
   const dbGet    = (t,q='') => fetch(`${SUPA_URL}/rest/v1/${t}${q}`,{headers:H}).then(r=>r.json());
   const dbPost   = (t,b)    => fetch(`${SUPA_URL}/rest/v1/${t}`,{method:'POST',headers:H,body:JSON.stringify(b)}).then(r=>r.json());
@@ -415,42 +320,44 @@
   }
 
   /* ============================================================
-     LAYOUT — account for header height
+     LAYOUT
+     Key fix: use full innerHeight (not innerHeight - headerH)
+     for the image scale calculation, since the bg image is
+     position:fixed inset:0 and covers the entire viewport.
+     Panels are also fixed, so they sit in the full viewport too.
   ============================================================ */
   const IMG_W = 1536, IMG_H = 1024;
-  const LF    = { x:180, y:281, w:543, h:474 };
-  const RF    = { x:812, y:281, w:543, h:474 };
-  const HEADER_H = 48;
+  const LF = { x:180, y:281, w:543, h:474 };
+  const RF = { x:812, y:281, w:543, h:474 };
 
   function layout() {
     const vw = innerWidth;
-    const vh = innerHeight - HEADER_H;
+    const vh = innerHeight; /* full viewport — matches the fixed bg image */
     const vr = vw/vh, ir = IMG_W/IMG_H;
-    let rw,rh,ox,oy;
-    if(vr>ir){rw=vw;rh=vw/ir;ox=0;oy=(vh-rh)/2;}
-    else{rh=vh;rw=vh*ir;ox=(vw-rw)/2;oy=0;}
-    const sx=rw/IMG_W, sy=rh/IMG_H;
-    const topOffset = HEADER_H;
+    let rw, rh, ox, oy;
+    if(vr > ir) { rw=vw; rh=vw/ir; ox=0; oy=(vh-rh)/2; }
+    else         { rh=vh; rw=vh*ir; ox=(vw-rw)/2; oy=0; }
+    const sx = rw/IMG_W, sy = rh/IMG_H;
 
-    const place=(el,f)=>{
+    const place = (el, f) => {
       el.style.left   = Math.round(ox + f.x*sx) + 'px';
-      el.style.top    = Math.round(topOffset + oy + f.y*sy) + 'px';
+      el.style.top    = Math.round(oy + f.y*sy) + 'px';
       el.style.width  = Math.round(f.w*sx) + 'px';
       el.style.height = Math.round(f.h*sy) + 'px';
     };
     place(document.getElementById('leftPanel'),  LF);
     place(document.getElementById('rightPanel'), RF);
 
-    const frameTop = topOffset + oy + LF.y*sy;
-    const frameBot = topOffset + oy + (LF.y+LF.h)*sy;
-    const fs = Math.max(10, Math.min(22, (frameTop - topOffset) * 0.52));
+    const headerH  = document.querySelector('.gc-header').offsetHeight;
+    const frameTop = oy + LF.y*sy;
+    const fs       = Math.max(10, Math.min(22, (frameTop - headerH) * 0.52));
 
     const t = document.getElementById('pageTitle');
-    t.style.top = Math.max(topOffset + 4, frameTop - fs*1.5) + 'px';
+    t.style.top      = Math.max(headerH + 4, frameTop - fs*1.5) + 'px';
     t.style.fontSize = fs + 'px';
 
     const panelH = LF.h * sy;
-    const base = Math.max(9, Math.min(14, panelH * 0.022));
+    const base   = Math.max(9, Math.min(14, panelH * 0.022));
     document.querySelectorAll('.frame-panel').forEach(p => p.style.fontSize = base + 'px');
     document.querySelectorAll('.panel-label').forEach(l => {
       l.style.fontSize = Math.max(8, base*0.82) + 'px';
@@ -459,15 +366,15 @@
     buildPanels(panelH, base);
   }
 
-  let built=false;
+  let built = false;
   function buildPanels(panelH, base) {
     if(built) return;
-    built=true;
-    const pad=Math.round(panelH*0.03);
-    const taH=Math.round(panelH*0.13);
-    const g=Math.round(panelH*0.018);
+    built = true;
+    const pad = Math.round(panelH*0.03);
+    const taH = Math.round(panelH*0.13);
+    const g   = Math.round(panelH*0.018);
 
-    document.getElementById('bodyL').innerHTML=`
+    document.getElementById('bodyL').innerHTML = `
       <div style="flex-shrink:0;padding:${g}px ${pad}px ${g}px;">
         <div class="byline" style="font-size:${base*.78}px;margin-bottom:${g*.6}px;">
           Posting as: <em id="nameTag">Guest</em>
@@ -485,7 +392,7 @@
         <div class="empty-note" id="emptyNote" style="margin-top:${g*2}px;font-size:${base}px;">loading...</div>
       </div>`;
 
-    document.getElementById('bodyR').innerHTML=`
+    document.getElementById('bodyR').innerHTML = `
       <div class="upload-row" style="flex-shrink:0;padding:${g}px ${pad}px;">
         <button class="btn" id="upBtn" style="font-size:${base*.85}px;padding:${g*.4}px ${g*1.4}px;">Upload Pic</button>
         <span class="photo-ct" id="phCt" style="font-size:${base*.78}px;">loading...</span>
@@ -506,9 +413,6 @@
     wireUp(base, g);
   }
 
-  /* ============================================================
-     WIRE UP
-  ============================================================ */
   function wireUp(base, g) {
     const guestName = localStorage.getItem('guestName') || 'Guest';
     document.getElementById('nameTag').textContent = guestName;
@@ -516,18 +420,14 @@
     document.getElementById('cBox').addEventListener('keydown', e => {
       if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();postComment(guestName,base,g);}
     });
-    document.getElementById('upBtn').onclick  = () => document.getElementById('fi').click();
-    document.getElementById('fi').onchange    = e  => handleUpload(e, guestName);
-
+    document.getElementById('upBtn').onclick = () => document.getElementById('fi').click();
+    document.getElementById('fi').onchange   = e => handleUpload(e, guestName);
     loadComments(base, g);
     loadPhotos();
     setInterval(() => loadComments(base, g), 30000);
     setInterval(loadPhotos, 60000);
   }
 
-  /* ============================================================
-     COMMENTS
-  ============================================================ */
   let allComments = [];
 
   async function loadComments(base, g) {
@@ -541,22 +441,16 @@
   }
 
   async function postComment(guestName, base, g) {
-    const box    = document.getElementById('cBox');
-    const btn    = document.getElementById('postBtn');
-    const status = document.getElementById('postStatus');
-    const txt    = box.value.trim();
+    const box=document.getElementById('cBox'), btn=document.getElementById('postBtn'), status=document.getElementById('postStatus');
+    const txt = box.value.trim();
     if(!txt) return;
-    btn.disabled = true;
-    status.textContent = 'posting...';
+    btn.disabled = true; status.textContent = 'posting...';
     try {
       await dbPost('comments',{guest_name:guestName,message:txt,hearts:0,hearted_by:[]});
-      box.value = '';
-      status.textContent = 'posted!';
+      box.value = ''; status.textContent = 'posted!';
       setTimeout(()=>status.textContent='',2000);
       await loadComments(base, g);
-    } catch(e) {
-      status.textContent = 'something went wrong, try again';
-    }
+    } catch(e) { status.textContent = 'something went wrong, try again'; }
     btn.disabled = false;
   }
 
@@ -569,14 +463,9 @@
   }
 
   function renderComments(base, g) {
-    const feed  = document.getElementById('feed');
-    const empty = document.getElementById('emptyNote');
+    const feed=document.getElementById('feed'), empty=document.getElementById('emptyNote');
     if(!feed) return;
-    if(!allComments.length){
-      empty.style.display='block';
-      empty.textContent='Be the first to leave a message for Emily and Travis!';
-      return;
-    }
+    if(!allComments.length){ empty.style.display='block'; empty.textContent='Be the first to leave a message for Emily and Travis!'; return; }
     empty.style.display='none';
     [...feed.querySelectorAll('.c-item')].forEach(el=>el.remove());
     const guestName = localStorage.getItem('guestName')||'Guest';
@@ -597,18 +486,12 @@
             <svg class="hi" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             ${c.hearts||0}
           </button>
-          ${isOwn ? `<button class="delete-btn" data-id="${c.id}" title="Delete comment">
-            <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-          </button>` : ''}
+          ${isOwn ? `<button class="delete-btn" data-id="${c.id}" title="Delete comment"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}
         </div>`;
       feed.appendChild(d);
     });
-    feed.querySelectorAll('.heart-btn').forEach(btn=>{
-      btn.onclick=()=>toggleHeart(parseInt(btn.dataset.id),base,g);
-    });
-    feed.querySelectorAll('.delete-btn').forEach(btn=>{
-      btn.onclick=()=>deleteComment(parseInt(btn.dataset.id),base,g);
-    });
+    feed.querySelectorAll('.heart-btn').forEach(btn=>{ btn.onclick=()=>toggleHeart(parseInt(btn.dataset.id),base,g); });
+    feed.querySelectorAll('.delete-btn').forEach(btn=>{ btn.onclick=()=>deleteComment(parseInt(btn.dataset.id),base,g); });
   }
 
   async function toggleHeart(id, base, g) {
@@ -624,35 +507,24 @@
     await dbPatch('comments',id,{hearts:c.hearts,hearted_by:hb});
   }
 
-  /* ============================================================
-     PHOTOS
-  ============================================================ */
   let photoRows=[], cur=0, paused=false, timer=null;
 
   async function loadPhotos() {
-    try {
-      photoRows = await dbGet('photos','?order=created_at.asc');
-      renderSlides();
-    } catch(e){}
+    try { photoRows = await dbGet('photos','?order=created_at.asc'); renderSlides(); } catch(e){}
   }
 
   async function handleUpload(e, guestName) {
     const files=Array.from(e.target.files);
-    const status=document.getElementById('upStatus');
-    const btn=document.getElementById('upBtn');
+    const status=document.getElementById('upStatus'), btn=document.getElementById('upBtn');
     if(!files.length) return;
-    btn.disabled=true;
-    status.textContent=`uploading ${files.length} photo${files.length>1?'s':''}...`;
+    btn.disabled=true; status.textContent=`uploading ${files.length} photo${files.length>1?'s':''}...`;
     try {
       for(const file of files) await uploadPhoto(file,guestName);
       status.textContent='uploaded!';
       setTimeout(()=>status.textContent='',3000);
       await loadPhotos();
-    } catch(err){
-      status.textContent='upload failed, try again';
-    }
-    btn.disabled=false;
-    e.target.value='';
+    } catch(err){ status.textContent='upload failed, try again'; }
+    btn.disabled=false; e.target.value='';
   }
 
   async function deletePhoto(id, url) {
@@ -660,85 +532,54 @@
       await deletePhotoFromStorage(url);
       await dbDelete('photos', id);
       photoRows = photoRows.filter(r => r.id !== id);
-      if (cur >= photoRows.length) cur = Math.max(0, photoRows.length - 1);
+      if(cur >= photoRows.length) cur = Math.max(0, photoRows.length - 1);
       renderSlides();
-    } catch(e) {}
+    } catch(e){}
   }
 
   function renderSlides() {
-    const si   = document.getElementById('si');
-    const noPh = document.getElementById('noPh');
-    const ctrl = document.getElementById('ssCtrl');
-    const ct   = document.getElementById('phCt');
+    const si=document.getElementById('si'), noPh=document.getElementById('noPh');
+    const ctrl=document.getElementById('ssCtrl'), ct=document.getElementById('phCt');
     if(!si) return;
-
     const guestName = localStorage.getItem('guestName') || 'Guest';
-    ct.textContent = photoRows.length + ' photo' + (photoRows.length !== 1 ? 's' : '') + ' shared';
-
-    if(!photoRows.length){
-      noPh.style.display='flex'; ctrl.style.display='none'; si.innerHTML=''; return;
-    }
-    noPh.style.display='none'; ctrl.style.display='flex';
-    si.innerHTML='';
-
-    photoRows.forEach((row, i) => {
-      const s = document.createElement('div');
-      s.className = 'slide' + (i === cur ? ' on' : '');
+    ct.textContent = photoRows.length + ' photo' + (photoRows.length!==1?'s':'') + ' shared';
+    if(!photoRows.length){ noPh.style.display='flex'; ctrl.style.display='none'; si.innerHTML=''; return; }
+    noPh.style.display='none'; ctrl.style.display='flex'; si.innerHTML='';
+    photoRows.forEach((row,i)=>{
+      const s=document.createElement('div');
+      s.className='slide'+(i===cur?' on':'');
       const isOwn = row.guest_name === guestName;
-      s.innerHTML = `<img src="${row.url}" alt="guest photo">${isOwn ? `<button class="photo-delete-btn" data-id="${row.id}" data-url="${row.url}" title="Remove photo"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>` : ''}`;
+      s.innerHTML=`<img src="${row.url}" alt="guest photo">${isOwn?`<button class="photo-delete-btn" data-id="${row.id}" data-url="${row.url}" title="Remove photo"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg></button>`:''}`;
       si.appendChild(s);
     });
-
-    si.querySelectorAll('.photo-delete-btn').forEach(btn => {
-      btn.onclick = () => deletePhoto(parseInt(btn.dataset.id), btn.dataset.url);
-    });
-
-    const dots = document.getElementById('dots');
-    dots.innerHTML = '';
-    const maxD = Math.min(photoRows.length, 8);
-    for(let i = 0; i < maxD; i++){
-      const d = document.createElement('div');
-      d.className = 'dot' + (i === cur ? ' on' : '');
-      d.onclick = () => goTo(i);
+    si.querySelectorAll('.photo-delete-btn').forEach(btn=>{ btn.onclick=()=>deletePhoto(parseInt(btn.dataset.id),btn.dataset.url); });
+    const dots=document.getElementById('dots');
+    dots.innerHTML='';
+    const maxD=Math.min(photoRows.length,8);
+    for(let i=0;i<maxD;i++){
+      const d=document.createElement('div');
+      d.className='dot'+(i===cur?' on':'');
+      d.onclick=()=>goTo(i);
       dots.appendChild(d);
     }
     startShow();
-    document.getElementById('pauseBtn').onclick = togglePause;
+    document.getElementById('pauseBtn').onclick=togglePause;
   }
 
-  function goTo(n){
-    document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('on',i===n));
-    document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===n));
-    cur=n;
-  }
-  function startShow(){
-    if(timer) clearInterval(timer);
-    if(paused||photoRows.length<=1) return;
-    timer=setInterval(()=>goTo((cur+1)%photoRows.length),4000);
-  }
-  function togglePause(){
-    paused=!paused;
-    document.getElementById('pauseBtn').textContent=paused?'Play':'Pause';
-    paused?clearInterval(timer):startShow();
-  }
+  function goTo(n){ document.querySelectorAll('.slide').forEach((s,i)=>s.classList.toggle('on',i===n)); document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===n)); cur=n; }
+  function startShow(){ if(timer) clearInterval(timer); if(paused||photoRows.length<=1) return; timer=setInterval(()=>goTo((cur+1)%photoRows.length),4000); }
+  function togglePause(){ paused=!paused; document.getElementById('pauseBtn').textContent=paused?'Play':'Pause'; paused?clearInterval(timer):startShow(); }
 
-  /* ============================================================
-     HAMBURGER
-  ============================================================ */
-  const gcHamburger = document.getElementById('gcHamburger');
-  const gcDrawer    = document.getElementById('gcDrawer');
-  const gcBackdrop  = document.getElementById('gcBackdrop');
-
+  const gcHamburger=document.getElementById('gcHamburger'), gcDrawer=document.getElementById('gcDrawer'), gcBackdrop=document.getElementById('gcBackdrop');
   function openDrawer()  { gcDrawer.classList.add('open'); gcBackdrop.classList.add('show'); gcHamburger.classList.add('open'); gcHamburger.setAttribute('aria-expanded','true'); }
   function closeDrawer() { gcDrawer.classList.remove('open'); gcBackdrop.classList.remove('show'); gcHamburger.classList.remove('open'); gcHamburger.setAttribute('aria-expanded','false'); }
-
-  gcHamburger.addEventListener('click', () => gcDrawer.classList.contains('open') ? closeDrawer() : openDrawer());
+  gcHamburger.addEventListener('click', ()=>gcDrawer.classList.contains('open')?closeDrawer():openDrawer());
   gcBackdrop.addEventListener('click', closeDrawer);
-  gcDrawer.querySelectorAll('.gc-drawer-link').forEach(l => l.addEventListener('click', closeDrawer));
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+  gcDrawer.querySelectorAll('.gc-drawer-link').forEach(l=>l.addEventListener('click',closeDrawer));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeDrawer(); });
 
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-  function fmtD(ts){return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});}
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function fmtD(ts){ return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
 
   window.addEventListener('resize', layout);
   document.getElementById('bgImg').addEventListener('load', layout);
